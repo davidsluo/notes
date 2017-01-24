@@ -1,4 +1,5 @@
 all: shifty
+	./shifty
 
 shifty: shifty.o
 	g++ -o shifty shifty.o

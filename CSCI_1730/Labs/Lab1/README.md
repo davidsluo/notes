@@ -3,9 +3,7 @@ Author: David Luo
 Student ID: 811357331
 
 ## How to Compile and Run
-Run `make` within this directory. Optionally run `make clean` first.
-
-To run, run `./shifty`.
+The Makefile does all compilation and running for you. Just run `make` in this directory.
 
 ## Reflection
 *todo*
