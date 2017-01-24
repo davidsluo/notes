@@ -10,34 +10,34 @@ typedef unsigned int uint;
 
 void setValue(uint & var, uint k, uint i, uint val) {
   // Generate number to filter out unwanted digits
-  uint filter = 0;
+  uint mask = 0;
   for(int j = 32 / k; j > 0; j--) {
-    filter += 1;
+    mask += 1;
     if (j != 1) {
-      filter <<= 1;
+      mask <<= 1;
     }
   }
-  filter <<= i * 32 / k;
+  mask <<= i * 32 / k;
 
-  // (var & ~filter) = var with the space we want to set "zero'd" out.
+  // (var & ~mask) = var with the space we want to set "zero'd" out.
   // + (val << i * 32 / k) = add our value (the input) to var, shifted over to the correct index.
-  var = (var & ~filter) + (val << i * 32 / k);
+  var = (var & ~mask) + (val << i * 32 / k);
 }
 
 uint getValue(uint var, uint k, uint i) {
   // Generate number to filter out relevvant digits
-  uint filter = 0;
+  uint mask = 0;
   for(int j = 32 / k; j > 0; j--) {
-    filter += 1;
+    mask += 1;
     if (j != 1) {
-      filter <<= 1;
+      mask <<= 1;
     }
   }
-  filter <<= i * 32 / k;
+  mask <<= i * 32 / k;
 
-  // (var & filter) get the relevant digits
+  // (var & mask) get the relevant digits
   // >> (i * 32 / k) shift over back to the right
-  return (var & filter) >> (i * 32 / k);
+  return (var & mask) >> (i * 32 / k);
 }
 
 int main() {
