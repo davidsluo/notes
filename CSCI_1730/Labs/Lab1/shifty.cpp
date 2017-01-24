@@ -6,10 +6,11 @@
 // Author: David Luo
 
 using namespace std;
+typedef unsigned int uint;
 
-void setValue(unsigned int & var, unsigned int k, unsigned int i, unsigned int val) {
+void setValue(uint & var, uint k, uint i, uint val) {
   // Generate number to filter out unwanted digits
-  unsigned int filter = 0;
+  uint filter = 0;
   for(int j = 32 / k; j > 0; j--) {
     filter += 1;
     if (j != 1) {
@@ -23,9 +24,9 @@ void setValue(unsigned int & var, unsigned int k, unsigned int i, unsigned int v
   var = (var & ~filter) + (val << i * 32 / k);
 }
 
-unsigned int getValue(unsigned int var, unsigned int k, unsigned int i) {
+uint getValue(uint var, uint k, uint i) {
   // Generate number to filter out relevvant digits
-  unsigned int filter = 0;
+  uint filter = 0;
   for(int j = 32 / k; j > 0; j--) {
     filter += 1;
     if (j != 1) {
@@ -40,7 +41,7 @@ unsigned int getValue(unsigned int var, unsigned int k, unsigned int i) {
 }
 
 int main() {
-  unsigned int var = 0;
+  uint var = 0;
   int k;
   cout << "How many splits(k)?" << endl;
   cin >> k;
