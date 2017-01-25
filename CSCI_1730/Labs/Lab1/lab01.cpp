@@ -3,11 +3,19 @@
 #include <bitset>
 #include <cmath>
 
-// Author: David Luo
-
+/**
+* @author David Luo
+*/
 using namespace std;
 typedef unsigned int uint;
 
+/**
+* Sets a value at the specified index of the unsigned int.
+* @param var The variable to be modified
+* @param k The number of times to divide *var*
+* @param i The index to insert at
+* @param val The value to insert at index *i*
+*/
 void setValue(uint & var, uint k, uint i, uint val) {
   // Generate number to filter out unwanted digits
   uint mask = 0;
@@ -24,8 +32,14 @@ void setValue(uint & var, uint k, uint i, uint val) {
   var = (var & ~mask) + (val << i * 32 / k);
 }
 
+/**
+* Gets the value located at a specified index.
+* @param var The variable that stores the ints
+* @param k The number of times to divide *var*
+* @param i The index to "get"
+*/
 uint getValue(uint var, uint k, uint i) {
-  // Generate number to filter out relevvant digits
+  // Generate number to filter out relevant digits
   uint mask = 0;
   for(int j = 32 / k; j > 0; j--) {
     mask += 1;
@@ -40,6 +54,9 @@ uint getValue(uint var, uint k, uint i) {
   return (var & mask) >> (i * 32 / k);
 }
 
+/**
+* Main test method.
+*/
 int main() {
   uint var = 0;
   int k;
@@ -54,7 +71,7 @@ int main() {
   cout << bitset<32>(var) << endl;
   for (int i = 0; i < k; i++) {
     int value = getValue(var, k, i);
-    cout << "value at index " << i << ":\t" << bitset<32>(value) << "\t" << value << endl;
+    cout << "Value at index " << i << ":\t" << bitset<32>(value) << "\t" << value << endl;
   }
   return EXIT_SUCCESS;
 }
