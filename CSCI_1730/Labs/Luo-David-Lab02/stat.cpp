@@ -14,7 +14,7 @@ double calcAverage(double sigmaX, int n) {
 }
 
 int main() {
-        cout << "asdfasdf" << endl;
+        cout << "Enter number: ";
 
         double sigmaX = 0;
         double sigmaXSquared = 0;
