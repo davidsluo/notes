@@ -1,5 +1,4 @@
 SOURCE = $(wildcard *.cpp)
-OBJECTS = $(SOURCES:.cpp=.o)
 NAMES = $(basename $(SOURCE))
 
 all: $(NAMES)
