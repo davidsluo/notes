@@ -10,7 +10,7 @@ bool isPrime(unsigned int x) {
 		return false;
     else if (x <= 3)
         return true;
-    else if (x % 2 == 0 || x % 3 == 0)
+    else if (x % 2 == 0 || x % 3 == 0 || x % 5 == 0 || x % 7 == 0 || x % 11 == 0)
 		return false;
 
 	for (unsigned int i = 5; i * i <= x; i+=6)
