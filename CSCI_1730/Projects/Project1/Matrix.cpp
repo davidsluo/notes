@@ -5,7 +5,7 @@ Matrix::Matrix(uint rows, uint cols) {
 	this->rows = rows;
 	this->cols = cols;
 
-	this->array = new double * [rows];
+	array = new double * [rows];
 	
 	for(uint i = 0; i < rows; i++) {
 		array[i] = new double [cols];
