@@ -26,9 +26,10 @@ CSCI 2610 Exam 1 Cheat Sheet
 
 ## Converse, Contrapositive, and Inverse
 For $p \rightarrow q$ :
+
 *   $q \rightarrow p$ is the **converse**.
 *   $\neg p \rightarrow \neg q$ is the **inverse**.
-*   $\neg q \rightarrow \neg p$ is the **converse**.
+*   $\neg q \rightarrow \neg p$ is the **contrapositive**.
 
 ## Logical Equivalences
 
@@ -76,7 +77,7 @@ $\neg(p \rightarrow q) \equiv p \land \neg q$
 $(p \rightarrow q) \land (p \rightarrow r) \equiv p \rightarrow (q \land r)$  
 $(p \rightarrow q) \lor (p \rightarrow r) \equiv p \rightarrow (q \lor r)$  
 $(p \rightarrow r) \land (q \rightarrow r) \equiv (p \land q) \rightarrow r$  
-$(p \rightarrow r) \lor (q \rightarrow r) \equiv (p \land q) \rightarrow r$
+$(p \rightarrow r) \lor (q \rightarrow r) \equiv (p \lor q) \rightarrow r$
 
 ### With Biconditionals
 $p \leftrightarrow q \equiv (p \rightarrow q) \land (q \rightarrow p)$  
@@ -85,7 +86,7 @@ $p \leftrightarrow q \equiv (p \land q) \lor (\neg p \land \neg q)$
 $\neg(p \leftrightarrow q) \equiv p \leftrightarrow \neg q$
 
 ## Propositional Satisfiability
-*   **Satisfiable** if there is an assignment of truth values to variables to make propsition true
+*   **Satisfiable** if there is an assignment of truth values to variables to make proposition true
 *   **Unsatisfiable** otherwise. Unsatisfiable if and only if its negation is a tautology.
 
 ## De Morgan's for Quantifiers
@@ -319,9 +320,72 @@ Basically find an example that makes a proposition false.
 There exists a unique $x$ such that $P(x)$ - $\exists !x P(x)$.
 
 Two parts:
+
 *   *Existence*: show that the $\exists$ part is true.
 *   *Uniqueness*: show that if $y\neq x$, then $y$ does not have the property.
 
 # Boolean Algebra
-*   CNF
-*   DNF
+
+## Basics
+3 Operators:
+
+*   \+ Sum (OR)
+*   \* Product (AND)
+*   $\overline{\text{complement}}$ (NOT)
+
+### Normal Forms
+
+#### Disjunctive Normal Form
+*   An *OR* of *ANDs*
+*   sum of products
+
+##### Ex:
+$F(x,y)=x+y$
+
+###### With Truth Table
+|$x$|$y$|$x+y$|Minterm|
+|-|-|-|-|
+|0|0|0|$\overline{x}\overline{y}$|
+|0|1|1|$\overline{x}y$|
+|1|0|1|$x\overline{y}$|
+|1|1|1|$xy$|
+
+Add together all minterms for which the output is 1.
+  $$ F(x,y) = \overline{x}y + x\overline{y} + xy $$
+
+###### With Boolean Identities
+${
+\begin{aligned}
+F(x,y) &= x+y &&\\
+       &= x1+1y && \text{identity}\\
+       &= x(y+\overline{y}) + (x+\overline{x})y && \text{unit property}\\
+       &= xy + x\overline{y} + xy + \overline{x}y && \text{distributive}\\
+       &= xy + x\overline{y} + \overline{x} y && \text{idempotent}
+\end{aligned}
+}$
+
+#### Conjunctive Normal Form
+*   An *AND* of *ORs*
+*   product of sums
+
+##### Ex:
+$F(x,y) = (x+y)\overline{(xy)}$
+
+###### With Truth Table
+|$x$|$y$|$(x+y)\overline{(xy)}$|Maxterm|
+|-|-|-|-|
+|0|0|0|$x+y$|
+|0|1|1|$x+\overline{y}$|
+|1|0|1|$\overline{x}+y$|
+|1|1|0|$\overline{x}+\overline{y}$|
+
+Multiply together all maxterms for which the output is 0.
+  $$ F(x,y) = (x+y)(\overline{x}+\overline{y}) $$
+
+###### With Boolean Identities
+${
+\begin{aligned}
+F(x,y) &= (x+y)\overline{(xy)} && \\
+       &= (x+y)(\overline{x} + \overline{y}) && \text{De Morgan's}
+\end{aligned}
+}$
