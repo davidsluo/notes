@@ -29,7 +29,34 @@ Matrix::Matrix(const i_list & list) {
  * @param m The matrix to copy
  */
 Matrix::Matrix(const Matrix & m){
-	//TODO
+    this->rows = m.numRows();
+    this->cols = m.numCols();
+    
+    array = new double * [this->rows];
+    
+    for (uint i = 0; i < this->rows; i++) {
+            array[i] = new double [this->cols];
+    }
+
+	for (uint i = 0; i < m.numRows(); i++) {
+        for (uint j = 0; j < m.numCols(); j++) {
+            at(i,j) = m.at(i,j);
+        }
+    } 
+}
+
+/**
+ * Allows unary minus
+ */
+Matrix Matrix::operator-() const {
+	Matrix result(*this);
+	for (uint i = 0; i < result.numRows(); i++) {
+		for (uint j = 0; j < result.numCols(); i++) {
+            result.at(i,j) *= -1;
+        }
+    }
+
+    return result;    
 }
 
 /**
@@ -157,10 +184,10 @@ const uint Matrix::numCols() const{
     return this->cols;
 }
 
-double & at(uint row, uint col) {
+double & Matrix::at(uint row, uint col) {
     return this->array[row][col];
 }
 
-const double & at(uint row, uint col) const{
+const double & Matrix::at(uint row, uint col) const{
     return this->array[row][col];
 }
