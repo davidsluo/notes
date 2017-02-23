@@ -76,9 +76,13 @@ ostream& operator<<(ostream& os, const Matrix& obj) {
     for (uint i = 0; i < obj.numRows(); i++) {
         os << "{";
         for (uint j = 0; j < obj.numCols(); j++) {
-            os << obj.at(i,j) << ",";
+            os << obj.at(i,j);
+            if (j != obj.numCols() - 1)
+                os << ",";
         }
         os << "}";
+        if (i != obj.numRows() - 1)
+            os << ",";
     }
     os << "}";
 
