@@ -16,12 +16,24 @@ Matrix::Matrix(uint rows, uint cols) {
 		array[i] = new double [cols];
 	}	
 }
+
 /*
  * Create a matrix from a list.
  * @param i_list The list to turn into a matrix
  */
 Matrix::Matrix(const i_list & list) {
-    // TODO
+
+    this->rows = list.size();
+    this->cols = (*list.begin()).size();
+
+    array = new double * [rows];
+
+    for (uint i = 0; i < rows; i++) {
+        array[i] = new double [cols];
+        for (uint j = 0; j < cols; j++) {
+            array[i][j] = (*(list.begin() + i) -> begin()) + j;
+        }
+    }
 }
 
 /**

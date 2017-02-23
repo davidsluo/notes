@@ -37,11 +37,11 @@ class Matrix {
          * Destructor.
          */
         ~Matrix();
-	
-	/**
-	 * Allows unary minus
-	 */
-	Matrix operator-() const;
+        
+        /**
+         * Allows unary minus
+         */
+        Matrix operator-() const;
 
         /**
          * Add a scalar to this matrix.
