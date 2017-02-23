@@ -71,6 +71,20 @@ Matrix Matrix::operator-() const {
     return result;    
 }
 
+ostream& operator<<(ostream& os, const Matrix& obj) {
+    os << "{";
+    for (uint i = 0; i < obj.numRows(); i++) {
+        os << "{";
+        for (uint j = 0; j < obj.numCols(); j++) {
+            os << obj.at(i,j) << ",";
+        }
+        os << "}";
+    }
+    os << "}";
+
+    return os;
+}
+
 /**
  * Destructor.
  */
@@ -159,7 +173,17 @@ Matrix Matrix::multiply(double s) const {
  * @return The resulting matrix
  */
 Matrix Matrix::multiply(const Matrix & m) const {
-    // TODO
+    Matrix result(rows, m.numCols());
+
+    for (uint i = 0; i < rows; i++) { // for each row in the first matrix 
+        for (uint j = 0; j < m.numCols(); j++) { // for each column in the second matrix
+            for (uint k = 0; k < cols; k++) { // for each element in the resulting pairing
+                result.at(i,j) += this->at(i,k) * m.at(j,k);
+            }
+        }
+    }
+
+    return result;            
 }
 
 /**

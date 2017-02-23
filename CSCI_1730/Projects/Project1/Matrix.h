@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include <initializer_list>
+#include <iostream>
 
 using namespace std;
 
@@ -42,6 +43,7 @@ class Matrix {
          * Allows unary minus
          */
         Matrix operator-() const;
+               
 
         /**
          * Add a scalar to this matrix.
@@ -127,5 +129,8 @@ class Matrix {
         const double & at (uint row, uint col) const;
 
 }; // Matrix
+
+ostream& operator<<(ostream& os, const Matrix& obj);
+
 
 #endif
