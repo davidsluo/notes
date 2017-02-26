@@ -11,7 +11,7 @@ typedef std::initializer_list<std::initializer_list<double>> i_list;
 
 class Matrix {
     public:
-        double ** array;
+        double ** array = nullptr;
         uint rows;
         uint cols;
 
@@ -37,13 +37,7 @@ class Matrix {
         /**
          * Destructor.
          */
-        ~Matrix();
-        
-        /**
-         * Allows unary minus
-         */
-        Matrix operator-() const;
-               
+        ~Matrix();             
 
         /**
          * Add a scalar to this matrix.
@@ -95,12 +89,27 @@ class Matrix {
          */
         Matrix divide(double s) const;
 
+        Matrix s_divide(double s) const;
+
         /**
          * Get the transpose of this matrix.
          * @return The transpose of this matrix.
          * @return The transposed matrix
          */
         Matrix t() const;
+
+        /**
+         * Allows unary minus
+         */
+        Matrix operator-() const;
+
+        double & operator()(uint row, uint col) const;
+
+        Matrix & operator=(const Matrix & m);
+
+        Matrix operator+(const Matrix & m) const;
+        Matrix operator-(const Matrix & m) const;
+        Matrix operator*(const Matrix & m) const;
 
         /**
          * Get the number of rows.
@@ -131,6 +140,14 @@ class Matrix {
 }; // Matrix
 
 ostream& operator<<(ostream& os, const Matrix& obj);
+Matrix operator+(const Matrix & m, const double x);
+Matrix operator+(const double x, const Matrix & m);
+Matrix operator-(const Matrix & m, const double x);
+Matrix operator-(const double x, const Matrix & m);
+Matrix operator*(const Matrix & m, const double x);
+Matrix operator*(const double x, const Matrix & m);
+Matrix operator/(const Matrix & m, const double x);
+Matrix operator/(const double x, const Matrix & m);
 
 
 #endif

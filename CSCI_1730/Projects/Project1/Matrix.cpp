@@ -54,39 +54,8 @@ Matrix::Matrix(const Matrix & m){
         for (uint j = 0; j < m.numCols(); j++) {
             at(i,j) = m.at(i,j);
         }
-    } 
-}
-
-/**
- * Allows unary minus
- */
-Matrix Matrix::operator-() const {
-	Matrix result(*this);
-	for (uint i = 0; i < result.numRows(); i++) {
-		for (uint j = 0; j < result.numCols(); i++) {
-            result.at(i,j) *= -1;
-        }
     }
 
-    return result;    
-}
-
-ostream& operator<<(ostream& os, const Matrix& obj) {
-    os << "{";
-    for (uint i = 0; i < obj.numRows(); i++) {
-        os << "{";
-        for (uint j = 0; j < obj.numCols(); j++) {
-            os << obj.at(i,j);
-            if (j != obj.numCols() - 1)
-                os << ",";
-        }
-        os << "}";
-        if (i != obj.numRows() - 1)
-            os << ",";
-    }
-    os << "}";
-
-    return os;
 }
 
 /**
@@ -109,7 +78,7 @@ Matrix Matrix::add(double s) const {
    Matrix result(*this);
 
    for (uint i = 0; i < result.numRows(); i++) {
-       for(uint j = 0; i < result.numCols(); j++) {
+       for(uint j = 0; j < result.numCols(); j++) {
            result.at(i,j) += s;
        }
     }
@@ -182,7 +151,7 @@ Matrix Matrix::multiply(const Matrix & m) const {
     for (uint i = 0; i < rows; i++) { // for each row in the first matrix 
         for (uint j = 0; j < m.numCols(); j++) { // for each column in the second matrix
             for (uint k = 0; k < cols; k++) { // for each element in the resulting pairing
-                result.at(i,j) += this->at(i,k) * m.at(j,k);
+                result.at(i,j) += (this->at(i,k) * m.at(k,j));
             }
         }
     }
@@ -197,6 +166,22 @@ Matrix Matrix::multiply(const Matrix & m) const {
  */
 Matrix Matrix::divide(double s) const {
     return multiply(1.0/s);
+}
+
+/**
+ * Divide a scalar by this matrix
+ */
+Matrix Matrix::s_divide(double s) const {
+    Matrix result(rows, cols);
+
+    for (uint i = 0; i < result.numRows(); i++) {
+        for (uint j = 0; j < result.numCols(); j++) {
+            result.at(i,j) = s / at(i,j);
+        }
+    }
+    
+    return result;
+
 }
 
 /**
@@ -215,6 +200,102 @@ Matrix Matrix::t() const {
 
     return result;
 }
+
+//////////// OPERATOR OVERLOADING ////////////
+
+/**
+ * Allows unary minus
+ */
+Matrix Matrix::operator-() const {
+	Matrix result(*this);
+	for (uint i = 0; i < result.numRows(); i++) {
+		for (uint j = 0; j < result.numCols(); j++) {
+            result.at(i,j) *= -1;
+        }
+    }
+
+    return result;    
+}
+
+// Function call
+double & Matrix::operator()(uint row, uint col) const {
+    return this->array[row][col];
+}
+
+// Copy Assignment operator
+Matrix & Matrix::operator=(const Matrix & m) {
+    for (uint i = 0; i < m.numRows(); i++) {
+        for (uint j = 0; j < m.numCols(); j++) {
+            at(i,j) = m.at(i,j);
+        }
+    }
+    
+    return *this;
+}
+
+Matrix Matrix::operator+(const Matrix & m) const {
+    return add(m);
+}
+
+Matrix operator+(const Matrix & m, const double x) {
+    return m.add(x);
+}
+
+Matrix operator+(const double x, const Matrix & m) {
+    return m.add(x);
+}
+
+Matrix Matrix::operator-(const Matrix & m) const {
+    return subtract(m);
+}
+
+Matrix operator-(const Matrix & m, const double x) {
+    return m.subtract(x);
+}
+
+Matrix operator-(const double x, const Matrix & m) {
+    return (-m).add(x);
+}
+
+Matrix Matrix::operator*(const Matrix & m) const {
+    return multiply(m);
+}
+
+Matrix operator*(const Matrix & m, const double x) {
+    return m.multiply(x);
+}
+
+Matrix operator*(const double x, const Matrix & m) {
+    return m.multiply(x);
+}
+
+Matrix operator/(const Matrix & m, const double x) {
+    return m.divide(x);
+}
+
+Matrix operator/(const double x, const Matrix & m) {
+    return m.s_divide(x);
+}
+
+// Stream Insertion
+ostream& operator<<(ostream& os, const Matrix& obj) {
+    os << "{";
+    for (uint i = 0; i < obj.numRows(); i++) {
+        os << "{";
+        for (uint j = 0; j < obj.numCols(); j++) {
+            os << obj.at(i,j);
+            if (j != obj.numCols() - 1)
+                os << ",";
+        }
+        os << "}";
+        if (i != obj.numRows() - 1)
+            os << "," << endl;
+    }
+    os << "}";
+
+    return os;
+}
+
 
 const uint Matrix::numRows() const{
     return this->rows;
