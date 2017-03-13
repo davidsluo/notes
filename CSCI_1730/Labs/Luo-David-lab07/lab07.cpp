@@ -14,14 +14,35 @@ int main(int argc, char *argv[]) {
     ifstream infile(argv[1]);
     
     initscr();
+    noecho();
+    keypad(stdscr, TRUE);
+
     char c;
     while (!infile.eof()){
         infile >> noskipws >> c;
         addch(c);
     }
 
-    refresh();
-    getch();
+    int ch, x=0, y=0;
+    while ((ch = getch()) != KEY_ENTER) {
+        switch (ch) {
+            case KEY_DOWN:
+                y++;
+                break;
+            case KEY_UP:
+                y--;
+                break;
+            case KEY_LEFT:
+                x--;
+                break;
+            case KEY_RIGHT:
+                x++;
+                break;
+        }
+        mvwin(stdscr, y,x);
+        refresh();
+    }
+
     endwin();
 
     return EXIT_SUCCESS;
