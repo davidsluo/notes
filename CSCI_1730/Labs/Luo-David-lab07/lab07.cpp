@@ -6,12 +6,13 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+
+    // reject invalid number of args
     if (argc != 2){
         cerr << "Requries exactly 1 argument." << endl;
         return EXIT_FAILURE;
     }
 
-    ifstream infile(argv[1]);
     
     initscr();
   //noecho();
@@ -24,9 +25,11 @@ int main(int argc, char *argv[]) {
     WINDOW *pad = newpad(1, max_cols);
 
     keypad(pad, TRUE);
-    
-    char c = '\n';
+   
+    // Print file to pad, increasing size of pad with each newline required.
+    char c;
     int num_rows = 1, num_cols = 1;
+    ifstream infile(argv[1]);
     while (!infile.eof()){
         infile >> noskipws >> c;
         
@@ -40,15 +43,17 @@ int main(int argc, char *argv[]) {
         pechochar(pad, c);
     }
     infile.close();
-
     
 
     int ch;
     int x=0, y=0;
     int left_edge=0, right_edge=max_cols - 1;
     int top_edge=0, bottom_edge=max_rows - 1;
-
+    
+    // initial refresh
     prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
+
+    // handle keypresses
     while ((ch = wgetch(pad)) != 'q') {
         switch (ch) {
             case 'j':
@@ -87,8 +92,8 @@ int main(int argc, char *argv[]) {
           //    x--;
           //    break;
         }
-        //mvwin(pad, y,x);
-        //prefresh: pad pminrow pmincol sminrow smincol smaxrow smaxcol 
+
+        // refresh pad, scrolling to new coorinates.
         prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
 
     }
