@@ -18,13 +18,13 @@ int main(int argc, char *argv[]) {
   //cbreak();
     curs_set(0);
 
-    WINDOW *pad = newpad(1, COLS);
+    int max_rows, max_cols;
+    getmaxyx(stdscr, max_rows, max_cols);
+
+    WINDOW *pad = newpad(1, max_cols);
 
     keypad(pad, TRUE);
     
-    //TODO: don't cut off in middle of word?
-    int max_rows, max_cols;
-    getmaxyx(pad, max_rows, max_cols);
     char c = '\n';
     int num_rows = 1, num_cols = 1;
     while (!infile.eof()){
@@ -45,15 +45,15 @@ int main(int argc, char *argv[]) {
 
     int ch;
     int x=0, y=0;
-    int left_edge=0, right_edge=COLS - 1;
-    int top_edge=0, bottom_edge=LINES - 1;
+    int left_edge=0, right_edge=max_cols - 1;
+    int top_edge=0, bottom_edge=max_rows - 1;
 
     prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
     while ((ch = wgetch(pad)) != 'q') {
         switch (ch) {
             case 'j':
             case KEY_DOWN:
-                if (y + 1 > num_rows - LINES)
+                if (y + 1 > num_rows - max_rows)
                     break;
                 y++;
                 break;
@@ -64,19 +64,19 @@ int main(int argc, char *argv[]) {
                 y--;
                 break;
             case KEY_NPAGE:
-                if (y + LINES > num_rows - LINES)
+                if (y + max_rows > num_rows - max_rows)
                     break;
-                y+=LINES;
+                y+=max_rows;
                 break;
             case KEY_PPAGE:
-                if (y - LINES < 0)
+                if (y - max_rows < 0)
                     break;
-                y-=LINES;
+                y-=max_rows;
                 break;
                 
           //case 'l':
           //case KEY_RIGHT:
-          //    if (x + 1 > COLS)
+          //    if (x + 1 > max_cols)
           //        break;
           //    x++;
           //    break;
