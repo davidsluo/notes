@@ -6,27 +6,30 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+
+    // reject invalid number of args
     if (argc != 2){
         cerr << "Requries exactly 1 argument." << endl;
         return EXIT_FAILURE;
     }
 
-    ifstream infile(argv[1]);
     
     initscr();
   //noecho();
   //cbreak();
     curs_set(0);
 
-    WINDOW *pad = newpad(1, COLS);
+    int max_rows, max_cols;
+    getmaxyx(stdscr, max_rows, max_cols);
+
+    WINDOW *pad = newpad(1, max_cols);
 
     keypad(pad, TRUE);
-    
-    //TODO: don't cut off in middle of word?
-    int max_rows, max_cols;
-    getmaxyx(pad, max_rows, max_cols);
-    char c = '\n';
+   
+    // Print file to pad, increasing size of pad with each newline required.
+    char c;
     int num_rows = 1, num_cols = 1;
+    ifstream infile(argv[1]);
     while (!infile.eof()){
         infile >> noskipws >> c;
         
@@ -40,20 +43,22 @@ int main(int argc, char *argv[]) {
         pechochar(pad, c);
     }
     infile.close();
-
     
 
     int ch;
     int x=0, y=0;
-    int left_edge=0, right_edge=COLS - 1;
-    int top_edge=0, bottom_edge=LINES - 1;
-
+    int left_edge=0, right_edge=max_cols - 1;
+    int top_edge=0, bottom_edge=max_rows - 1;
+    
+    // initial refresh
     prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
+
+    // handle keypresses
     while ((ch = wgetch(pad)) != 'q') {
         switch (ch) {
             case 'j':
             case KEY_DOWN:
-                if (y + 1 > num_rows - LINES)
+                if (y + 1 > num_rows - max_rows)
                     break;
                 y++;
                 break;
@@ -64,19 +69,19 @@ int main(int argc, char *argv[]) {
                 y--;
                 break;
             case KEY_NPAGE:
-                if (y + LINES > num_rows - LINES)
+                if (y + max_rows > num_rows - max_rows)
                     break;
-                y+=LINES;
+                y+=max_rows;
                 break;
             case KEY_PPAGE:
-                if (y - LINES < 0)
+                if (y - max_rows < 0)
                     break;
-                y-=LINES;
+                y-=max_rows;
                 break;
                 
           //case 'l':
           //case KEY_RIGHT:
-          //    if (x + 1 > COLS)
+          //    if (x + 1 > max_cols)
           //        break;
           //    x++;
           //    break;
@@ -87,8 +92,8 @@ int main(int argc, char *argv[]) {
           //    x--;
           //    break;
         }
-        //mvwin(pad, y,x);
-        //prefresh: pad pminrow pmincol sminrow smincol smaxrow smaxcol 
+
+        // refresh pad, scrolling to new coorinates.
         prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
 
     }
