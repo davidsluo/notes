@@ -36,17 +36,20 @@ int main(int argc, char *argv[]) {
 
 
         const int BUFFER_SIZE = 1024;
-        char buffer[BUFFER_SIZE];
-        int n = 0;
-
-        while ((n = read(file_desc, buffer, BUFFER_SIZE)) > 0) {
-            if(write(STDOUT_FILENO, buffer, n) == -1)
+        char buffer[BUFFER_SIZE] = {};
+        int r = 0;
+        while ((r = read(file_desc, buffer, BUFFER_SIZE)) > 0) {
+            if(write(STDOUT_FILENO, buffer, r) == -1){
                 perror(argv[i]);
+            }
         }
+        if (file_desc != 0)
+            close(file_desc);
 
-        close(file_desc);
-
-        cout << file_desc << endl;
+        if (r == -1) {
+            perror(argv[0]);
+            return EXIT_FAILURE;
+        }
 
     }
 
