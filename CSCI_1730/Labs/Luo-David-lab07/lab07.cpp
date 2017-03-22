@@ -48,8 +48,9 @@ int main(int argc, char *argv[]) {
     int ch;
     int x=0, y=0;
     int left_edge=0, right_edge=max_cols - 1;
-    int top_edge=0, bottom_edge=max_rows - 1;
-    
+    int top_edge=1, bottom_edge=max_rows - 1;
+   
+    box(pad, 0, 0);
     // initial refresh
     prefresh(pad, y, x, top_edge, left_edge, bottom_edge, right_edge);
 
