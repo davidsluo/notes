@@ -12,7 +12,7 @@
 using namespace std;
 
 void make_perm_string(struct stat file, char * perms) {
-    
+
     // Partially from man 2 stat
     switch (file.st_mode & S_IFMT) {
         case S_IFBLK: 
@@ -61,21 +61,20 @@ void make_perm_string(struct stat file, char * perms) {
         perms[10] = '\0';
 }
 
-int main(int argc, char * argv[]) {
+void print_stat(const char * filename) {
     struct stat file;
-    const char * filename = argc > 2 ? argv[1] : "-";
 
     if (strcmp(filename, "-") == 0) {
         if (fstat(STDIN_FILENO, &file) == -1) {
-            perror(argv[0]);
+            perror("Error: ");
             exit(EXIT_FAILURE);
         }
     }
     else if (lstat(filename, &file) == -1) {
-        perror(argv[0]);
+        perror("Error: ");
         exit(EXIT_FAILURE);
     }
-    
+
     char perm_string[10] = {};
     make_perm_string(file, perm_string); 
 
@@ -113,5 +112,15 @@ int main(int argc, char * argv[]) {
     printf("Access: %s", ctime(&(file.st_atime)));
     printf("Modify: %s", ctime(&(file.st_mtime)));
     printf("Change: %s", ctime(&(file.st_ctime)));
+}
+
+int main(int argc, char * argv[]) {
+    if (argc == 1)
+        print_stat("-");
+    else
+        for (int i = 1; i < argc; i++)
+            print_stat(argv[i]);
+
+    exit(EXIT_SUCCESS);
 }
 
