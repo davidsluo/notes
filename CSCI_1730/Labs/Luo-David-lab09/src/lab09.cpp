@@ -67,20 +67,6 @@ int main(int argc, char * argv[]) {
         return EXIT_FAILURE;
     }
     
-  //int fd;
-
-  //if (argv[1] == "-")
-  //    fd = FILENO_STDIN;
-  //else {
-  //    fd = open(argv[1], O_RDONLY);
-
-  //    if (fd == -1) {
-  //        perror(argv[0]);
-  //        return EXIT_FAILURE;
-  //    }
-  //}
-
-    
     struct stat file;
 
     if (strcmp(argv[1], "-") == 0) {
@@ -97,38 +83,39 @@ int main(int argc, char * argv[]) {
     char perm_string[10] = {};
     make_perm_string(file, perm_string); 
 
-    printf("File: %s\n", argv[1]);
+    printf("File: `%s'\n", argv[1]);
 
-    printf("Size: %llu\t", (long long) file.st_size);
-    printf("Blocks: %lu\t", file.st_blocks);
-    printf("IO Block: %lu\t", file.st_blksize);
+    printf("Size: %-10lu\t",  file.st_size);
+    printf("Blocks: %-10lu\t", file.st_blocks);
+    printf("IO Block: %-6lu\t", file.st_blksize);
+
     // From man 2 stat
     switch (file.st_mode & S_IFMT) {
-        case S_IFBLK:  printf("block device\n");            break;
-        case S_IFCHR:  printf("character device\n");        break;
+        case S_IFBLK:  printf("block special device\n");            break;
+        case S_IFCHR:  printf("character special device\n");        break;
         case S_IFDIR:  printf("directory\n");               break;
-        case S_IFIFO:  printf("FIFO/pipe\n");               break;
+        case S_IFIFO:  printf("fifo\n");               break;
         case S_IFLNK:  printf("symlink\n");                 break;
         case S_IFREG:  printf("regular file\n");            break;
         case S_IFSOCK: printf("socket\n");                  break;
         default:       printf("unknown?\n");                break;
     }
 
-    printf("Device: %luh/%lud\t", file.st_dev, file.st_dev);
-    printf("Inode: %llu\t", (long long) file.st_ino);
-    printf("Links: %d\t", (unsigned int) file.st_nlink);
-    printf("Device type: %x, %x\n", major(file.st_rdev), minor(file.st_rdev));
+    printf("Device: %lxh/%lud\t", file.st_dev, file.st_dev);
+    printf("Inode: %-10llu\t", (long long) file.st_ino);
+    printf("Links: %-5d\t", (unsigned int) file.st_nlink);
+    if (S_ISBLK(file.st_mode) || S_ISCHR(file.st_mode))
+        printf("Device type: %x,%x\n", major(file.st_rdev), minor(file.st_rdev));
+    else 
+        printf("\n");
 
-    printf("Access: (%04o/%s)\t", 
+    printf("Access: (%04o/%s)  ", 
             (file.st_mode & ~S_IFMT), perm_string);
-    printf("Uid: (% 8d/%8s)\t", file.st_uid, getpwuid(file.st_uid)->pw_name);
-    printf("Gid: (% 8d/%8s)\n", file.st_gid, getgrgid(file.st_gid)->gr_name);
+    printf("Uid: (% 5d/%8s)  ", file.st_uid, getpwuid(file.st_uid)->pw_name);
+    printf("Gid: (% 5d/%8s)\n", file.st_gid, getgrgid(file.st_gid)->gr_name);
 
     printf("Access: %s", ctime(&(file.st_atime)));
     printf("Modify: %s", ctime(&(file.st_mtime)));
     printf("Change: %s", ctime(&(file.st_ctime)));
-
-    printf("Birth: %s\n", "-");
-
 }
 
