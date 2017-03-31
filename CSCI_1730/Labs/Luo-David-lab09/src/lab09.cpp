@@ -62,20 +62,16 @@ void make_perm_string(struct stat file, char * perms) {
 }
 
 int main(int argc, char * argv[]) {
-    if (argc < 2) {
-        cerr << "Syntax: " << argv[0] << " <filename>" << endl;
-        return EXIT_FAILURE;
-    }
-    
     struct stat file;
+    const char * filename = argc > 2 ? argv[1] : "-";
 
-    if (strcmp(argv[1], "-") == 0) {
+    if (strcmp(filename, "-") == 0) {
         if (fstat(STDIN_FILENO, &file) == -1) {
             perror(argv[0]);
             exit(EXIT_FAILURE);
         }
     }
-    else if (lstat(argv[1], &file) == -1) {
+    else if (lstat(filename, &file) == -1) {
         perror(argv[0]);
         exit(EXIT_FAILURE);
     }
@@ -83,7 +79,7 @@ int main(int argc, char * argv[]) {
     char perm_string[10] = {};
     make_perm_string(file, perm_string); 
 
-    printf("File: `%s'\n", argv[1]);
+    printf("File: `%s'\n", filename);
 
     printf("Size: %-10lu\t",  file.st_size);
     printf("Blocks: %-10lu\t", file.st_blocks);
