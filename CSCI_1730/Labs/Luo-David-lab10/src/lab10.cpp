@@ -12,8 +12,12 @@ using namespace std;
 int rmpath(const char * path, bool recursive=false, bool force=false);
 bool is_directory(const char * path);
 bool dir_is_empty(const char * path);
+bool is_write_protected(const char * path);
+
+const char * program;
 
 int main(int argc, char * argv[]) {
+    program = argv[0];
     bool recursive = false;
     bool force = false;
 
@@ -60,19 +64,36 @@ int rmpath(const char * path, bool recursive, bool force) {
                 DIR *dir;
                 struct dirent *ent;
                 char * subpath;
+                int status;
                 if ((dir = opendir(path)) != NULL) {
                     while ((ent = readdir(dir)) != NULL) {
                         if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
                             continue;
                         subpath = new char[strlen(path) + strlen(ent->d_name) + 1];
+                        *subpath = '\0';
                         strcat(subpath, path);
                         strcat(subpath, "/");
                         strcat(subpath, ent->d_name);
-                        rmpath(subpath, recursive, force);
+
+                        status = rmpath(subpath, recursive, force);
                         delete subpath;
+
+                        if (status < 0) break;
                     }
                     closedir(dir);
+                    
+                    if (status < 0)
+                        return -1;
+                    
+                    if (!force && is_write_protected(path)) {
+                        
+                        printf("%s: remove write protected directory '%s'? ", program, path);
 
+                        char response = '\0';
+                        cin >> response;
+                        if (response != 'y')
+                            return -1;
+                    }
                     return rmdir(path);
                 } else {
                     return -1;
@@ -81,6 +102,14 @@ int rmpath(const char * path, bool recursive, bool force) {
         } else
             return -1;
     else {
+        if (!force && is_write_protected(path)) {
+            printf("%s: remove write protected file '%s'? ", program, path);
+            
+            char response = '\0';
+            cin >> response;
+            if (response != 'y')
+                return -1;
+        }
         return unlink(path);
     }
 }
@@ -103,4 +132,10 @@ bool dir_is_empty(const char * path) {
     }
     closedir(dir);
     return n <= 2;
+}
+
+bool is_write_protected(const char * path) {
+    struct stat file_stat;
+    return stat(path, &file_stat) == 0 &&
+        !(file_stat.st_mode & S_IWUSR);
 }
