@@ -1,4 +1,5 @@
-# CS1302
+# CSCI 1302
+From Fall semester CSCI 1302 at UGA with Eman Saleh
 ## Project 1:
 A basic Rock-Paper-Scissors game.
 ## Project 2:
