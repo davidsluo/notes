@@ -1,0 +1,20 @@
+*Buffer();
+*resize_pad();
+*print();
+*open();
+*save();
+*insert_line(string line, int index=-1);
+*del_line(int index=-1);
+
+*insert_char(char c);
+backspace_char();
+
+move_up();
+move_down();
+move_left();
+move_right();
+
+move_EOL();
+move_BOL();
+
+
