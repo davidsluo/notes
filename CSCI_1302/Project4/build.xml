@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Define project-->
+<project name="Project4" basedir="." default="main">
+
+    <!--Define name of source, build, class, jar, lib, and documentation directories-->
+    <property name="src.dir" value="src"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+
+    <property name="doc.dir" value="docs"/>
+
+    <!--Define where name class is-->
+    <property name="main-class" value="Demo"/>
+
+    <!--Define command to clean up compiled stuff-->
+    <target name="clean">
+        <!--Delete "build" directory-->
+        <delete dir="${build.dir}"/>
+        <delete file="serialized"/>
+    </target>
+
+    <!--Define compile command-->
+    <target name="compile">
+        <!--Make directory named the value of the "classes.dir" variable defined above-->
+        <mkdir dir="${classes.dir}"/>
+        <!--Compile with source directory, etc.-->
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+    </target>
+
+    <!--Define command to put all the compiled classes in a jar file-->
+    <!--Requires compilation first-->
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <!--Define main class-->
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!--Define run command-->
+    <!--Requires jarring first-->
+    <target name="run" depends="jar">
+        <java fork="true" classname="${main-class}">
+            <!--Include classpath-->
+            <classpath>
+                <path location="${jar.dir}/${ant.project.name}.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!--Define test command-->
+    <target name="test" depends="jar">
+        <java fork="true" classname="${main-class}">
+            <classpath>
+                <path location="${jar.dir}/${ant.project.name}.jar"/>
+            </classpath>
+            <arg value="test"/>
+        </java>
+    </target>
+
+    <!--Define javadoc command-->
+    <target name="javadoc">
+        <mkdir dir="${doc.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dir}"/>
+    </target>
+
+    <target name="clean-build" depends="clean, jar"/>
+
+    <target name="main" depends="clean, run"/>
+
+</project>
