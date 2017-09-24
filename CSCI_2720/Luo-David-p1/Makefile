@@ -1,7 +1,6 @@
 GCC = g++
-RLFLAGS = -lreadline
-LFLAGS = -Wall -g $(RLFLAGS)
-CFLAGS = -Wall -std=c++14 -g -O0 -pedantic-errors $(RLFLAGS)
+LFLAGS = -Wall -g
+CFLAGS = -Wall -std=c++14 -g -O0 -pedantic-errors
 
 TARGET = LinkedList
 SRCDIR = ./src
