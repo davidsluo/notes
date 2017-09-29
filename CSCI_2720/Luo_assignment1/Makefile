@@ -2,7 +2,7 @@ GCC = g++
 LFLAGS = -Wall -g
 CFLAGS = -Wall -std=c++14 -g -O0 -pedantic-errors
 
-TARGET = LinkedList
+TARGET = main
 SRCDIR = ./src
 OBJDIR = ./obj
 
@@ -23,3 +23,6 @@ dir:
 
 clean:
 	rm -rf $(TARGET) $(OBJDIR)
+
+run:
+	./$(TARGET) input.txt

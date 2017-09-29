@@ -1,13 +1,10 @@
 #include "ItemType.h"
 #include <iostream>
 
-using namespace std;
-
 /**
  * Constructor
  */
 ItemType::ItemType() {
-    // ??? i don't know what to do here.
 }
 
 /**
@@ -16,19 +13,22 @@ ItemType::ItemType() {
  * @param item The ItemType to compare to.
  * @return The relationship between `this` and `item`.
  */
+// It's logically impossible for this to return anything other than as defined
+// in the RelationType enum, so this warning is suppressed.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreturn-type"
 RelationType ItemType::compareTo(ItemType &item) {
-    if (this.getValue() == item.getValue()) return RelationType.EQUAL;
-    if (this.getValue() < item.getValue()) return RelationType.LESS;
-    if (this.getValue() > item.getValue()) return RelationType.GREATER;
-
-    return NULL;
+    if (this->getValue() == item.getValue()) return EQUAL;
+    if (this->getValue() < item.getValue()) return LESS;
+    if (this->getValue() > item.getValue()) return GREATER;
 }
+#pragma GCC diagnostic pop
 
 /**
  * Prints the current value of this ItemType to stdout.
  */
 void ItemType::print() {
-    std::cout << this.getValue() << std::endl;    
+    std::cout << this->getValue() << std::endl;    
 }
 
 /**
@@ -37,7 +37,7 @@ void ItemType::print() {
  * @param number The value to set to.
  */
 void ItemType::initialize(int number) {
-    this.value = number; 
+    this->value = number; 
 }
 
 /**
@@ -46,5 +46,5 @@ void ItemType::initialize(int number) {
  * @return The value.
  */
 int ItemType::getValue() const {
-    return this.value();
+    return this->value;
 }

@@ -1,7 +1,22 @@
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+
+#include "ItemType.h"
+
 struct NodeType {
     ItemType info;
     NodeType *next;
-}
+
+    NodeType(ItemType info, NodeType *next) {
+        this->info = info;
+        this->next = next;
+    }
+
+    // ~NodeType() {
+    //     delete next;
+    //     delete info;
+    // }
+};
 
 class LinkedList {
     public:
@@ -21,4 +36,6 @@ class LinkedList {
         NodeType *current;
         NodeType * findNode(ItemType &item);
         void getNextNode();
-}
+};
+
+#endif

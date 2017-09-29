@@ -1,6 +1,8 @@
+#ifndef ITEMTYPE_H
+#define ITEMTYPE_H
 enum RelationType {
     GREATER, LESS, EQUAL
-}
+};
 
 class ItemType {
     public:
@@ -11,4 +13,5 @@ class ItemType {
         int getValue() const; // ???
     private:
         int value;
-}
+};
+#endif
