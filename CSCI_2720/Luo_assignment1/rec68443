@@ -1,0 +1,25 @@
+Luo_assignment1/:
+total 124
+-rw-r--r--. 1 ugrad     28 Sep 28 20:49 input.txt
+-rwxr-xr-x. 1 ugrad 101820 Sep 29 02:42 main
+-rw-r--r--. 1 ugrad    460 Sep 29 02:22 Makefile
+drwxr-xr-x. 2 ugrad   4096 Sep 29 02:42 obj
+-rw-r--r--. 1 ugrad    155 Sep 29 02:39 README.md
+-rw-r--r--. 1 ugrad      0 Sep 29 02:52 rec68443
+drwxr-xr-x. 2 ugrad   4096 Sep 20 14:00 src
+-rw-r--r--. 1 ugrad    291 Sep 28 20:30 test.txt
+
+Luo_assignment1/obj:
+total 184
+-rw-r--r--. 1 ugrad 38840 Sep 29 02:42 ItemType.o
+-rw-r--r--. 1 ugrad 47440 Sep 29 02:42 LinkedList.o
+-rw-r--r--. 1 ugrad 97224 Sep 29 02:42 Main.o
+
+Luo_assignment1/src:
+total 24
+-rw-r--r--. 1 ugrad 1160 Sep 29 02:40 ItemType.cpp
+-rw-r--r--. 1 ugrad  316 Sep 29 02:44 ItemType.h
+-rw-r--r--. 1 ugrad 4515 Sep 29 02:50 LinkedList.cpp
+-rw-r--r--. 1 ugrad  797 Sep 29 02:45 LinkedList.h
+-rw-r--r--. 1 ugrad 2711 Sep 29 02:44 Main.cpp
+/home/ugrads/dluo/projects/CSCI_2720/Luo_assignment1/:/home/work/cs2720
