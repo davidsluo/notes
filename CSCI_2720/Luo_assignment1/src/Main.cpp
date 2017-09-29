@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     ItemType item;
     int input;
 
+    // Read from file.
     fstream fs;
     if (argc > 0)
         fs.open(argv[1], fstream::in);
@@ -31,7 +32,8 @@ int main(int argc, char *argv[]) {
         }
         fs.close();
     }
-
+        
+    // "Shell" for list.
     cout << "Commands - insert (i), delete (d), make empty (e), length (l), print (p)," << endl;
     cout << "get next item (g), reset list (r), quit (q)" << endl;
 
@@ -39,14 +41,14 @@ int main(int argc, char *argv[]) {
 
     while(command != "q") {
         cout << "Enter a command: ";
-        cin.clear();
         cin >> command;
 
         if (command == "i") {
             cout << "Number to insert: ";
             int number;
             cin >> number;
-
+            
+            // Handle invalid conversions to int.
             if (cin.fail()) {
                 cin.clear();
                 cout << "Invalid number." << endl;
@@ -55,12 +57,15 @@ int main(int argc, char *argv[]) {
                 list.insertItem(item);
                 list.print();
             }
+
+            // Clear stdin buffer.
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else if (command == "d") {
             cout << "Number to delete: ";
             int number;
             cin >> number;
 
+            // Handle invalid conversions to int.
             if (cin.fail()) {
                 cin.clear();
                 cout << "Invalid number. " << endl;
@@ -69,6 +74,8 @@ int main(int argc, char *argv[]) {
                 list.deleteItem(item);
                 list.print();
             }
+
+            // Clear stdin buffer.
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else if (command == "e") {
             list.makeEmpty();

@@ -3,20 +3,35 @@
 
 using namespace std;
 
+/**
+ * Constructor
+ */
 LinkedList::LinkedList() {
     this->length = 0;
     this->head = nullptr;
     this->current = nullptr;
 }
 
+/**
+ * Destructor
+ */
 LinkedList::~LinkedList() {
     this->makeEmpty();
 }
 
+/**
+ * Get length of the list.
+ */
 int LinkedList::lengthIs() const {
     return this->length;
 }
 
+/**
+ * Get if `item` is in the list.
+ *
+ * @param item The item to search for
+ * @param found The variable to store the result of teh search.
+ */
 void LinkedList::retrieveItem(ItemType &item, bool &found) {
     NodeType *cursor = this->head;
     NodeType *prev = nullptr;
@@ -39,12 +54,18 @@ void LinkedList::retrieveItem(ItemType &item, bool &found) {
     found = false;
 }
 
+/**
+ * Insert an item into the list.
+ *
+ * @param item The item to insert.
+ */
 void LinkedList::insertItem(ItemType &item) {
     if (this->length == 0) {
         this->head = new NodeType(item, nullptr);
         this->length++;
         return;
     } else {
+        // Decouples this method from the user's iterator.
         NodeType *cursor = this->head;
         NodeType *prev = nullptr;
 
@@ -77,7 +98,13 @@ void LinkedList::insertItem(ItemType &item) {
     }
 }
 
+/**
+ * Delete an item from the list.
+ *
+ * @param item The item to remove.
+ */
 void LinkedList::deleteItem(ItemType &item) {
+    // Decouples this method from the user's iterator.
     NodeType *cursor = this->head;
     NodeType *prev = nullptr;
     do {
@@ -102,16 +129,27 @@ void LinkedList::deleteItem(ItemType &item) {
     std::cout << "Item not in list." << std::endl;
 }
 
+/**
+ * Reset the user's iterator.
+ */
 void LinkedList::resetList() {
     this->current = nullptr;
 }
 
+/**
+ * Get the next item in the list.
+ *
+ * @param item The variable to store the item in.
+ */
 void LinkedList::getNextItem(ItemType &item) {
     this->getNextNode();
     if (this->current != nullptr)
         item = this->current->info;
 }
 
+/**
+ * Remove all items from the list.
+ */
 void LinkedList::makeEmpty() {
     while (this->head != nullptr) {
         NodeType *next = this->head->next;
@@ -123,6 +161,9 @@ void LinkedList::makeEmpty() {
     this->length = 0;
 }
 
+/**
+ * Print the contents of this list, space delimited, to stdout.
+ */
 void LinkedList::print() {
     if (this->length == 0) {
         std::cout << "Empty list." << std::endl;
@@ -141,6 +182,9 @@ void LinkedList::print() {
     std::cout << std::endl;
 }
 
+/**
+ * Get the next node in the list.
+ */
 void LinkedList::getNextNode() {
     if (this->current != nullptr)
         this->current = this->current->next;

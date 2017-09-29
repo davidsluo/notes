@@ -6,16 +6,12 @@
 struct NodeType {
     ItemType info;
     NodeType *next;
-
+    
+    // For dynamic allocation.
     NodeType(ItemType info, NodeType *next) {
         this->info = info;
         this->next = next;
     }
-
-    // ~NodeType() {
-    //     delete next;
-    //     delete info;
-    // }
 };
 
 class LinkedList {
