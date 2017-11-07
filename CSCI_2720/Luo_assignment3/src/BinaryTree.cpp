@@ -15,8 +15,15 @@ BinaryTree::BinaryTree() {
  * Destructor
  */
 BinaryTree::~BinaryTree() {
-    while(this->root != nullptr)
-        this->deleteItem(this->root->info);
+    destruct(this->root);
+}
+
+void BinaryTree::destruct(NodeType *root) {
+    if (root != nullptr) {
+        destruct(root->left);
+        destruct(root->right);
+        delete root;
+    } 
 }
 
 /**
@@ -83,14 +90,18 @@ void BinaryTree::deleteItem(ItemType &key, NodeType *&root) {
             if (root->left == nullptr) {
                 root = root->right;
                 delete temp;
+                this->length--;
             } else if (root->right == nullptr) {
                 root = root->left;
                 delete temp;
+                this->length--;
             } else {
                 while (temp->right != nullptr)
                     temp = temp->right;
                 ItemType newKey = temp->info;
+                root->info = newKey;
                 deleteItem(newKey, root->left);
+                this->length--;
             }
     }
 }

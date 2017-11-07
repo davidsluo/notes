@@ -33,6 +33,7 @@ class BinaryTree {
     private:
         int length;
         NodeType *root;
+        void destruct(NodeType *root);
         void insert(ItemType &key, NodeType *&root);
         void deleteItem(ItemType &key, NodeType *&root);
         void retrieve(ItemType &key, bool &found, NodeType *root) const;
