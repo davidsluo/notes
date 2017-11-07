@@ -1,0 +1,17 @@
+Luo_assignment3/:
+total 20
+-rw-r--r--. 1 ugrad   29 Nov  7 16:30 input.txt
+-rw-r--r--. 1 ugrad  460 Nov  7 16:30 Makefile
+-rw-r--r--. 1 ugrad  155 Nov  7 16:30 README.md
+-rw-r--r--. 1 ugrad    0 Nov  7 16:33 rec22620
+drwxr-xr-x. 2 ugrad 4096 Nov  7 16:30 src
+-rw-r--r--. 1 ugrad  292 Nov  7 16:30 test.txt
+
+Luo_assignment3/src:
+total 24
+-rw-r--r--. 1 ugrad 4434 Nov  7 16:30 BinaryTree.cpp
+-rw-r--r--. 1 ugrad 1162 Nov  7 16:30 BinaryTree.h
+-rw-r--r--. 1 ugrad 1160 Nov  7 16:30 ItemType.cpp
+-rw-r--r--. 1 ugrad  316 Nov  7 16:30 ItemType.h
+-rw-r--r--. 1 ugrad 3289 Nov  7 16:30 Main.cpp
+/home/ugrads/dluo/projects/CSCI_2720/Luo_assignment3/:/home/work/cs2720
