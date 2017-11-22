@@ -19,10 +19,10 @@ template<class T>
 ulong insertionSort(vector<T> &data) {
     ulong comparisons = 0;
 
-    for (auto i = 1; i < data.size(); i++) {
+    for (ulong i = 1; i < data.size(); i++) {
         T item = data[i];
 
-        auto j = i - 1;
+        ulong j = i - 1;
         while (j >= 0) {
             comparisons++;
             if (data[j] > item) {
@@ -52,6 +52,7 @@ ulong mergeSort(vector<T> &data, ulong start, ulong end) {
 
     vector<T> temp;
 
+    // Comparing and merging.
     ulong l, r;
     for (l = start, r = middle; l < middle && r < end;) {
         comparisons++;
