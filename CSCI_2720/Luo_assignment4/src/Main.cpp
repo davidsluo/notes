@@ -23,11 +23,9 @@ int main(int argc, char *argv[]) {
 
     if (fs.is_open()) {
         int input;
-        fs >> input;
-        while (!fs.eof()) {
+
+        while (fs >> input)
             data.push_back(input);
-            fs >> input;
-        }
         fs.close();
     }
 

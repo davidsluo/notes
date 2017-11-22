@@ -10,8 +10,6 @@ typedef unsigned long ulong;
 
 template<class T>
 void swap(T &one, T &two) {
-//    if (&one == &two)
-//        return;
     T temp = one;
     one = two;
     two = temp;
@@ -39,63 +37,49 @@ ulong insertionSort(vector<T> &data) {
     return comparisons;
 }
 
-//template<class T>
-//ulong mergeSort(vector<T> &data, ulong start, ulong end) {
-//    ulong comparisons = 0;
-//
-//    // Trivially sorted.
-//    if (data.size() <= 1)
-//        return comparisons;
-//
-//}
-
 template<class T>
-ulong mergeSort(vector<T> &data) {
+ulong mergeSort(vector<T> &data, ulong start, ulong end) {
     ulong comparisons = 0;
 
     // Trivially sorted.
-    if (data.size() <= 1)
+    if (end - start < 2)
         return comparisons;
 
-    // Split into two equal size lists.
-    vector<T> left;
-    vector<T> right;
+    ulong middle = (end + start) / 2;
 
-    for (ulong i = 0; i < data.size(); i++) {
-        if (i < data.size() / 2)
-            left.push_back(data[i]);
-        else
-            right.push_back(data[i]);
-    }
+    comparisons += mergeSort(data, start, middle);
+    comparisons += mergeSort(data, middle, end);
 
-    // Sort each branch.
-    comparisons += mergeSort(left);
-    comparisons += mergeSort(right);
-
-    data.clear();
+    vector<T> temp;
 
     // Comparing and merging.
-    ulong l = 0, r = 0;
-    while (l < left.size() && r < right.size()) {
+    ulong l, r;
+    for (l = start, r = middle; l < middle && r < end;) {
         comparisons++;
-        if (left[l] <= right[r]) {
-            data.push_back(left[l]);
+        if (data[l] < data[r]) {
+            temp.push_back(data[l]);
             l++;
         } else {
-            data.push_back(right[r]);
+            temp.push_back(data[r]);
             r++;
         }
     }
 
-    // Add anything that's left.
-    for (; l < left.size(); l++) {
-        data.push_back(left[l]);
-    }
-    for (; r < left.size(); r++) {
-        data.push_back(right[r]);
+    for (; l < middle; l++)
+        temp.push_back(data[l]);
+    for (; r < end; r++)
+        temp.push_back(data[r]);
+
+    for (ulong i = start; i < end; i++) {
+        data[i] = temp[i - start];
     }
 
     return comparisons;
+}
+
+template<class T>
+ulong mergeSort(vector<T> &data) {
+    return mergeSort(data, 0, data.size());
 }
 
 
