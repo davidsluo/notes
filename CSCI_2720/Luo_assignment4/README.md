@@ -10,4 +10,4 @@ Run `make`.
 
 ## Running
 
-./main <file to read>
+`./main <file to read>`
