@@ -136,6 +136,8 @@ ulong quickSort(vector<T> &data, ulong start, ulong end) {
             break;
 
         swap(data[r], data[l]);
+        l++;
+        r--;
     }
 
     // Do this recursively on both sides of the pivot.
