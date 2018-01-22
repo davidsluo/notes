@@ -21,13 +21,17 @@ while True:
     prompt = joke['prompt']
     response = joke['response']
 
+    # accept connection
     client, address = connection.accept()
+
     client.send(b'KNOCK KNOCK\n')
     data = client.recv(4096)
+    # validate who's there
     if data.strip() == b"WHO'S THERE?":
         client.send((prompt + '\n').encode())
         client.recv(4096)
         client.send((response + '\n').encode())
+    # end connection
     client.shutdown(socket.SHUT_RDWR)
     client.close()
 

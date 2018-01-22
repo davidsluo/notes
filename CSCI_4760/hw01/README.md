@@ -4,6 +4,8 @@ David Luo
 
 811357331
 
+A knock knock joke server.
+
 ## To Run
 
 ### Activate virtualenv
@@ -21,6 +23,8 @@ From this directory:
 `telnet <cluster> 47684`
 
 ## Jokes
+
+List of jokes from: http://www.funology.com/knock-knock-jokes/
 
 ```
 Knock, knock.
