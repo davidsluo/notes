@@ -1,6 +1,7 @@
 import socket
 import json
 import random
+import threading
 
 # load jokes from json file
 with open('jokes.json', 'r') as f:
@@ -15,23 +16,45 @@ connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 connection.bind(SERVER_ADDR)
 connection.listen(10)
 
-while True:
-    # choose random joke
-    joke = random.choice(jokes)
-    prompt = joke['prompt']
-    response = joke['response']
+class JokeThread(threading.Thread):
+    """Runs a joke connection in a new thread."""
+    def __init__(self, client, address):
+        """Constructor"""
+        threading.Thread.__init__(self)
+        self.client = client
+        self.address = address
 
-    # accept connection
-    client, address = connection.accept()
+    def run(self):
+        """Runs joke procedure."""
+        # choose random joke
+        joke = random.choice(jokes)
+        prompt = joke['prompt']
+        response = joke['response']
 
-    client.send(b'KNOCK KNOCK\n')
-    data = client.recv(4096)
-    # validate who's there
-    if data.strip() == b"WHO'S THERE?":
-        client.send((prompt + '\n').encode())
-        client.recv(4096)
-        client.send((response + '\n').encode())
-    # end connection
-    client.shutdown(socket.SHUT_RDWR)
-    client.close()
+        # send joke
+        data = b''
+        while data.strip() != b"WHO'S THERE?":
+            self.client.send(b'KNOCK KNOCK\n')
+            data = self.client.recv(4096)
+        self.client.send((prompt + '\n').encode())
+        self.client.recv(4096)
+        self.client.send((response + '\n').encode())
+        # end connection
+        self.client.shutdown(socket.SHUT_RDWR)
+        self.client.close()
 
+try:
+    while True:
+        # accept connection
+        client, address = connection.accept()
+        # start joke in new thread.
+        thread = JokeThread(client, address)
+        thread.start()
+# exit gracefully
+except KeyboardInterrupt:
+    print('Waiting for connections to close...')
+    for thread in threading.enumerate():
+        if thread != threading.current_thread():
+            print(f'Closing {thread.address}')
+            thread.join()
+    print('Exiting...')

@@ -18,6 +18,10 @@ From this directory:
 
 `python3 knock_knock_server.py`
 
+### Exit Server
+
+`CTRL-C` will exit the server gracefully, waiting for all connections to terminate.
+
 ### Connect to Server
 
 `telnet <cluster> 47684`

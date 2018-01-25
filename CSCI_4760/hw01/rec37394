@@ -1,0 +1,1010 @@
+hw01/:
+total 28
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 bin
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 include
+-rw-r--r-- 1 ugrad 1717 Jan 22 16:31 jokes.json
+-rw-r--r-- 1 ugrad 1745 Jan 25 11:28 knock_knock_server.py
+drwxr-xr-x 3 ugrad 4096 Jan 22 16:17 lib
+lrwxrwxrwx 1 ugrad    3 Jan 22 16:17 lib64 -> lib
+-rw-r--r-- 1 ugrad   82 Jan 22 16:17 pyvenv.cfg
+-rw-r--r-- 1 ugrad 1883 Jan 25 11:30 README.md
+-rw-r--r-- 1 ugrad    0 Jan 25 11:31 rec37394
+
+hw01/bin:
+total 32
+-rw-r--r-- 1 ugrad 2217 Jan 22 16:17 activate
+-rw-r--r-- 1 ugrad 1273 Jan 22 16:17 activate.csh
+-rw-r--r-- 1 ugrad 2437 Jan 22 16:17 activate.fish
+-rwxr-xr-x 1 ugrad  271 Jan 22 16:17 easy_install
+-rwxr-xr-x 1 ugrad  271 Jan 22 16:17 easy_install-3.6
+-rwxr-xr-x 1 ugrad  243 Jan 22 16:17 pip
+-rwxr-xr-x 1 ugrad  243 Jan 22 16:17 pip3
+-rwxr-xr-x 1 ugrad  243 Jan 22 16:17 pip3.6
+lrwxrwxrwx 1 ugrad    7 Jan 22 16:17 python -> python3
+lrwxrwxrwx 1 ugrad   29 Jan 22 16:17 python3 -> /usr/local/python/bin/python3
+
+hw01/include:
+total 0
+
+hw01/lib:
+total 4
+drwxr-xr-x 3 ugrad 4096 Jan 22 16:17 python3.6
+
+hw01/lib/python3.6:
+total 4
+drwxr-xr-x 8 ugrad 4096 Jan 22 16:17 site-packages
+
+hw01/lib/python3.6/site-packages:
+total 28
+-rw-r--r--  1 ugrad  126 Jan 22 16:17 easy_install.py
+drwxr-xr-x 11 ugrad 4096 Jan 22 16:17 pip
+drwxr-xr-x  2 ugrad 4096 Jan 22 16:17 pip-9.0.1.dist-info
+drwxr-xr-x  5 ugrad 4096 Jan 22 16:17 pkg_resources
+drwxr-xr-x  2 ugrad 4096 Jan 22 16:17 __pycache__
+drwxr-xr-x  5 ugrad 4096 Jan 22 16:17 setuptools
+drwxr-xr-x  2 ugrad 4096 Jan 22 16:17 setuptools-28.8.0.dist-info
+
+hw01/lib/python3.6/site-packages/pip:
+total 232
+-rw-r--r--  1 ugrad 11910 Jan 22 16:17 basecommand.py
+-rw-r--r--  1 ugrad 10465 Jan 22 16:17 baseparser.py
+-rw-r--r--  1 ugrad 16474 Jan 22 16:17 cmdoptions.py
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 commands
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 compat
+-rw-r--r--  1 ugrad 32171 Jan 22 16:17 download.py
+-rw-r--r--  1 ugrad  8121 Jan 22 16:17 exceptions.py
+-rw-r--r--  1 ugrad 39950 Jan 22 16:17 index.py
+-rw-r--r--  1 ugrad 11348 Jan 22 16:17 __init__.py
+-rw-r--r--  1 ugrad  5626 Jan 22 16:17 locations.py
+-rw-r--r--  1 ugrad   584 Jan 22 16:17 __main__.py
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 models
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 operations
+-rw-r--r--  1 ugrad 10980 Jan 22 16:17 pep425tags.py
+drwxr-xr-x  2 ugrad  4096 Jan 22 16:17 __pycache__
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 req
+-rw-r--r--  1 ugrad   156 Jan 22 16:17 status_codes.py
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 utils
+drwxr-xr-x  3 ugrad  4096 Jan 22 16:17 vcs
+drwxr-xr-x 13 ugrad  4096 Jan 22 16:17 _vendor
+-rw-r--r--  1 ugrad 32010 Jan 22 16:17 wheel.py
+
+hw01/lib/python3.6/site-packages/pip/commands:
+total 96
+-rw-r--r-- 1 ugrad  1382 Jan 22 16:17 check.py
+-rw-r--r-- 1 ugrad  2453 Jan 22 16:17 completion.py
+-rw-r--r-- 1 ugrad  7810 Jan 22 16:17 download.py
+-rw-r--r-- 1 ugrad  2835 Jan 22 16:17 freeze.py
+-rw-r--r-- 1 ugrad  1597 Jan 22 16:17 hash.py
+-rw-r--r-- 1 ugrad   982 Jan 22 16:17 help.py
+-rw-r--r-- 1 ugrad  2244 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad 17412 Jan 22 16:17 install.py
+-rw-r--r-- 1 ugrad 11369 Jan 22 16:17 list.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  4502 Jan 22 16:17 search.py
+-rw-r--r-- 1 ugrad  5891 Jan 22 16:17 show.py
+-rw-r--r-- 1 ugrad  2884 Jan 22 16:17 uninstall.py
+-rw-r--r-- 1 ugrad  7729 Jan 22 16:17 wheel.py
+
+hw01/lib/python3.6/site-packages/pip/commands/__pycache__:
+total 84
+-rw-r--r-- 1 ugrad 1269 Jan 22 16:17 check.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2600 Jan 22 16:17 completion.cpython-36.pyc
+-rw-r--r-- 1 ugrad 5385 Jan 22 16:17 download.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2582 Jan 22 16:17 freeze.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1923 Jan 22 16:17 hash.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1074 Jan 22 16:17 help.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2028 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 9856 Jan 22 16:17 install.cpython-36.pyc
+-rw-r--r-- 1 ugrad 9685 Jan 22 16:17 list.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4164 Jan 22 16:17 search.cpython-36.pyc
+-rw-r--r-- 1 ugrad 5335 Jan 22 16:17 show.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2560 Jan 22 16:17 uninstall.cpython-36.pyc
+-rw-r--r-- 1 ugrad 5422 Jan 22 16:17 wheel.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/compat:
+total 36
+-rw-r--r-- 1 ugrad 23096 Jan 22 16:17 dictconfig.py
+-rw-r--r-- 1 ugrad  4672 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/compat/__pycache__:
+total 20
+-rw-r--r-- 1 ugrad 13604 Jan 22 16:17 dictconfig.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3957 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/models:
+total 12
+-rw-r--r-- 1 ugrad  487 Jan 22 16:17 index.py
+-rw-r--r-- 1 ugrad   71 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/models/__pycache__:
+total 8
+-rw-r--r-- 1 ugrad 827 Jan 22 16:17 index.cpython-36.pyc
+-rw-r--r-- 1 ugrad 223 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/operations:
+total 16
+-rw-r--r-- 1 ugrad 1590 Jan 22 16:17 check.py
+-rw-r--r-- 1 ugrad 5194 Jan 22 16:17 freeze.py
+-rw-r--r-- 1 ugrad    0 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/operations/__pycache__:
+total 12
+-rw-r--r-- 1 ugrad 1424 Jan 22 16:17 check.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2881 Jan 22 16:17 freeze.cpython-36.pyc
+-rw-r--r-- 1 ugrad  137 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/__pycache__:
+total 156
+-rw-r--r-- 1 ugrad  7210 Jan 22 16:17 basecommand.cpython-36.pyc
+-rw-r--r-- 1 ugrad  9271 Jan 22 16:17 baseparser.cpython-36.pyc
+-rw-r--r-- 1 ugrad 12929 Jan 22 16:17 cmdoptions.cpython-36.pyc
+-rw-r--r-- 1 ugrad 20310 Jan 22 16:17 download.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10483 Jan 22 16:17 exceptions.cpython-36.pyc
+-rw-r--r-- 1 ugrad 30233 Jan 22 16:17 index.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8375 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3869 Jan 22 16:17 locations.cpython-36.pyc
+-rw-r--r-- 1 ugrad   374 Jan 22 16:17 __main__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  7464 Jan 22 16:17 pep425tags.cpython-36.pyc
+-rw-r--r-- 1 ugrad   338 Jan 22 16:17 status_codes.cpython-36.pyc
+-rw-r--r-- 1 ugrad 21655 Jan 22 16:17 wheel.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/req:
+total 112
+-rw-r--r-- 1 ugrad   276 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 11926 Jan 22 16:17 req_file.py
+-rw-r--r-- 1 ugrad 46487 Jan 22 16:17 req_install.py
+-rw-r--r-- 1 ugrad 34462 Jan 22 16:17 req_set.py
+-rw-r--r-- 1 ugrad  6897 Jan 22 16:17 req_uninstall.py
+
+hw01/lib/python3.6/site-packages/pip/req/__pycache__:
+total 80
+-rw-r--r-- 1 ugrad   404 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8419 Jan 22 16:17 req_file.cpython-36.pyc
+-rw-r--r-- 1 ugrad 30120 Jan 22 16:17 req_install.cpython-36.pyc
+-rw-r--r-- 1 ugrad 20967 Jan 22 16:17 req_set.cpython-36.pyc
+-rw-r--r-- 1 ugrad  6282 Jan 22 16:17 req_uninstall.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/utils:
+total 100
+-rw-r--r-- 1 ugrad  8811 Jan 22 16:17 appdirs.py
+-rw-r--r-- 1 ugrad  1312 Jan 22 16:17 build.py
+-rw-r--r-- 1 ugrad  2232 Jan 22 16:17 deprecation.py
+-rw-r--r-- 1 ugrad   971 Jan 22 16:17 encoding.py
+-rw-r--r-- 1 ugrad   899 Jan 22 16:17 filesystem.py
+-rw-r--r-- 1 ugrad  2939 Jan 22 16:17 glibc.py
+-rw-r--r-- 1 ugrad  2866 Jan 22 16:17 hashes.py
+-rw-r--r-- 1 ugrad 27187 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  3327 Jan 22 16:17 logging.py
+-rw-r--r-- 1 ugrad  5455 Jan 22 16:17 outdated.py
+-rw-r--r-- 1 ugrad  2080 Jan 22 16:17 packaging.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad   278 Jan 22 16:17 setuptools_build.py
+-rw-r--r-- 1 ugrad 11597 Jan 22 16:17 ui.py
+
+hw01/lib/python3.6/site-packages/pip/utils/__pycache__:
+total 88
+-rw-r--r-- 1 ugrad  7701 Jan 22 16:17 appdirs.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1315 Jan 22 16:17 build.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1728 Jan 22 16:17 deprecation.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1018 Jan 22 16:17 encoding.cpython-36.pyc
+-rw-r--r-- 1 ugrad   583 Jan 22 16:17 filesystem.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1366 Jan 22 16:17 glibc.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3242 Jan 22 16:17 hashes.cpython-36.pyc
+-rw-r--r-- 1 ugrad 22198 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3898 Jan 22 16:17 logging.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4223 Jan 22 16:17 outdated.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1986 Jan 22 16:17 packaging.cpython-36.pyc
+-rw-r--r-- 1 ugrad   327 Jan 22 16:17 setuptools_build.cpython-36.pyc
+-rw-r--r-- 1 ugrad  9583 Jan 22 16:17 ui.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/vcs:
+total 52
+-rw-r--r-- 1 ugrad  3803 Jan 22 16:17 bazaar.py
+-rw-r--r-- 1 ugrad 11197 Jan 22 16:17 git.py
+-rw-r--r-- 1 ugrad 12374 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  3472 Jan 22 16:17 mercurial.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  9350 Jan 22 16:17 subversion.py
+
+hw01/lib/python3.6/site-packages/pip/vcs/__pycache__:
+total 40
+-rw-r--r-- 1 ugrad  3655 Jan 22 16:17 bazaar.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8795 Jan 22 16:17 git.cpython-36.pyc
+-rw-r--r-- 1 ugrad 11102 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3568 Jan 22 16:17 mercurial.cpython-36.pyc
+-rw-r--r-- 1 ugrad  7107 Jan 22 16:17 subversion.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor:
+total 468
+-rw-r--r-- 1 ugrad  22368 Jan 22 16:17 appdirs.py
+drwxr-xr-x 4 ugrad   4096 Jan 22 16:17 cachecontrol
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 colorama
+drwxr-xr-x 4 ugrad   4096 Jan 22 16:17 distlib
+-rw-r--r-- 1 ugrad  38349 Jan 22 16:17 distro.py
+drwxr-xr-x 8 ugrad   4096 Jan 22 16:17 html5lib
+-rw-r--r-- 1 ugrad   4670 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  80176 Jan 22 16:17 ipaddress.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 lockfile
+-rw-r--r-- 1 ugrad   4094 Jan 22 16:17 ordereddict.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 packaging
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 pkg_resources
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 progress
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 224171 Jan 22 16:17 pyparsing.py
+drwxr-xr-x 4 ugrad   4096 Jan 22 16:17 requests
+-rw-r--r-- 1 ugrad   9972 Jan 22 16:17 retrying.py
+-rw-r--r-- 1 ugrad    773 Jan 22 16:17 re-vendor.py
+-rw-r--r-- 1 ugrad  30098 Jan 22 16:17 six.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 webencodings
+
+hw01/lib/python3.6/site-packages/pip/_vendor/cachecontrol:
+total 72
+-rw-r--r-- 1 ugrad  4608 Jan 22 16:17 adapter.py
+-rw-r--r-- 1 ugrad   790 Jan 22 16:17 cache.py
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 caches
+-rw-r--r-- 1 ugrad  1320 Jan 22 16:17 _cmd.py
+-rw-r--r-- 1 ugrad   416 Jan 22 16:17 compat.py
+-rw-r--r-- 1 ugrad 13024 Jan 22 16:17 controller.py
+-rw-r--r-- 1 ugrad  2531 Jan 22 16:17 filewrapper.py
+-rw-r--r-- 1 ugrad  4141 Jan 22 16:17 heuristics.py
+-rw-r--r-- 1 ugrad   302 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  6536 Jan 22 16:17 serialize.py
+-rw-r--r-- 1 ugrad   498 Jan 22 16:17 wrapper.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches:
+total 16
+-rw-r--r-- 1 ugrad 3532 Jan 22 16:17 file_cache.py
+-rw-r--r-- 1 ugrad  369 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  973 Jan 22 16:17 redis_cache.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/cachecontrol/caches/__pycache__:
+total 12
+-rw-r--r-- 1 ugrad 2754 Jan 22 16:17 file_cache.cpython-36.pyc
+-rw-r--r-- 1 ugrad  557 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1660 Jan 22 16:17 redis_cache.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/cachecontrol/__pycache__:
+total 52
+-rw-r--r-- 1 ugrad 2836 Jan 22 16:17 adapter.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1711 Jan 22 16:17 cache.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1509 Jan 22 16:17 _cmd.cpython-36.pyc
+-rw-r--r-- 1 ugrad  567 Jan 22 16:17 compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad 7711 Jan 22 16:17 controller.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2104 Jan 22 16:17 filewrapper.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4646 Jan 22 16:17 heuristics.cpython-36.pyc
+-rw-r--r-- 1 ugrad  500 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4423 Jan 22 16:17 serialize.cpython-36.pyc
+-rw-r--r-- 1 ugrad  519 Jan 22 16:17 wrapper.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/colorama:
+total 44
+-rw-r--r-- 1 ugrad 2524 Jan 22 16:17 ansi.py
+-rw-r--r-- 1 ugrad 9668 Jan 22 16:17 ansitowin32.py
+-rw-r--r-- 1 ugrad 1917 Jan 22 16:17 initialise.py
+-rw-r--r-- 1 ugrad  240 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 5365 Jan 22 16:17 win32.py
+-rw-r--r-- 1 ugrad 6290 Jan 22 16:17 winterm.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/colorama/__pycache__:
+total 32
+-rw-r--r-- 1 ugrad 3292 Jan 22 16:17 ansi.cpython-36.pyc
+-rw-r--r-- 1 ugrad 7024 Jan 22 16:17 ansitowin32.cpython-36.pyc
+-rw-r--r-- 1 ugrad  394 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1615 Jan 22 16:17 initialise.cpython-36.pyc
+-rw-r--r-- 1 ugrad 3585 Jan 22 16:17 win32.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4517 Jan 22 16:17 winterm.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/distlib:
+total 748
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 _backport
+-rw-r--r-- 1 ugrad 40801 Jan 22 16:17 compat.py
+-rw-r--r-- 1 ugrad 49672 Jan 22 16:17 database.py
+-rw-r--r-- 1 ugrad 21085 Jan 22 16:17 index.py
+-rw-r--r-- 1 ugrad   581 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad 51013 Jan 22 16:17 locators.py
+-rw-r--r-- 1 ugrad 14810 Jan 22 16:17 manifest.py
+-rw-r--r-- 1 ugrad  6282 Jan 22 16:17 markers.py
+-rw-r--r-- 1 ugrad 38833 Jan 22 16:17 metadata.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 10766 Jan 22 16:17 resources.py
+-rw-r--r-- 1 ugrad 15224 Jan 22 16:17 scripts.py
+-rw-r--r-- 1 ugrad 89088 Jan 22 16:17 t32.exe
+-rw-r--r-- 1 ugrad 97792 Jan 22 16:17 t64.exe
+-rw-r--r-- 1 ugrad 52991 Jan 22 16:17 util.py
+-rw-r--r-- 1 ugrad 23711 Jan 22 16:17 version.py
+-rw-r--r-- 1 ugrad 85504 Jan 22 16:17 w32.exe
+-rw-r--r-- 1 ugrad 94208 Jan 22 16:17 w64.exe
+-rw-r--r-- 1 ugrad 39115 Jan 22 16:17 wheel.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/distlib/_backport:
+total 164
+-rw-r--r-- 1 ugrad   274 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad   971 Jan 22 16:17 misc.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 25647 Jan 22 16:17 shutil.py
+-rw-r--r-- 1 ugrad  2617 Jan 22 16:17 sysconfig.cfg
+-rw-r--r-- 1 ugrad 26955 Jan 22 16:17 sysconfig.py
+-rw-r--r-- 1 ugrad 92628 Jan 22 16:17 tarfile.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/__pycache__:
+total 112
+-rw-r--r-- 1 ugrad   434 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1040 Jan 22 16:17 misc.cpython-36.pyc
+-rw-r--r-- 1 ugrad 21387 Jan 22 16:17 shutil.cpython-36.pyc
+-rw-r--r-- 1 ugrad 15988 Jan 22 16:17 sysconfig.cpython-36.pyc
+-rw-r--r-- 1 ugrad 62998 Jan 22 16:17 tarfile.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/distlib/__pycache__:
+total 308
+-rw-r--r-- 1 ugrad 31953 Jan 22 16:17 compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad 42091 Jan 22 16:17 database.cpython-36.pyc
+-rw-r--r-- 1 ugrad 17325 Jan 22 16:17 index.cpython-36.pyc
+-rw-r--r-- 1 ugrad   992 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 38549 Jan 22 16:17 locators.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10311 Jan 22 16:17 manifest.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5987 Jan 22 16:17 markers.cpython-36.pyc
+-rw-r--r-- 1 ugrad 27030 Jan 22 16:17 metadata.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10859 Jan 22 16:17 resources.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10026 Jan 22 16:17 scripts.cpython-36.pyc
+-rw-r--r-- 1 ugrad 44453 Jan 22 16:17 util.cpython-36.pyc
+-rw-r--r-- 1 ugrad 20969 Jan 22 16:17 version.cpython-36.pyc
+-rw-r--r-- 1 ugrad 24990 Jan 22 16:17 wheel.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib:
+total 376
+-rw-r--r-- 1 ugrad  83387 Jan 22 16:17 constants.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 filters
+-rw-r--r-- 1 ugrad 117170 Jan 22 16:17 html5parser.py
+-rw-r--r-- 1 ugrad  16705 Jan 22 16:17 _ihatexml.py
+-rw-r--r-- 1 ugrad    780 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  32532 Jan 22 16:17 _inputstream.py
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  14177 Jan 22 16:17 serializer.py
+-rw-r--r-- 1 ugrad  76580 Jan 22 16:17 _tokenizer.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 treeadapters
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 treebuilders
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 treewalkers
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 _trie
+-rw-r--r-- 1 ugrad   4096 Jan 22 16:17 _utils.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/filters:
+total 64
+-rw-r--r-- 1 ugrad   621 Jan 22 16:17 alphabeticalattributes.py
+-rw-r--r-- 1 ugrad   286 Jan 22 16:17 base.py
+-rw-r--r-- 1 ugrad     0 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  2742 Jan 22 16:17 inject_meta_charset.py
+-rw-r--r-- 1 ugrad  3365 Jan 22 16:17 lint.py
+-rw-r--r-- 1 ugrad 10534 Jan 22 16:17 optionaltags.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 25112 Jan 22 16:17 sanitizer.py
+-rw-r--r-- 1 ugrad  1139 Jan 22 16:17 whitespace.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/filters/__pycache__:
+total 48
+-rw-r--r-- 1 ugrad  1022 Jan 22 16:17 alphabeticalattributes.cpython-36.pyc
+-rw-r--r-- 1 ugrad   801 Jan 22 16:17 base.cpython-36.pyc
+-rw-r--r-- 1 ugrad   151 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1652 Jan 22 16:17 inject_meta_charset.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2323 Jan 22 16:17 lint.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2995 Jan 22 16:17 optionaltags.cpython-36.pyc
+-rw-r--r-- 1 ugrad 17990 Jan 22 16:17 sanitizer.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1227 Jan 22 16:17 whitespace.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/__pycache__:
+total 268
+-rw-r--r-- 1 ugrad 66270 Jan 22 16:17 constants.cpython-36.pyc
+-rw-r--r-- 1 ugrad 97955 Jan 22 16:17 html5parser.cpython-36.pyc
+-rw-r--r-- 1 ugrad 13807 Jan 22 16:17 _ihatexml.cpython-36.pyc
+-rw-r--r-- 1 ugrad   913 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 22661 Jan 22 16:17 _inputstream.cpython-36.pyc
+-rw-r--r-- 1 ugrad  9316 Jan 22 16:17 serializer.cpython-36.pyc
+-rw-r--r-- 1 ugrad 42111 Jan 22 16:17 _tokenizer.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3320 Jan 22 16:17 _utils.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters:
+total 16
+-rw-r--r-- 1 ugrad 1555 Jan 22 16:17 genshi.py
+-rw-r--r-- 1 ugrad  208 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 1661 Jan 22 16:17 sax.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treeadapters/__pycache__:
+total 12
+-rw-r--r-- 1 ugrad 1483 Jan 22 16:17 genshi.cpython-36.pyc
+-rw-r--r-- 1 ugrad  406 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1337 Jan 22 16:17 sax.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders:
+total 68
+-rw-r--r-- 1 ugrad 13942 Jan 22 16:17 base.py
+-rw-r--r-- 1 ugrad  8835 Jan 22 16:17 dom.py
+-rw-r--r-- 1 ugrad 14161 Jan 22 16:17 etree_lxml.py
+-rw-r--r-- 1 ugrad 12764 Jan 22 16:17 etree.py
+-rw-r--r-- 1 ugrad  3406 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treebuilders/__pycache__:
+total 52
+-rw-r--r-- 1 ugrad 11128 Jan 22 16:17 base.cpython-36.pyc
+-rw-r--r-- 1 ugrad  9224 Jan 22 16:17 dom.cpython-36.pyc
+-rw-r--r-- 1 ugrad 11818 Jan 22 16:17 etree.cpython-36.pyc
+-rw-r--r-- 1 ugrad 11770 Jan 22 16:17 etree_lxml.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3085 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers:
+total 44
+-rw-r--r-- 1 ugrad 4939 Jan 22 16:17 base.py
+-rw-r--r-- 1 ugrad 1413 Jan 22 16:17 dom.py
+-rw-r--r-- 1 ugrad 6309 Jan 22 16:17 etree_lxml.py
+-rw-r--r-- 1 ugrad 4684 Jan 22 16:17 etree.py
+-rw-r--r-- 1 ugrad 2309 Jan 22 16:17 genshi.py
+-rw-r--r-- 1 ugrad 5544 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/treewalkers/__pycache__:
+total 32
+-rw-r--r-- 1 ugrad 4532 Jan 22 16:17 base.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1673 Jan 22 16:17 dom.cpython-36.pyc
+-rw-r--r-- 1 ugrad 3627 Jan 22 16:17 etree.cpython-36.pyc
+-rw-r--r-- 1 ugrad 6608 Jan 22 16:17 etree_lxml.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1847 Jan 22 16:17 genshi.cpython-36.pyc
+-rw-r--r-- 1 ugrad 3776 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie:
+total 20
+-rw-r--r-- 1 ugrad  979 Jan 22 16:17 _base.py
+-rw-r--r-- 1 ugrad 1178 Jan 22 16:17 datrie.py
+-rw-r--r-- 1 ugrad  289 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 1775 Jan 22 16:17 py.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/html5lib/_trie/__pycache__:
+total 16
+-rw-r--r-- 1 ugrad 1465 Jan 22 16:17 _base.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1978 Jan 22 16:17 datrie.cpython-36.pyc
+-rw-r--r-- 1 ugrad  376 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2183 Jan 22 16:17 py.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/lockfile:
+total 44
+-rw-r--r-- 1 ugrad 9371 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad 2652 Jan 22 16:17 linklockfile.py
+-rw-r--r-- 1 ugrad 3096 Jan 22 16:17 mkdirlockfile.py
+-rw-r--r-- 1 ugrad 6090 Jan 22 16:17 pidlockfile.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 5506 Jan 22 16:17 sqlitelockfile.py
+-rw-r--r-- 1 ugrad 2616 Jan 22 16:17 symlinklockfile.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/lockfile/__pycache__:
+total 36
+-rw-r--r-- 1 ugrad 9860 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2239 Jan 22 16:17 linklockfile.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2601 Jan 22 16:17 mkdirlockfile.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4801 Jan 22 16:17 pidlockfile.cpython-36.pyc
+-rw-r--r-- 1 ugrad 3700 Jan 22 16:17 sqlitelockfile.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2124 Jan 22 16:17 symlinklockfile.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/packaging:
+total 84
+-rw-r--r-- 1 ugrad   720 Jan 22 16:17 __about__.py
+-rw-r--r-- 1 ugrad   860 Jan 22 16:17 _compat.py
+-rw-r--r-- 1 ugrad   513 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  8230 Jan 22 16:17 markers.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  4327 Jan 22 16:17 requirements.py
+-rw-r--r-- 1 ugrad 28025 Jan 22 16:17 specifiers.py
+-rw-r--r-- 1 ugrad  1416 Jan 22 16:17 _structures.py
+-rw-r--r-- 1 ugrad   421 Jan 22 16:17 utils.py
+-rw-r--r-- 1 ugrad 11556 Jan 22 16:17 version.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/packaging/__pycache__:
+total 68
+-rw-r--r-- 1 ugrad   670 Jan 22 16:17 __about__.cpython-36.pyc
+-rw-r--r-- 1 ugrad   955 Jan 22 16:17 _compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad   508 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8826 Jan 22 16:17 markers.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3813 Jan 22 16:17 requirements.cpython-36.pyc
+-rw-r--r-- 1 ugrad 19774 Jan 22 16:17 specifiers.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2812 Jan 22 16:17 _structures.cpython-36.pyc
+-rw-r--r-- 1 ugrad   439 Jan 22 16:17 utils.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10549 Jan 22 16:17 version.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/pkg_resources:
+total 108
+-rw-r--r-- 1 ugrad 103230 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/_vendor/pkg_resources/__pycache__:
+total 96
+-rw-r--r-- 1 ugrad 95258 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/progress:
+total 24
+-rw-r--r-- 1 ugrad 2685 Jan 22 16:17 bar.py
+-rw-r--r-- 1 ugrad 1502 Jan 22 16:17 counter.py
+-rw-r--r-- 1 ugrad 2854 Jan 22 16:17 helpers.py
+-rw-r--r-- 1 ugrad 3023 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 1314 Jan 22 16:17 spinner.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/progress/__pycache__:
+total 20
+-rw-r--r-- 1 ugrad 2415 Jan 22 16:17 bar.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1539 Jan 22 16:17 counter.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2925 Jan 22 16:17 helpers.cpython-36.pyc
+-rw-r--r-- 1 ugrad 3796 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1181 Jan 22 16:17 spinner.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/__pycache__:
+total 364
+-rw-r--r-- 1 ugrad  18560 Jan 22 16:17 appdirs.cpython-36.pyc
+-rw-r--r-- 1 ugrad  32532 Jan 22 16:17 distro.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2741 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  66367 Jan 22 16:17 ipaddress.cpython-36.pyc
+-rw-r--r-- 1 ugrad   3565 Jan 22 16:17 ordereddict.cpython-36.pyc
+-rw-r--r-- 1 ugrad 201056 Jan 22 16:17 pyparsing.cpython-36.pyc
+-rw-r--r-- 1 ugrad   8042 Jan 22 16:17 retrying.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1053 Jan 22 16:17 re-vendor.cpython-36.pyc
+-rw-r--r-- 1 ugrad  24431 Jan 22 16:17 six.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests:
+total 516
+-rw-r--r-- 1 ugrad  19740 Jan 22 16:17 adapters.py
+-rw-r--r-- 1 ugrad   5794 Jan 22 16:17 api.py
+-rw-r--r-- 1 ugrad   8175 Jan 22 16:17 auth.py
+-rw-r--r-- 1 ugrad 344712 Jan 22 16:17 cacert.pem
+-rw-r--r-- 1 ugrad    625 Jan 22 16:17 certs.py
+-rw-r--r-- 1 ugrad   1687 Jan 22 16:17 compat.py
+-rw-r--r-- 1 ugrad  18208 Jan 22 16:17 cookies.py
+-rw-r--r-- 1 ugrad   2860 Jan 22 16:17 exceptions.py
+-rw-r--r-- 1 ugrad    767 Jan 22 16:17 hooks.py
+-rw-r--r-- 1 ugrad   2326 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  30532 Jan 22 16:17 models.py
+drwxr-xr-x 5 ugrad   4096 Jan 22 16:17 packages
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  25609 Jan 22 16:17 sessions.py
+-rw-r--r-- 1 ugrad   3316 Jan 22 16:17 status_codes.py
+-rw-r--r-- 1 ugrad   3012 Jan 22 16:17 structures.py
+-rw-r--r-- 1 ugrad  24163 Jan 22 16:17 utils.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages:
+total 16
+drwxr-xr-x 3 ugrad 4096 Jan 22 16:17 chardet
+-rw-r--r-- 1 ugrad 1384 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+drwxr-xr-x 6 ugrad 4096 Jan 22 16:17 urllib3
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/chardet:
+total 524
+-rw-r--r-- 1 ugrad 82594 Jan 22 16:17 big5freq.py
+-rw-r--r-- 1 ugrad  1684 Jan 22 16:17 big5prober.py
+-rw-r--r-- 1 ugrad  2504 Jan 22 16:17 chardetect.py
+-rw-r--r-- 1 ugrad  9226 Jan 22 16:17 chardistribution.py
+-rw-r--r-- 1 ugrad  3791 Jan 22 16:17 charsetgroupprober.py
+-rw-r--r-- 1 ugrad  1902 Jan 22 16:17 charsetprober.py
+-rw-r--r-- 1 ugrad  2318 Jan 22 16:17 codingstatemachine.py
+-rw-r--r-- 1 ugrad  1157 Jan 22 16:17 compat.py
+-rw-r--r-- 1 ugrad  1335 Jan 22 16:17 constants.py
+-rw-r--r-- 1 ugrad  1782 Jan 22 16:17 cp949prober.py
+-rw-r--r-- 1 ugrad  3187 Jan 22 16:17 escprober.py
+-rw-r--r-- 1 ugrad  7839 Jan 22 16:17 escsm.py
+-rw-r--r-- 1 ugrad  3678 Jan 22 16:17 eucjpprober.py
+-rw-r--r-- 1 ugrad 45978 Jan 22 16:17 euckrfreq.py
+-rw-r--r-- 1 ugrad  1675 Jan 22 16:17 euckrprober.py
+-rw-r--r-- 1 ugrad 34872 Jan 22 16:17 euctwfreq.py
+-rw-r--r-- 1 ugrad  1676 Jan 22 16:17 euctwprober.py
+-rw-r--r-- 1 ugrad 36011 Jan 22 16:17 gb2312freq.py
+-rw-r--r-- 1 ugrad  1681 Jan 22 16:17 gb2312prober.py
+-rw-r--r-- 1 ugrad 13359 Jan 22 16:17 hebrewprober.py
+-rw-r--r-- 1 ugrad  1295 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad 47315 Jan 22 16:17 jisfreq.py
+-rw-r--r-- 1 ugrad 19348 Jan 22 16:17 jpcntx.py
+-rw-r--r-- 1 ugrad 12784 Jan 22 16:17 langbulgarianmodel.py
+-rw-r--r-- 1 ugrad 17725 Jan 22 16:17 langcyrillicmodel.py
+-rw-r--r-- 1 ugrad 12628 Jan 22 16:17 langgreekmodel.py
+-rw-r--r-- 1 ugrad 11318 Jan 22 16:17 langhebrewmodel.py
+-rw-r--r-- 1 ugrad 12536 Jan 22 16:17 langhungarianmodel.py
+-rw-r--r-- 1 ugrad 11275 Jan 22 16:17 langthaimodel.py
+-rw-r--r-- 1 ugrad  5232 Jan 22 16:17 latin1prober.py
+-rw-r--r-- 1 ugrad  3268 Jan 22 16:17 mbcharsetprober.py
+-rw-r--r-- 1 ugrad  1967 Jan 22 16:17 mbcsgroupprober.py
+-rw-r--r-- 1 ugrad 19590 Jan 22 16:17 mbcssm.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  4793 Jan 22 16:17 sbcharsetprober.py
+-rw-r--r-- 1 ugrad  3291 Jan 22 16:17 sbcsgroupprober.py
+-rw-r--r-- 1 ugrad  3764 Jan 22 16:17 sjisprober.py
+-rw-r--r-- 1 ugrad  6840 Jan 22 16:17 universaldetector.py
+-rw-r--r-- 1 ugrad  2652 Jan 22 16:17 utf8prober.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/chardet/__pycache__:
+total 768
+-rw-r--r-- 1 ugrad 141741 Jan 22 16:17 big5freq.cpython-36.pyc
+-rw-r--r-- 1 ugrad    909 Jan 22 16:17 big5prober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2521 Jan 22 16:17 chardetect.cpython-36.pyc
+-rw-r--r-- 1 ugrad   6131 Jan 22 16:17 chardistribution.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1975 Jan 22 16:17 charsetgroupprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1726 Jan 22 16:17 charsetprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1446 Jan 22 16:17 codingstatemachine.cpython-36.pyc
+-rw-r--r-- 1 ugrad    455 Jan 22 16:17 compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad    310 Jan 22 16:17 constants.cpython-36.pyc
+-rw-r--r-- 1 ugrad    916 Jan 22 16:17 cp949prober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1896 Jan 22 16:17 escprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   6866 Jan 22 16:17 escsm.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2207 Jan 22 16:17 eucjpprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad  88781 Jan 22 16:17 euckrfreq.cpython-36.pyc
+-rw-r--r-- 1 ugrad    917 Jan 22 16:17 euckrprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad  61179 Jan 22 16:17 euctwfreq.cpython-36.pyc
+-rw-r--r-- 1 ugrad    917 Jan 22 16:17 euctwprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad  68797 Jan 22 16:17 gb2312freq.cpython-36.pyc
+-rw-r--r-- 1 ugrad    923 Jan 22 16:17 gb2312prober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2711 Jan 22 16:17 hebrewprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad    647 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  84013 Jan 22 16:17 jisfreq.cpython-36.pyc
+-rw-r--r-- 1 ugrad  38518 Jan 22 16:17 jpcntx.cpython-36.pyc
+-rw-r--r-- 1 ugrad  24800 Jan 22 16:17 langbulgarianmodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad  30330 Jan 22 16:17 langcyrillicmodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad  24487 Jan 22 16:17 langgreekmodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad  23345 Jan 22 16:17 langhebrewmodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad  24785 Jan 22 16:17 langhungarianmodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad  23331 Jan 22 16:17 langthaimodel.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2743 Jan 22 16:17 latin1prober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1934 Jan 22 16:17 mbcharsetprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1020 Jan 22 16:17 mbcsgroupprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad  16563 Jan 22 16:17 mbcssm.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2693 Jan 22 16:17 sbcharsetprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1584 Jan 22 16:17 sbcsgroupprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   2240 Jan 22 16:17 sjisprober.cpython-36.pyc
+-rw-r--r-- 1 ugrad   3220 Jan 22 16:17 universaldetector.cpython-36.pyc
+-rw-r--r-- 1 ugrad   1739 Jan 22 16:17 utf8prober.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/__pycache__:
+total 4
+-rw-r--r-- 1 ugrad 1554 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3:
+total 144
+-rw-r--r-- 1 ugrad 10553 Jan 22 16:17 _collections.py
+-rw-r--r-- 1 ugrad 33591 Jan 22 16:17 connectionpool.py
+-rw-r--r-- 1 ugrad 11617 Jan 22 16:17 connection.py
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 contrib
+-rw-r--r-- 1 ugrad  5599 Jan 22 16:17 exceptions.py
+-rw-r--r-- 1 ugrad  5931 Jan 22 16:17 fields.py
+-rw-r--r-- 1 ugrad  2320 Jan 22 16:17 filepost.py
+-rw-r--r-- 1 ugrad  2852 Jan 22 16:17 __init__.py
+drwxr-xr-x 4 ugrad  4096 Jan 22 16:17 packages
+-rw-r--r-- 1 ugrad 13092 Jan 22 16:17 poolmanager.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  5988 Jan 22 16:17 request.py
+-rw-r--r-- 1 ugrad 18615 Jan 22 16:17 response.py
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 util
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/contrib:
+total 40
+-rw-r--r-- 1 ugrad  7937 Jan 22 16:17 appengine.py
+-rw-r--r-- 1 ugrad     0 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  4531 Jan 22 16:17 ntlmpool.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 11778 Jan 22 16:17 pyopenssl.py
+-rw-r--r-- 1 ugrad  5668 Jan 22 16:17 socks.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/contrib/__pycache__:
+total 36
+-rw-r--r-- 1 ugrad  6636 Jan 22 16:17 appengine.cpython-36.pyc
+-rw-r--r-- 1 ugrad   168 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3265 Jan 22 16:17 ntlmpool.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10109 Jan 22 16:17 pyopenssl.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4483 Jan 22 16:17 socks.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/packages:
+total 56
+-rw-r--r-- 1 ugrad   109 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  8935 Jan 22 16:17 ordered_dict.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 30098 Jan 22 16:17 six.py
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 ssl_match_hostname
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/packages/__pycache__:
+total 40
+-rw-r--r-- 1 ugrad   294 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8371 Jan 22 16:17 ordered_dict.cpython-36.pyc
+-rw-r--r-- 1 ugrad 24466 Jan 22 16:17 six.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/packages/ssl_match_hostname:
+total 12
+-rw-r--r-- 1 ugrad 3778 Jan 22 16:17 _implementation.py
+-rw-r--r-- 1 ugrad  460 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/packages/ssl_match_hostname/__pycache__:
+total 8
+-rw-r--r-- 1 ugrad 2279 Jan 22 16:17 _implementation.cpython-36.pyc
+-rw-r--r-- 1 ugrad  455 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/__pycache__:
+total 112
+-rw-r--r-- 1 ugrad 10560 Jan 22 16:17 _collections.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8419 Jan 22 16:17 connection.cpython-36.pyc
+-rw-r--r-- 1 ugrad 22703 Jan 22 16:17 connectionpool.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8876 Jan 22 16:17 exceptions.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5834 Jan 22 16:17 fields.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2637 Jan 22 16:17 filepost.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2477 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10823 Jan 22 16:17 poolmanager.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5579 Jan 22 16:17 request.cpython-36.pyc
+-rw-r--r-- 1 ugrad 13756 Jan 22 16:17 response.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/util:
+total 68
+-rw-r--r-- 1 ugrad  4744 Jan 22 16:17 connection.py
+-rw-r--r-- 1 ugrad   892 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  2128 Jan 22 16:17 request.py
+-rw-r--r-- 1 ugrad  2165 Jan 22 16:17 response.py
+-rw-r--r-- 1 ugrad 10664 Jan 22 16:17 retry.py
+-rw-r--r-- 1 ugrad 11622 Jan 22 16:17 ssl_.py
+-rw-r--r-- 1 ugrad  9596 Jan 22 16:17 timeout.py
+-rw-r--r-- 1 ugrad  5879 Jan 22 16:17 url.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/packages/urllib3/util/__pycache__:
+total 60
+-rw-r--r-- 1 ugrad 3252 Jan 22 16:17 connection.cpython-36.pyc
+-rw-r--r-- 1 ugrad  966 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1951 Jan 22 16:17 request.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1823 Jan 22 16:17 response.cpython-36.pyc
+-rw-r--r-- 1 ugrad 9107 Jan 22 16:17 retry.cpython-36.pyc
+-rw-r--r-- 1 ugrad 8732 Jan 22 16:17 ssl_.cpython-36.pyc
+-rw-r--r-- 1 ugrad 8738 Jan 22 16:17 timeout.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4887 Jan 22 16:17 url.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/requests/__pycache__:
+total 152
+-rw-r--r-- 1 ugrad 15758 Jan 22 16:17 adapters.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5989 Jan 22 16:17 api.cpython-36.pyc
+-rw-r--r-- 1 ugrad  7103 Jan 22 16:17 auth.cpython-36.pyc
+-rw-r--r-- 1 ugrad   775 Jan 22 16:17 certs.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1361 Jan 22 16:17 compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad 18427 Jan 22 16:17 cookies.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4831 Jan 22 16:17 exceptions.cpython-36.pyc
+-rw-r--r-- 1 ugrad   948 Jan 22 16:17 hooks.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2288 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 21862 Jan 22 16:17 models.cpython-36.pyc
+-rw-r--r-- 1 ugrad 17920 Jan 22 16:17 sessions.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3609 Jan 22 16:17 status_codes.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4356 Jan 22 16:17 structures.cpython-36.pyc
+-rw-r--r-- 1 ugrad 18744 Jan 22 16:17 utils.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip/_vendor/webencodings:
+total 48
+-rw-r--r-- 1 ugrad 10576 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  8979 Jan 22 16:17 labels.py
+-rw-r--r-- 1 ugrad  1305 Jan 22 16:17 mklabels.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  6562 Jan 22 16:17 tests.py
+-rw-r--r-- 1 ugrad  4306 Jan 22 16:17 x_user_defined.py
+
+hw01/lib/python3.6/site-packages/pip/_vendor/webencodings/__pycache__:
+total 32
+-rw-r--r-- 1 ugrad 9626 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 4040 Jan 22 16:17 labels.cpython-36.pyc
+-rw-r--r-- 1 ugrad 1862 Jan 22 16:17 mklabels.cpython-36.pyc
+-rw-r--r-- 1 ugrad 5018 Jan 22 16:17 tests.cpython-36.pyc
+-rw-r--r-- 1 ugrad 2615 Jan 22 16:17 x_user_defined.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pip-9.0.1.dist-info:
+total 68
+-rw-r--r-- 1 ugrad  1287 Jan 22 16:17 DESCRIPTION.rst
+-rw-r--r-- 1 ugrad    68 Jan 22 16:17 entry_points.txt
+-rw-r--r-- 1 ugrad     4 Jan 22 16:17 INSTALLER
+-rw-r--r-- 1 ugrad  2529 Jan 22 16:17 METADATA
+-rw-r--r-- 1 ugrad  1565 Jan 22 16:17 metadata.json
+-rw-r--r-- 1 ugrad 39922 Jan 22 16:17 RECORD
+-rw-r--r-- 1 ugrad     4 Jan 22 16:17 top_level.txt
+-rw-r--r-- 1 ugrad   110 Jan 22 16:17 WHEEL
+
+hw01/lib/python3.6/site-packages/pkg_resources:
+total 116
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 extern
+-rw-r--r-- 1 ugrad 103301 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+drwxr-xr-x 4 ugrad   4096 Jan 22 16:17 _vendor
+
+hw01/lib/python3.6/site-packages/pkg_resources/extern:
+total 8
+-rw-r--r-- 1 ugrad 2487 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/pkg_resources/extern/__pycache__:
+total 4
+-rw-r--r-- 1 ugrad 2382 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pkg_resources/__pycache__:
+total 96
+-rw-r--r-- 1 ugrad 95307 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pkg_resources/_vendor:
+total 292
+-rw-r--r-- 1 ugrad  22374 Jan 22 16:17 appdirs.py
+-rw-r--r-- 1 ugrad      0 Jan 22 16:17 __init__.py
+drwxr-xr-x 3 ugrad   4096 Jan 22 16:17 packaging
+drwxr-xr-x 2 ugrad   4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 229867 Jan 22 16:17 pyparsing.py
+-rw-r--r-- 1 ugrad  30098 Jan 22 16:17 six.py
+
+hw01/lib/python3.6/site-packages/pkg_resources/_vendor/packaging:
+total 80
+-rw-r--r-- 1 ugrad   720 Jan 22 16:17 __about__.py
+-rw-r--r-- 1 ugrad   860 Jan 22 16:17 _compat.py
+-rw-r--r-- 1 ugrad   513 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  7939 Jan 22 16:17 markers.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad  4355 Jan 22 16:17 requirements.py
+-rw-r--r-- 1 ugrad 28025 Jan 22 16:17 specifiers.py
+-rw-r--r-- 1 ugrad  1416 Jan 22 16:17 _structures.py
+-rw-r--r-- 1 ugrad   421 Jan 22 16:17 utils.py
+-rw-r--r-- 1 ugrad 11556 Jan 22 16:17 version.py
+
+hw01/lib/python3.6/site-packages/pkg_resources/_vendor/packaging/__pycache__:
+total 64
+-rw-r--r-- 1 ugrad   687 Jan 22 16:17 __about__.cpython-36.pyc
+-rw-r--r-- 1 ugrad   972 Jan 22 16:17 _compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad   525 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  7991 Jan 22 16:17 markers.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3848 Jan 22 16:17 requirements.cpython-36.pyc
+-rw-r--r-- 1 ugrad 19791 Jan 22 16:17 specifiers.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2829 Jan 22 16:17 _structures.cpython-36.pyc
+-rw-r--r-- 1 ugrad   456 Jan 22 16:17 utils.cpython-36.pyc
+-rw-r--r-- 1 ugrad 10566 Jan 22 16:17 version.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/pkg_resources/_vendor/__pycache__:
+total 248
+-rw-r--r-- 1 ugrad  18577 Jan 22 16:17 appdirs.cpython-36.pyc
+-rw-r--r-- 1 ugrad    151 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad 201073 Jan 22 16:17 pyparsing.cpython-36.pyc
+-rw-r--r-- 1 ugrad  24448 Jan 22 16:17 six.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/__pycache__:
+total 4
+-rw-r--r-- 1 ugrad 275 Jan 22 16:17 easy_install.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/setuptools:
+total 656
+-rw-r--r-- 1 ugrad  6613 Jan 22 16:17 archive_util.py
+-rw-r--r-- 1 ugrad 65536 Jan 22 16:17 cli-32.exe
+-rw-r--r-- 1 ugrad 74752 Jan 22 16:17 cli-64.exe
+-rw-r--r-- 1 ugrad 65536 Jan 22 16:17 cli.exe
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 command
+-rw-r--r-- 1 ugrad  6473 Jan 22 16:17 depends.py
+-rw-r--r-- 1 ugrad 37129 Jan 22 16:17 dist.py
+-rw-r--r-- 1 ugrad  1729 Jan 22 16:17 extension.py
+drwxr-xr-x 3 ugrad  4096 Jan 22 16:17 extern
+-rw-r--r-- 1 ugrad  5207 Jan 22 16:17 glob.py
+-rw-r--r-- 1 ugrad 65536 Jan 22 16:17 gui-32.exe
+-rw-r--r-- 1 ugrad 75264 Jan 22 16:17 gui-64.exe
+-rw-r--r-- 1 ugrad 65536 Jan 22 16:17 gui.exe
+-rw-r--r-- 1 ugrad  5050 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad   787 Jan 22 16:17 launch.py
+-rw-r--r-- 1 ugrad  2013 Jan 22 16:17 lib2to3_ex.py
+-rw-r--r-- 1 ugrad  5337 Jan 22 16:17 monkey.py
+-rw-r--r-- 1 ugrad 37091 Jan 22 16:17 msvc.py
+-rw-r--r-- 1 ugrad  2648 Jan 22 16:17 namespaces.py
+-rw-r--r-- 1 ugrad 39947 Jan 22 16:17 package_index.py
+-rw-r--r-- 1 ugrad   679 Jan 22 16:17 py26compat.py
+-rw-r--r-- 1 ugrad   330 Jan 22 16:17 py27compat.py
+-rw-r--r-- 1 ugrad  1645 Jan 22 16:17 py31compat.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad 14324 Jan 22 16:17 sandbox.py
+-rw-r--r-- 1 ugrad   201 Jan 22 16:17 script (dev).tmpl
+-rw-r--r-- 1 ugrad   138 Jan 22 16:17 script.tmpl
+-rw-r--r-- 1 ugrad  2307 Jan 22 16:17 site-patch.py
+-rw-r--r-- 1 ugrad  8131 Jan 22 16:17 ssl_support.py
+-rw-r--r-- 1 ugrad   996 Jan 22 16:17 unicode_utils.py
+-rw-r--r-- 1 ugrad   138 Jan 22 16:17 version.py
+-rw-r--r-- 1 ugrad   714 Jan 22 16:17 windows_support.py
+
+hw01/lib/python3.6/site-packages/setuptools/command:
+total 272
+-rw-r--r-- 1 ugrad  2426 Jan 22 16:17 alias.py
+-rw-r--r-- 1 ugrad 17178 Jan 22 16:17 bdist_egg.py
+-rw-r--r-- 1 ugrad  1508 Jan 22 16:17 bdist_rpm.py
+-rw-r--r-- 1 ugrad   637 Jan 22 16:17 bdist_wininst.py
+-rw-r--r-- 1 ugrad 13049 Jan 22 16:17 build_ext.py
+-rw-r--r-- 1 ugrad  9596 Jan 22 16:17 build_py.py
+-rw-r--r-- 1 ugrad  7384 Jan 22 16:17 develop.py
+-rw-r--r-- 1 ugrad 85720 Jan 22 16:17 easy_install.py
+-rw-r--r-- 1 ugrad 25110 Jan 22 16:17 egg_info.py
+-rw-r--r-- 1 ugrad   563 Jan 22 16:17 __init__.py
+-rw-r--r-- 1 ugrad  2203 Jan 22 16:17 install_egg_info.py
+-rw-r--r-- 1 ugrad  3840 Jan 22 16:17 install_lib.py
+-rw-r--r-- 1 ugrad  4683 Jan 22 16:17 install.py
+-rw-r--r-- 1 ugrad  2439 Jan 22 16:17 install_scripts.py
+-rw-r--r-- 1 ugrad   628 Jan 22 16:17 launcher manifest.xml
+-rw-r--r-- 1 ugrad  4986 Jan 22 16:17 py36compat.py
+drwxr-xr-x 2 ugrad  4096 Jan 22 16:17 __pycache__
+-rw-r--r-- 1 ugrad   270 Jan 22 16:17 register.py
+-rw-r--r-- 1 ugrad  2164 Jan 22 16:17 rotate.py
+-rw-r--r-- 1 ugrad   658 Jan 22 16:17 saveopts.py
+-rw-r--r-- 1 ugrad  6650 Jan 22 16:17 sdist.py
+-rw-r--r-- 1 ugrad  5085 Jan 22 16:17 setopt.py
+-rw-r--r-- 1 ugrad  8535 Jan 22 16:17 test.py
+-rw-r--r-- 1 ugrad  7275 Jan 22 16:17 upload_docs.py
+-rw-r--r-- 1 ugrad  1077 Jan 22 16:17 upload.py
+
+hw01/lib/python3.6/site-packages/setuptools/command/__pycache__:
+total 224
+-rw-r--r-- 1 ugrad  2392 Jan 22 16:17 alias.cpython-36.pyc
+-rw-r--r-- 1 ugrad 13622 Jan 22 16:17 bdist_egg.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1735 Jan 22 16:17 bdist_rpm.cpython-36.pyc
+-rw-r--r-- 1 ugrad   936 Jan 22 16:17 bdist_wininst.cpython-36.pyc
+-rw-r--r-- 1 ugrad  9962 Jan 22 16:17 build_ext.cpython-36.pyc
+-rw-r--r-- 1 ugrad  8531 Jan 22 16:17 build_py.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5848 Jan 22 16:17 develop.cpython-36.pyc
+-rw-r--r-- 1 ugrad 63942 Jan 22 16:17 easy_install.cpython-36.pyc
+-rw-r--r-- 1 ugrad 21015 Jan 22 16:17 egg_info.cpython-36.pyc
+-rw-r--r-- 1 ugrad   670 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3932 Jan 22 16:17 install.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2397 Jan 22 16:17 install_egg_info.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4042 Jan 22 16:17 install_lib.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2237 Jan 22 16:17 install_scripts.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4582 Jan 22 16:17 py36compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad   552 Jan 22 16:17 register.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2538 Jan 22 16:17 rotate.cpython-36.pyc
+-rw-r--r-- 1 ugrad   883 Jan 22 16:17 saveopts.cpython-36.pyc
+-rw-r--r-- 1 ugrad  6067 Jan 22 16:17 sdist.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4561 Jan 22 16:17 setopt.cpython-36.pyc
+-rw-r--r-- 1 ugrad  7410 Jan 22 16:17 test.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1311 Jan 22 16:17 upload.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5980 Jan 22 16:17 upload_docs.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/setuptools/extern:
+total 8
+-rw-r--r-- 1 ugrad  131 Jan 22 16:17 __init__.py
+drwxr-xr-x 2 ugrad 4096 Jan 22 16:17 __pycache__
+
+hw01/lib/python3.6/site-packages/setuptools/extern/__pycache__:
+total 4
+-rw-r--r-- 1 ugrad 291 Jan 22 16:17 __init__.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/setuptools/__pycache__:
+total 200
+-rw-r--r-- 1 ugrad  5116 Jan 22 16:17 archive_util.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5786 Jan 22 16:17 depends.cpython-36.pyc
+-rw-r--r-- 1 ugrad 32126 Jan 22 16:17 dist.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1933 Jan 22 16:17 extension.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3801 Jan 22 16:17 glob.cpython-36.pyc
+-rw-r--r-- 1 ugrad  5653 Jan 22 16:17 __init__.cpython-36.pyc
+-rw-r--r-- 1 ugrad   812 Jan 22 16:17 launch.cpython-36.pyc
+-rw-r--r-- 1 ugrad  2391 Jan 22 16:17 lib2to3_ex.cpython-36.pyc
+-rw-r--r-- 1 ugrad  4481 Jan 22 16:17 monkey.cpython-36.pyc
+-rw-r--r-- 1 ugrad 31234 Jan 22 16:17 msvc.cpython-36.pyc
+-rw-r--r-- 1 ugrad  3149 Jan 22 16:17 namespaces.cpython-36.pyc
+-rw-r--r-- 1 ugrad 32448 Jan 22 16:17 package_index.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1021 Jan 22 16:17 py26compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad   570 Jan 22 16:17 py27compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1851 Jan 22 16:17 py31compat.cpython-36.pyc
+-rw-r--r-- 1 ugrad 15491 Jan 22 16:17 sandbox.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1464 Jan 22 16:17 site-patch.cpython-36.pyc
+-rw-r--r-- 1 ugrad  6317 Jan 22 16:17 ssl_support.cpython-36.pyc
+-rw-r--r-- 1 ugrad  1127 Jan 22 16:17 unicode_utils.cpython-36.pyc
+-rw-r--r-- 1 ugrad   281 Jan 22 16:17 version.cpython-36.pyc
+-rw-r--r-- 1 ugrad   969 Jan 22 16:17 windows_support.cpython-36.pyc
+
+hw01/lib/python3.6/site-packages/setuptools-28.8.0.dist-info:
+total 68
+-rw-r--r-- 1 ugrad   239 Jan 22 16:17 dependency_links.txt
+-rw-r--r-- 1 ugrad 10257 Jan 22 16:17 DESCRIPTION.rst
+-rw-r--r-- 1 ugrad  2885 Jan 22 16:17 entry_points.txt
+-rw-r--r-- 1 ugrad     4 Jan 22 16:17 INSTALLER
+-rw-r--r-- 1 ugrad 11486 Jan 22 16:17 METADATA
+-rw-r--r-- 1 ugrad  4614 Jan 22 16:17 metadata.json
+-rw-r--r-- 1 ugrad 10669 Jan 22 16:17 RECORD
+-rw-r--r-- 1 ugrad    38 Jan 22 16:17 top_level.txt
+-rw-r--r-- 1 ugrad   110 Jan 22 16:17 WHEEL
+-rw-r--r-- 1 ugrad     1 Jan 22 16:17 zip-safe
+/home/ugrads/dluo/notes/CSCI_4760/hw01/:/home/work/cs4760a
