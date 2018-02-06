@@ -2,6 +2,8 @@ import argparse
 import os
 import socket
 import threading
+from pathlib import Path
+from urllib.parse import urlparse
 
 parser = argparse.ArgumentParser(description='A basic HTTP server.')
 
@@ -14,7 +16,8 @@ def directory_type(arg):
         raise argparse.ArgumentError(arg, 'Could not resolve root path.')
 
 
-parser.add_argument('--root', '-R', metavar='PATH', type=directory_type, default=os.getcwd() + '\\www')
+default_path = Path('./www')
+parser.add_argument('--root', '-R', metavar='PATH', type=directory_type, default=default_path.absolute())
 parser.add_argument('--host', '-H', metavar='ADDRESS', default='0.0.0.0')
 parser.add_argument('--port', '-P', metavar='PORT', type=int, default='47684')
 args = parser.parse_args()
@@ -123,10 +126,15 @@ class ServerThread(threading.Thread):
     def respond(self, request: Request):
         response = b''
 
-        path = f'{SERVER_ROOT}{request.url}'
+        parser = urlparse(request.url)
 
-        if os.path.isfile(path):
-            if any(path.endswith(suffix) for suffix in self.suffixes):
+        if '..' in parser.path or '.' in parser.path:
+            return self.error_codes[403]
+
+        path = SERVER_ROOT / parser.path.strip('/')
+
+        if path.is_file():
+            if path.suffix in self.suffixes:
                 # serve file
                 response += b'HTTP/1.1 200 OK\r\n\r\n'
                 with open(path, 'rb') as f:
@@ -134,17 +142,17 @@ class ServerThread(threading.Thread):
             else:
                 # do not serve. invalid suffix.
                 response = self.error_codes[403]
-        elif os.path.isdir(path):
+        elif path.is_dir():
             # serve index.html/index.txt or 404 if no index found.
             file = None
-            if os.path.isfile(path + '/index.html'):
-                file = '/index.html'
-            elif os.path.isfile(path + '/index.txt'):
-                file = '/index.txt'
+            if (path / 'index.html').is_file():
+                file = 'index.html'
+            elif (path / 'index.txt').is_file():
+                file = 'index.txt'
 
             if file is not None:
                 response += b'HTTP/1.1 200 OK\r\n\r\n'
-                with open(path + file, 'rb') as f:
+                with open(path / file, 'rb') as f:
                     response += f.read()
             else:
                 # 404 not found
