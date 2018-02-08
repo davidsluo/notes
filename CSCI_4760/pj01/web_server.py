@@ -160,6 +160,7 @@ class ServerThread(threading.Thread):
         """Serve client's request."""
         request = self.client.recv(1024)
 
+        # Try to parse request, 400 otherwise.
         try:
             request = Request.decode(request)
         except:
@@ -178,12 +179,12 @@ class ServerThread(threading.Thread):
         :param request: The request.
         :return: The corresponding `Response` object.
         """
-        parser = urlparse(request.url)
+        url_parser = urlparse(request.url)
 
-        # if '..' in parser.path or '.' in parser.path:
+        # if '..' in url_parser.path or '.' in url_parser.path:
         #     return self.error_codes[403]
 
-        path = SERVER_ROOT / parser.path.strip('/')
+        path = SERVER_ROOT / url_parser.path.strip('/')
 
         if path.is_file():
             try:
@@ -194,6 +195,7 @@ class ServerThread(threading.Thread):
                 content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
                 return Response(status=200, body=body, headers={'Content-Type': content_type} if content_type else None)
             except:
+                # could not open file for whatever reason.
                 return Response(status=403)
         elif path.is_dir():
             # serve index.html/index.txt or 404 if no index found.
@@ -211,6 +213,7 @@ class ServerThread(threading.Thread):
                     return Response(status=200, body=body,
                                     headers={'Content-Type': content_type} if content_type else None)
                 except:
+                    # could not open file for whatever reason.
                     return Response(status=403)
             else:
                 # 404 not found
