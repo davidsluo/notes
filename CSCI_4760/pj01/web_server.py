@@ -95,7 +95,7 @@ class Response:
         404: 'Not Found',
     }
 
-    default_body = {key: f'<h1>{key} {value}</h1>' for key, value in status_codes.items()}
+    default_body = {key: f'<h1>{key} {value}</h1>'.encode() for key, value in status_codes.items()}
 
     def __init__(self, status: int, version: str = '1.1', headers: dict = None, body: bytes = None):
         self.status = status
