@@ -1,4 +1,5 @@
 import argparse
+import mimetypes
 import os
 import socket
 import threading
@@ -22,7 +23,7 @@ parser.add_argument('--host', '-H', metavar='ADDRESS', default='0.0.0.0')
 parser.add_argument('--port', '-P', metavar='PORT', type=int, default='47684')
 args = parser.parse_args()
 
-SERVER_ROOT = args.root
+SERVER_ROOT = args.root if isinstance(args.root, Path) else Path(args.root)
 SERVER_HOST = args.host
 SERVER_PORT = args.port
 SERVER_ADDR = (SERVER_HOST, SERVER_PORT)
@@ -47,7 +48,7 @@ class Request:
         return str(self.__dict__)
 
     @classmethod
-    def from_bytes(cls, raw: bytes):
+    def decode(cls, raw: bytes):
         """Turns a raw request into an instance of this class."""
 
         request = cls()
@@ -86,17 +87,37 @@ class Request:
         return request
 
 
+class Response:
+    status_codes = {
+        200: 'OK',
+        400: 'Bad Request',
+        403: 'Forbidden',
+        404: 'Not Found',
+    }
+
+    default_body = {key: f'<h1>{key} {value}</h1>' for key, value in status_codes.items()}
+
+    def __init__(self, status: int, version: str = '1.1', headers: dict = None, body: bytes = None):
+        self.status = status
+        self.version = version
+        self.headers = headers or {}
+        self.body = body or self.default_body[status]
+
+    def encode(self):
+        return bytes(self)
+
+    def __bytes__(self):
+        status_code = self.status_codes[self.status]
+        status = f'HTTP/{self.version} {self.status} {status_code}\r\n'
+        headers = ''.join(f'{key}: {value}\r\n' for key, value in self.headers.items())
+
+        return (status + headers + '\r\n').encode() + self.body
+
+
 class ServerThread(threading.Thread):
     """Runs an HTTP connection in a new thread."""
 
     suffixes = ['.txt', '.html', '.png']
-    # suffixes = ['.txt', '.html', '.png', '.css', '.js', '.jpg', '.svg']
-    error_codes = {
-        200: b'HTTP/1.1 200 OK\r\n\r\n<h1>200 OK</h1>',
-        400: b'HTTP/1.1 400 Bad Request\r\n\r\n<h1>400 Bad Request</h1>',
-        403: b'HTTP/1.1 403 Forbidden\r\n\r\n<h1>403 Forbidden</h1>',
-        404: b'HTTP/1.1 404 Not Found\r\n\r\n<h1>404 Not Found</h1>',
-    }
 
     def __init__(self, client, address):
         """Constructor"""
@@ -113,35 +134,36 @@ class ServerThread(threading.Thread):
             return
 
         try:
-            request = Request.from_bytes(request)
+            request = Request.decode(request)
         except:
-            response = self.error_codes[400]
+            response = Response(status=400)
         else:
             response = self.respond(request)
 
-        self.client.send(response)
+        self.client.send(response.encode())
         self.client.shutdown(socket.SHUT_RDWR)
         self.client.close()
 
     def respond(self, request: Request):
-        response = b''
-
         parser = urlparse(request.url)
 
-        if '..' in parser.path or '.' in parser.path:
-            return self.error_codes[403]
+        # if '..' in parser.path or '.' in parser.path:
+        #     return self.error_codes[403]
 
         path = SERVER_ROOT / parser.path.strip('/')
 
         if path.is_file():
-            if path.suffix in self.suffixes:
+            # if path.suffix in self.suffixes:
+            if True:
                 # serve file
-                response += b'HTTP/1.1 200 OK\r\n\r\n'
                 with open(path, 'rb') as f:
-                    response += f.read()
+                    body = f.read()
+
+                content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
+                return Response(status=200, body=body, headers={'Content-Type': content_type} if content_type else None)
             else:
                 # do not serve. invalid suffix.
-                response = self.error_codes[403]
+                return Response(status=403)
         elif path.is_dir():
             # serve index.html/index.txt or 404 if no index found.
             file = None
@@ -151,17 +173,16 @@ class ServerThread(threading.Thread):
                 file = 'index.txt'
 
             if file is not None:
-                response += b'HTTP/1.1 200 OK\r\n\r\n'
                 with open(path / file, 'rb') as f:
-                    response += f.read()
+                    body = f.read()
+                content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
+                return Response(status=200, body=body, headers={'Content-Type': content_type} if content_type else None)
             else:
                 # 404 not found
-                response = self.error_codes[404]
+                return Response(status=404)
         else:
             # 404 not found
-            response = self.error_codes[404]
-
-        return response
+            return Response(status=404)
 
 
 if __name__ == '__main__':
