@@ -117,8 +117,6 @@ class Response:
 class ServerThread(threading.Thread):
     """Runs an HTTP connection in a new thread."""
 
-    suffixes = ['.txt', '.html', '.png']
-
     def __init__(self, client, address):
         """Constructor"""
         threading.Thread.__init__(self)
@@ -153,16 +151,14 @@ class ServerThread(threading.Thread):
         path = SERVER_ROOT / parser.path.strip('/')
 
         if path.is_file():
-            # if path.suffix in self.suffixes:
-            if True:
+            try:
                 # serve file
                 with open(path, 'rb') as f:
                     body = f.read()
 
                 content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
                 return Response(status=200, body=body, headers={'Content-Type': content_type} if content_type else None)
-            else:
-                # do not serve. invalid suffix.
+            except:
                 return Response(status=403)
         elif path.is_dir():
             # serve index.html/index.txt or 404 if no index found.
@@ -173,10 +169,14 @@ class ServerThread(threading.Thread):
                 file = 'index.txt'
 
             if file is not None:
-                with open(path / file, 'rb') as f:
-                    body = f.read()
-                content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
-                return Response(status=200, body=body, headers={'Content-Type': content_type} if content_type else None)
+                try:
+                    with open(path / file, 'rb') as f:
+                        body = f.read()
+                    content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
+                    return Response(status=200, body=body,
+                                    headers={'Content-Type': content_type} if content_type else None)
+                except:
+                    return Response(status=403)
             else:
                 # 404 not found
                 return Response(status=404)
