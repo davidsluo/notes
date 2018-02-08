@@ -198,26 +198,26 @@ class ServerThread(threading.Thread):
                 # could not open file for whatever reason.
                 return Response(status=403)
         elif path.is_dir():
-            # serve index.html/index.txt or 404 if no index found.
-            file = None
-            if (path / 'index.html').is_file():
-                file = 'index.html'
-            elif (path / 'index.txt').is_file():
-                file = 'index.txt'
+            try:
+                # serve index.html/index.txt or 404 if no index found.
+                file = None
+                if (path / 'index.html').is_file():
+                    file = 'index.html'
+                elif (path / 'index.txt').is_file():
+                    file = 'index.txt'
 
-            if file is not None:
-                try:
+                if file is not None:
                     with open(path / file, 'rb') as f:
                         body = f.read()
                     content_type = mimetypes.types_map.get(path.suffix, None)  # resolve content_type
                     return Response(status=200, body=body,
                                     headers={'Content-Type': content_type} if content_type else None)
-                except:
-                    # could not open file for whatever reason.
-                    return Response(status=403)
-            else:
-                # 404 not found
-                return Response(status=404)
+                else:
+                    # 404 not found
+                    return Response(status=404)
+            except:
+                # could not open file for whatever reason.
+                return Response(status=403)
         else:
             # 404 not found
             return Response(status=404)
