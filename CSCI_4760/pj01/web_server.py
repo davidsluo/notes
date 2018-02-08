@@ -38,6 +38,9 @@ class Request:
     """Represents an HTTP request."""
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.method: str = None
         self.url: str = None
         self.version: str = None
@@ -45,11 +48,20 @@ class Request:
         self.bytes = None
 
     def __str__(self):
+        """
+        String representation of `Request` object.
+        :return: string representation.
+        """
         return str(self.__dict__)
 
     @classmethod
     def decode(cls, raw: bytes):
-        """Turns a raw request into an instance of this class."""
+        """
+        Turns a raw request into an instance of this class.
+
+        :param raw: the raw bytes from the HTTP request.
+        :return: An instance of `Request`.
+        """
 
         request = cls()
 
@@ -88,6 +100,9 @@ class Request:
 
 
 class Response:
+    """
+    Represents an HTTP response.
+    """
     status_codes = {
         200: 'OK',
         400: 'Bad Request',
@@ -98,15 +113,33 @@ class Response:
     default_body = {key: f'<h1>{key} {value}</h1>'.encode() for key, value in status_codes.items()}
 
     def __init__(self, status: int, version: str = '1.1', headers: dict = None, body: bytes = None):
+        """
+        Constructor
+
+        :param status: HTTP status code.
+        :param version: HTTP version (e.g. 1.1, 1.0).
+        :param headers: Headers to be passed to client.
+        :param body: Bytes to be used as response body.
+        """
         self.status = status
         self.version = version
         self.headers = headers or {}
         self.body = body or self.default_body[status]
 
     def encode(self):
+        """
+        Make this object into HTTP formatted bytes.
+
+        :return: Bytes representation.
+        """
         return bytes(self)
 
     def __bytes__(self):
+        """
+        Make this object into HTTP formatted bytes.
+
+        :return: Bytes representation.
+        """
         status_code = self.status_codes[self.status]
         status = f'HTTP/{self.version} {self.status} {status_code}\r\n'
         headers = ''.join(f'{key}: {value}\r\n' for key, value in self.headers.items())
@@ -127,10 +160,6 @@ class ServerThread(threading.Thread):
         """Serve client's request."""
         request = self.client.recv(1024)
 
-        # TODO: why does this happen?
-        if len(request) == 0:
-            return
-
         try:
             request = Request.decode(request)
         except:
@@ -143,6 +172,12 @@ class ServerThread(threading.Thread):
         self.client.close()
 
     def respond(self, request: Request):
+        """
+        Respond to a HTTP request.
+
+        :param request: The request.
+        :return: The corresponding `Response` object.
+        """
         parser = urlparse(request.url)
 
         # if '..' in parser.path or '.' in parser.path:
