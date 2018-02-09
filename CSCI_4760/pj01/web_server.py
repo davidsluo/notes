@@ -44,8 +44,9 @@ class Request:
         self.method: str = None
         self.url: str = None
         self.version: str = None
+        self.headers: dict = None
         self.body: str = None
-        self.bytes = None
+        self.bytes = None  # the raw bytes from original request
 
     def __str__(self):
         """
@@ -83,14 +84,17 @@ class Request:
         setattr(request, 'url', url)
         setattr(request, 'version', version)
 
+        headers = {}
         for field in fields:
+            # end of headers
             if field == '':
                 break
 
             body_start += 1
 
             key, value = field.split(':', 1)
-            setattr(request, key.lower(), value.strip())
+            headers[key] = value
+        setattr(request, 'headers', headers)
 
         body = '\n'.join(fields[body_start:])
 
