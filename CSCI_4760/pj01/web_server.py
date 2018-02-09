@@ -48,7 +48,7 @@ class Request:
         self.body: str = None
         self.bytes = None  # the raw bytes from original request
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         String representation of `Request` object.
         :return: string representation.
@@ -56,7 +56,7 @@ class Request:
         return str(self.__dict__)
 
     @classmethod
-    def decode(cls, raw: bytes):
+    def decode(cls, raw: bytes) -> 'Request':
         """
         Turns a raw request into an instance of this class.
 
@@ -130,7 +130,7 @@ class Response:
         self.headers = headers or {}
         self.body = body or self.default_body[status]
 
-    def encode(self):
+    def encode(self) -> bytes:
         """
         Make this object into HTTP formatted bytes.
 
@@ -138,7 +138,7 @@ class Response:
         """
         return bytes(self)
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         """
         Make this object into HTTP formatted bytes.
 
@@ -178,17 +178,14 @@ class ServerThread(threading.Thread):
         self.client.shutdown(socket.SHUT_RDWR)
         self.client.close()
 
-    def respond(self, request: Request):
+    def respond(self, request: Request) -> Response:
         """
         Respond to a HTTP request.
 
         :param request: The request.
         :return: The corresponding `Response` object.
         """
-        url_parser = urlparse(request.url)
-
-        # if '..' in url_parser.path or '.' in url_parser.path:
-        #     return self.error_codes[403]
+        url_parser = urlparse(request.url)  # splits url into its components
 
         path = SERVER_ROOT / url_parser.path.strip('/')
 
@@ -206,8 +203,8 @@ class ServerThread(threading.Thread):
                 # could not open file for whatever reason.
                 return Response(status=403)
         elif path.is_dir():
+            # serve index.html/index.txt or 404 if no index found.
             try:
-                # serve index.html/index.txt or 404 if no index found.
                 file = None
                 if (path / 'index.html').is_file():
                     file = 'index.html'
