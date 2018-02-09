@@ -148,6 +148,8 @@ class Response:
 
 
 class ServerThread(threading.Thread):
+    suffix_whitelist = ['png', 'html', 'txt']
+
     """Runs an HTTP connection in a new thread."""
 
     def __init__(self, client, address):
@@ -188,6 +190,8 @@ class ServerThread(threading.Thread):
 
         if path.is_file():
             try:
+                if path.suffix not in self.suffix_whitelist:
+                    raise PermissionError()
                 # serve file
                 with open(path, 'rb') as f:
                     body = f.read()
