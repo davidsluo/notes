@@ -44,10 +44,11 @@ class Request:
         self.method: str = None
         self.url: str = None
         self.version: str = None
+        self.headers: dict = None
         self.body: str = None
-        self.bytes = None
+        self.bytes = None  # the raw bytes from original request
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         String representation of `Request` object.
         :return: string representation.
@@ -55,7 +56,7 @@ class Request:
         return str(self.__dict__)
 
     @classmethod
-    def decode(cls, raw: bytes):
+    def decode(cls, raw: bytes) -> 'Request':
         """
         Turns a raw request into an instance of this class.
 
@@ -83,14 +84,17 @@ class Request:
         setattr(request, 'url', url)
         setattr(request, 'version', version)
 
+        headers = {}
         for field in fields:
+            # end of headers
             if field == '':
                 break
 
             body_start += 1
 
             key, value = field.split(':', 1)
-            setattr(request, key.lower(), value.strip())
+            headers[key] = value
+        setattr(request, 'headers', headers)
 
         body = '\n'.join(fields[body_start:])
 
@@ -126,7 +130,7 @@ class Response:
         self.headers = headers or {}
         self.body = body or self.default_body[status]
 
-    def encode(self):
+    def encode(self) -> bytes:
         """
         Make this object into HTTP formatted bytes.
 
@@ -134,7 +138,7 @@ class Response:
         """
         return bytes(self)
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         """
         Make this object into HTTP formatted bytes.
 
@@ -148,6 +152,8 @@ class Response:
 
 
 class ServerThread(threading.Thread):
+    suffix_whitelist = ['png', 'html', 'txt']
+
     """Runs an HTTP connection in a new thread."""
 
     def __init__(self, client, address):
@@ -172,22 +178,21 @@ class ServerThread(threading.Thread):
         self.client.shutdown(socket.SHUT_RDWR)
         self.client.close()
 
-    def respond(self, request: Request):
+    def respond(self, request: Request) -> Response:
         """
         Respond to a HTTP request.
 
         :param request: The request.
         :return: The corresponding `Response` object.
         """
-        url_parser = urlparse(request.url)
-
-        # if '..' in url_parser.path or '.' in url_parser.path:
-        #     return self.error_codes[403]
+        url_parser = urlparse(request.url)  # splits url into its components
 
         path = SERVER_ROOT / url_parser.path.strip('/')
 
         if path.is_file():
             try:
+                if path.suffix not in self.suffix_whitelist:
+                    raise PermissionError()
                 # serve file
                 with open(path, 'rb') as f:
                     body = f.read()
@@ -198,8 +203,8 @@ class ServerThread(threading.Thread):
                 # could not open file for whatever reason.
                 return Response(status=403)
         elif path.is_dir():
+            # serve index.html/index.txt or 404 if no index found.
             try:
-                # serve index.html/index.txt or 404 if no index found.
                 file = None
                 if (path / 'index.html').is_file():
                     file = 'index.html'
