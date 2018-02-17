@@ -1,7 +1,5 @@
-import sys
-
 import struct
-from pprint import pprint
+import sys
 
 masks = {
     'QR': (0b1, 15),
@@ -15,12 +13,23 @@ masks = {
 }
 
 with open(sys.argv[1], 'rb') as f:
-    raw = f.read(4)
+    raw = f.read(12)
 
-    id, metadata = struct.unpack('HH', raw)
+    id, metadata, qd, an, ns, ar = struct.unpack('>HHHHHH', raw)
 
-    print(f'id       = {id:0>19_b}')
-    print(f'metadata = {metadata:0>19_b}')
+    print(f'id       = {id: >19_b} ({id})')
+    print(f'metadata = {metadata: >19_b}')
 
     properties = {key: (metadata & (bits << shift)) >> shift for key, (bits, shift) in masks.items()}
-    pprint(properties)
+    print(properties)
+    print(f'QD_COUNT: {qd}')
+    print(f'AN_COUNT: {an}')
+    print(f'NS_COUNT: {ns}')
+    print(f'AR_COUNT: {ar}')
+
+    for _ in range(qd):
+        read = int.from_bytes(f.read(1), byteorder='big')
+        while read > 0:
+            name = f.read(read).decode()
+            print(name)
+            read = int.from_bytes(f.read(1), byteorder='big')
