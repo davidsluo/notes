@@ -1,5 +1,6 @@
 import copy
 import sys
+from pprint import pprint
 
 
 class BytesView:
@@ -28,7 +29,7 @@ class BytesView:
     #     self._sub_index += sub_add
     #     self.index += bytes_add
 
-    def read_bytes(self, amount: int = 1):
+    def read_bytes(self, amount: int):
         """
         Reads raw bytes from the source.
 
@@ -49,7 +50,7 @@ class BytesView:
     #
     #     return
 
-    def read_int(self, byte_length: int = 1, signed=False):
+    def read_int(self, byte_length: int, *, signed=False):
         """
         Reads a length of bytes interpreted as a big-endian integer.
 
@@ -59,30 +60,53 @@ class BytesView:
         """
         return int.from_bytes(self.read_bytes(byte_length), 'big', signed=signed)
 
-    def read_name(self, index: int = None, *, copy_view=True):
+    def read_name(self, *, check_pointer=True):
         """
         Reads a domain name. Handles pointers.
 
-        :param index: where to start reading.
-        :param copy_view: TODO
         :return: the domain name read.
         """
-        if index is None:
-            index = self.index
-        if copy_view:
-            view = copy.copy(self)
-        else:
-            view = self
-        view.index = index
 
-        ret = ''
-        read = view.read_int(1)
-        while read > 0:
-            ret += view.read_bytes(read).decode()
-            ret += '.'
-            read = view.read_int(1)
+        def read(length):
+            """
+            Helper method to read labels.
+            """
+            # nonlocal self
+            ret = ''
+            while length > 0:
+                ret += self.read_bytes(length).decode()
+                ret += '.'
+                length = self.read_int(1)
+            return ret
+
+        ret = None
+        if check_pointer:
+            type = self.read_int(1)
+            if type & 0xC0 != 0:
+                # is pointer
+                temp_index = ((type & 0x3F) << 4) | self.read_int(1)
+                current_index = self.index
+                self.index = temp_index
+                ret = self.read_name(check_pointer=False)
+                self.index = current_index
+            else:
+                # is label
+                read_len = type
+                ret = read(read_len)
+        else:
+            read_len = self.read_int(1)
+            ret = read(read_len)
 
         return ret
+
+    def read_address(self, length=4):
+        """
+        Reads an IP address
+
+        :param length: the RDLENGTH to read
+        :return: an IP address split into a tuple
+        """
+        return tuple(self.read_int(1) for _ in range(length))
 
     def __getitem__(self, item):
         """
@@ -119,12 +143,22 @@ counts = {
 }
 
 # questions
-for i in range(counts['QD']):
-    if i == 0:
-        qname = view.read_name(12, copy_view=False)
-    else:
-        qname = view.read_name(copy_view=False)
+qnames = [view.read_name(check_pointer=False) for _ in range(counts['QD'])]
 qtype = view.read_int(2)
 qclass = view.read_int(2)
 
 # answers
+answers = []
+for _ in range(counts['AN']):
+    answer = {
+        'name': view.read_name(),
+        'qtype': view.read_int(2),
+        'qclass': view.read_int(2),
+        'ttl': view.read_int(4),
+        'rdlength': view.read_int(2),
+        'rdata': view.read_address()
+    }
+
+    answers.append(answer)
+
+pprint(locals())
