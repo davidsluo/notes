@@ -1,3 +1,4 @@
+import argparse
 import sys
 from pprint import pprint
 
@@ -78,7 +79,11 @@ class BytesView:
         return tuple(self.read_int(1) for _ in range(length))
 
 
-with open(sys.argv[1], 'rb') as f:
+parser = argparse.ArgumentParser(description='Parses DNS messages.')
+parser.add_argument('--file', '-f', type=argparse.FileType('rb'))
+args = parser.parse_args()
+
+with args.file as f:
     raw = f.read()
 
 view = BytesView(raw)
