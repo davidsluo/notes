@@ -93,15 +93,16 @@ view = BytesView(raw)
 
 transaction_id = view.read_int(2)
 raw_flags = view.read_int(2)
+opcodes = ['QUERY', 'IQUERY', 'STATUS', *('UNUSED' for _ in range(3, 16))]
+opcode = opcodes[(raw_flags & (0b1111 << 11)) >> 11]
+rcode = ((raw_flags & (0b1111 << 0)) >> 0) == 0
 flags = {
     'qr': (raw_flags & (0b1 << 15)) >> 15,
-    'opcode': (raw_flags & (0b1111 << 11)) >> 11,
     'aa': (raw_flags & (0b1 << 10)) >> 10,
     'tc': (raw_flags & (0b1 << 9)) >> 9,
     'rd': (raw_flags & (0b1 << 8)) >> 8,
     'ra': (raw_flags & (0b1 << 7)) >> 7,
-    'z': (raw_flags & (0b111 << 4)) >> 4,
-    'rcode': (raw_flags & (0b1111 << 0)) >> 0
+    # 'z': (raw_flags & (0b111 << 4)) >> 4,
 }
 counts = {
     'qd': view.read_int(2),  # question
@@ -126,27 +127,37 @@ def read_response_record(number):
     :param number: how many to read.
     :return: a dictionary of resource record values.
     """
+    classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
+    types = {1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 255: 'ANY'}
+
     records = []
     for _ in range(number):
         rr = {
             'name': view.read_name(),
-            'qtype': view.read_int(2),
-            'qclass': view.read_int(2),
+            'qtype': types.get(view.read_int(2), 'UNKNOWN'),
+            'qclass': classes.get(view.read_int(2), 'UNKNOWN'),
             'ttl': view.read_int(4),
             'rdlength': view.read_int(2),
         }
 
-        # A record
-        if rr['qtype'] == 1:
+        if rr['qtype'] == 'A':
             rr['rdata'] = view.read_address()
-        # NS, CNAME respectively
-        elif rr['qtype'] in (2, 5):
+        elif rr['qtype'] in ('NS', 'CNAME'):
             rr['rdata'] = view.read_name()
+        elif rr['qtype'] == 'SOA':
+            mname = view.read_name()
+            rname = view.read_name()
+            serial = view.read_int(4)
+            refresh = view.read_int(4)
+            retry = view.read_int(4)
+            expire = view.read_int(4)
+            minimum = view.read_int(4)
+            rr['rdata'] = f'{mname} {rname} {serial} {refresh} {retry} {expire} {minimum}'
         # Everything else
         else:
             rr['rdata'] = 'Record type unsupported.'
             view.skip(rr['rdlength'])
-            continue
+            # continue
         records.append(rr)
     return records
 
@@ -156,30 +167,26 @@ answers = read_response_record(counts['an'])
 authorities = read_response_record(counts['ns'])
 additional = read_response_record(counts['ar'])
 
-# pprint(locals())
 # format output
 print(f'; <<>> {parser.prog} David Luo 811357331 <<>> {args.file.name}')
 print(f'; ({len(questions)} server{"s" if len(questions)>1 else ""} found)')
 print(';; Got answer:')
-opcodes = ['QUERY', 'IQUERY', 'STATUS', *('UNUSED' for _ in range(3, 16))]
-opcode = opcodes[flags['opcode']]
-status = 'NOERROR' if flags['rcode'] else 'ERROR'
+status = 'NOERROR' if rcode else 'ERROR'
 print(f';; ->>HEADER<<- opcode: {opcode}, status: {status}, id:{transaction_id}')
 flag_str = ' '.join(key for key, value in flags.items() if value == 1 and key in ('qr', 'aa', 'tc', 'rd', 'ra'))
 print(
     f';; flags: {flag_str}; QUERY: {len(questions)}, ANSWER: {counts["an"]}, AUTHORITY: {counts["ns"]}, ADDITIONAL: {counts["ar"]}')
 print()
 print(';; QUESTION SECTION:')
-classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
-types = {1: 'A', 2: 'NS', 5: 'CNAME', 255: 'ANY'}
 for q in questions:
-    print(f';{q["name"]:<35}    {classes[q["qclass"]]:<4}    {types[q["qtype"]]:<8}')
+    print(f';{q["name"]:<35}    {q["qclass"]:<4}    {q["qtype"]:<8}')
 print()
 
-for name, section in {'ANSWER': answers, 'AUTHORITY': authorities, 'ADDITIONAL': additional}.items():
+# for name, section in {'ANSWER': answers, 'AUTHORITY': authorities, 'ADDITIONAL': additional}.items():
+for name, section in {'ANSWER': answers, 'AUTHORITY': authorities}.items():
     if len(section) > 0:
         print(f';; {name} SECTION:')
-        for r in answers:
+        for r in section:
             data = '.'.join(str(i) for i in r['rdata']) if isinstance(r['rdata'], tuple) else r['rdata']
-            print(f'{r["name"]:<24}    {r["ttl"]:<8}    {classes[r["qclass"]]:<4}    {types[r["qtype"]]:<8}    {data:<24}')
+            print(f'{r["name"]:<24}    {r["ttl"]:<8}    {r["qclass"]:<4}    {r["qtype"]:<8}    {data:<24}')
         print()
