@@ -16,6 +16,11 @@ class BytesView:
         self.index = 0
 
     def skip(self, amount: int):
+        """
+        Skip over an amount of bytes.
+
+        :param amount: the amount to skip
+        """
         self.index += amount
 
     def read_bytes(self, amount: int):
@@ -166,9 +171,9 @@ print(
 print()
 print(';; QUESTION SECTION:')
 classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
-types = {1: 'A', 2: 'NS', 5: 'CNAME'}
+types = {1: 'A', 2: 'NS', 5: 'CNAME', 255: 'ANY'}
 for q in questions:
-    print(f';{q["name"]:<32}{classes[q["qclass"]]:>4}{types[q["qtype"]]:>8}')
+    print(f';{q["name"]:<35}    {classes[q["qclass"]]:<4}    {types[q["qtype"]]:<8}')
 print()
 
 for name, section in {'ANSWER': answers, 'AUTHORITY': authorities, 'ADDITIONAL': additional}.items():
@@ -176,5 +181,5 @@ for name, section in {'ANSWER': answers, 'AUTHORITY': authorities, 'ADDITIONAL':
         print(f';; {name} SECTION:')
         for r in answers:
             data = '.'.join(str(i) for i in r['rdata']) if isinstance(r['rdata'], tuple) else r['rdata']
-            print(f'{r["name"]:<29}{r["ttl"]:>4}{classes[r["qclass"]]:>4}{types[r["qtype"]]:>8}{data:>24}')
-    print()
+            print(f'{r["name"]:<24}    {r["ttl"]:<8}    {classes[r["qclass"]]:<4}    {types[r["qtype"]]:<8}    {data:<24}')
+        print()
