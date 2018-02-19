@@ -1,6 +1,4 @@
 import argparse
-import sys
-from pprint import pprint
 
 
 class BytesView:
@@ -91,20 +89,20 @@ view = BytesView(raw)
 transaction_id = view.read_int(2)
 raw_flags = view.read_int(2)
 flags = {
-    'QR': (raw_flags & (0b1 << 15)) >> 15,
-    'OPCODE': (raw_flags & (0b1111 << 11)) >> 11,
-    'AA': (raw_flags & (0b1 << 10)) >> 10,
-    'TC': (raw_flags & (0b1 << 9)) >> 9,
-    'RD': (raw_flags & (0b1 << 8)) >> 8,
-    'RA': (raw_flags & (0b1 << 7)) >> 7,
-    'Z': (raw_flags & (0b111 << 4)) >> 4,
-    'RCODE': (raw_flags & (0b1111 << 0)) >> 0
+    'qr': (raw_flags & (0b1 << 15)) >> 15,
+    'opcode': (raw_flags & (0b1111 << 11)) >> 11,
+    'aa': (raw_flags & (0b1 << 10)) >> 10,
+    'tc': (raw_flags & (0b1 << 9)) >> 9,
+    'rd': (raw_flags & (0b1 << 8)) >> 8,
+    'ra': (raw_flags & (0b1 << 7)) >> 7,
+    'z': (raw_flags & (0b111 << 4)) >> 4,
+    'rcode': (raw_flags & (0b1111 << 0)) >> 0
 }
 counts = {
-    'QD': view.read_int(2),  # question
-    'AN': view.read_int(2),  # answer
-    'NS': view.read_int(2),  # authority
-    'AR': view.read_int(2)  # additional
+    'qd': view.read_int(2),  # question
+    'an': view.read_int(2),  # answer
+    'ns': view.read_int(2),  # authority
+    'ar': view.read_int(2)  # additional
 }
 
 # questions
@@ -113,7 +111,7 @@ questions = [
         'name': view.read_name(),
         'qtype': view.read_int(2),
         'qclass': view.read_int(2)
-    } for _ in range(counts['QD'])
+    } for _ in range(counts['qd'])
 ]
 
 
@@ -149,8 +147,34 @@ def read_response_record(number):
 
 
 # resource records
-answers = read_response_record(counts['AN'])
-auths = read_response_record(counts['NS'])
-addi = read_response_record(counts['AR'])
+answers = read_response_record(counts['an'])
+authorities = read_response_record(counts['ns'])
+additional = read_response_record(counts['ar'])
 
-pprint(locals())
+# pprint(locals())
+# format output
+print(f'; <<>> {parser.prog} David Luo 811357331 <<>> {args.file.name}')
+print(f'; ({len(questions)} server{"s" if len(questions)>1 else ""} found)')
+print(';; Got answer:')
+opcodes = ['QUERY', 'IQUERY', 'STATUS', *('UNUSED' for _ in range(3, 16))]
+opcode = opcodes[flags['opcode']]
+status = 'NOERROR' if flags['rcode'] else 'ERROR'
+print(f';; ->>HEADER<<- opcode: {opcode}, status: {status}, id:{transaction_id}')
+flag_str = ' '.join(key for key, value in flags.items() if value == 1 and key in ('qr', 'aa', 'tc', 'rd', 'ra'))
+print(
+    f';; flags: {flag_str}; QUERY: {len(questions)}, ANSWER: {counts["an"]}, AUTHORITY: {counts["ns"]}, ADDITIONAL: {counts["ar"]}')
+print()
+print(';; QUESTION SECTION:')
+classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
+types = {1: 'A', 2: 'NS', 5: 'CNAME'}
+for q in questions:
+    print(f';{q["name"]:<32}{classes[q["qclass"]]:>4}{types[q["qtype"]]:>8}')
+print()
+
+for name, section in {'ANSWER': answers, 'AUTHORITY': authorities, 'ADDITIONAL': additional}.items():
+    if len(section) > 0:
+        print(f';; {name} SECTION:')
+        for r in answers:
+            data = '.'.join(str(i) for i in r['rdata']) if isinstance(r['rdata'], tuple) else r['rdata']
+            print(f'{r["name"]:<29}{r["ttl"]:>4}{classes[r["qclass"]]:>4}{types[r["qtype"]]:>8}{data:>24}')
+    print()
