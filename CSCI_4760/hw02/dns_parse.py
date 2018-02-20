@@ -54,7 +54,7 @@ class BytesView:
         ret = ''
         type = self.read_int(1)
         while type > 0:
-            if type & 0xC0 != 0:
+            if type & 0xC0 == 0xC0:
                 # is pointer
                 temp_index = ((type & 0x3F) << 4) | self.read_int(1)
                 current_index = self.index
@@ -111,12 +111,15 @@ counts = {
     'ar': view.read_int(2)  # additional
 }
 
+classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
+types = {1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 255: 'ANY'}
+
 # questions
 questions = [
     {
         'name': view.read_name(),
-        'qtype': view.read_int(2),
-        'qclass': view.read_int(2)
+        'qtype': types.get(view.read_int(2), 'UNKNOWN'),
+        'qclass': classes.get(view.read_int(2), 'UNKNOWN')
     } for _ in range(counts['qd'])
 ]
 
@@ -124,11 +127,10 @@ questions = [
 def read_response_record(number):
     """
     Reads a resource record
+
     :param number: how many to read.
     :return: a dictionary of resource record values.
     """
-    classes = {1: 'IN', 2: 'CS', 3: 'CH', 4: 'HS'}
-    types = {1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 255: 'ANY'}
 
     records = []
     for _ in range(number):
