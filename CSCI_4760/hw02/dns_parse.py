@@ -83,7 +83,7 @@ class BytesView:
 
 
 parser = argparse.ArgumentParser(description='Parses DNS messages.')
-parser.add_argument('--file', '-f', type=argparse.FileType('rb'))
+parser.add_argument('file', type=argparse.FileType('rb'))
 args = parser.parse_args()
 
 with args.file as f:
@@ -165,7 +165,7 @@ def read_response_record(number):
 # resource records
 answers = read_response_record(counts['an'])
 authorities = read_response_record(counts['ns'])
-additional = read_response_record(counts['ar'])
+# additional = read_response_record(counts['ar'])
 
 # format output
 print(f'; <<>> {parser.prog} David Luo 811357331 <<>> {args.file.name}')
@@ -174,8 +174,7 @@ print(';; Got answer:')
 status = 'NOERROR' if rcode else 'ERROR'
 print(f';; ->>HEADER<<- opcode: {opcode}, status: {status}, id:{transaction_id}')
 flag_str = ' '.join(key for key, value in flags.items() if value == 1 and key in ('qr', 'aa', 'tc', 'rd', 'ra'))
-print(
-    f';; flags: {flag_str}; QUERY: {len(questions)}, ANSWER: {counts["an"]}, AUTHORITY: {counts["ns"]}, ADDITIONAL: {counts["ar"]}')
+print(f';; flags: {flag_str}; QUERY: {len(questions)}, ANSWER: {counts["an"]}, AUTHORITY: {counts["ns"]}, ADDITIONAL: {counts["ar"]}')
 print()
 print(';; QUESTION SECTION:')
 for q in questions:
