@@ -152,7 +152,7 @@ class Response:
 
 
 class ServerThread(threading.Thread):
-    suffix_whitelist = ['png', 'html', 'txt']
+    suffix_whitelist = ['.png', '.html', '.txt']
 
     """Runs an HTTP connection in a new thread."""
 
