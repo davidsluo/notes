@@ -1,6 +1,8 @@
 import random
 
-from .models import DNSMessage, QType, OpCode, Flag, Question, QClass
+from .models.enums import OpCode, QClass, QType, Flag
+from .models.message import DNSMessage
+from .models.question import Question
 
 
 class DNSConstructor:
