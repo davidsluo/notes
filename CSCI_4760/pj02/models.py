@@ -1,19 +1,22 @@
-from enum import IntEnum, IntFlag, Enum, Flag
+from enum import IntEnum, IntFlag
 from typing import List
 
+import itertools
 
-class OpCode(Enum):
+
+def int_to_bytes(integer):
+    """
+    Helper method to convert
+    :param integer:
+    :return:
+    """
+    return (integer).to_bytes(2, 'big')
+
+
+class OpCode(IntEnum):
     QUERY = 0
     IQUERY = 1
     STATUS = 2
-    UNUSED = tuple(range(3, 16))
-
-    @classmethod
-    def from_opcode(cls, opcode):
-        if opcode in cls.UNUSED.value:
-            return cls.UNUSED
-        else:
-            return cls.__call__(opcode)
 
 
 class QClass(IntEnum):
@@ -21,6 +24,9 @@ class QClass(IntEnum):
     CH = 3
     HS = 4
     ANY = 255
+
+    def __bytes__(self):
+        return int_to_bytes(self)
 
 
 class QType(IntEnum):
@@ -38,8 +44,11 @@ class QType(IntEnum):
     MAILB = 253
     ANY = 255
 
+    def __bytes__(self):
+        return int_to_bytes(self)
 
-class Flags(IntFlag):
+
+class Flag(IntFlag):
     QR = 1 << 15
     AA = 1 << 10
     TC = 1 << 9
@@ -55,6 +64,18 @@ class Question:
 
     def __str__(self):
         return f'<Question name={self.name}>'
+
+    def __bytes__(self):
+        ret = bytearray()
+        split = self.name.split('.')
+        for segment in split:
+            encoded = segment.encode()
+            ret.append(len(encoded))
+            ret.extend(encoded)
+        ret.extend(bytes(self.qtype))
+        ret.extend(bytes(self.qclass))
+
+        return bytes(ret)
 
 
 class ResourceRecord:
@@ -72,6 +93,20 @@ class ResourceRecord:
         self.rdlength = rdlength
         self.rdata = rdata
 
+    def __bytes__(self):
+        ret = bytearray()
+        split = self.name.split('.')
+        for segment in split:
+            encoded = segment.encode()
+            ret.append(len(encoded))  # len must be < 64
+            ret.extend(encoded)
+        ret.extend(bytes(self.qtype))
+        ret.extend(bytes(self.qclass))
+        ret.extend(int_to_bytes(self.ttl))
+        # ret.append()  # TODO: R Data, consider making this class abc, and subclassing different qtypes.
+
+        return bytes(ret)
+
     def __str__(self):
         return f'<ResourceRecord name={self.name} rdata={self.rdata}>'
 
@@ -83,9 +118,9 @@ class DNSMessage:
                  flags: List[Flag],
                  z: int,
                  rcode: int,
-                 questions: List[Question],
-                 answers: List[ResourceRecord],
-                 authorities: List[ResourceRecord],
+                 questions: List[Question] = None,
+                 answers: List[ResourceRecord] = None,
+                 authorities: List[ResourceRecord] = None,
                  additionals: List[ResourceRecord] = None):
         self.transaction_id = transaction_id
         self.opcode = opcode
@@ -93,9 +128,9 @@ class DNSMessage:
         self.z = z
         self.rcode = rcode
         self.questions = questions
-        self.answers = answers
-        self.authorities = authorities
-        self.additionals = additionals
+        self.answers = answers or []
+        self.authorities = authorities or []
+        self.additionals = additionals or []
 
     def __repr__(self):
         return f'<DNSResponse id={self.transaction_id}>'
@@ -103,4 +138,30 @@ class DNSMessage:
     def __str__(self):
         pass
 
+    def __bytes__(self):
+        ret = bytearray()
 
+        # Transaction ID
+        # First we split the 16 bit number into two bytes, so bytes() will accept it
+        ret.extend(int_to_bytes(self.transaction_id))
+
+        # Flags, Op Code, Z, R Code
+        line2 = 0
+        line2 |= self.opcode << 11
+        for flag in self.flags:
+            line2 |= flag
+        line2 |= self.z << 4
+        line2 |= self.rcode
+        print(bin(line2))
+        ret.extend(int_to_bytes(line2))
+
+        for section in (self.questions, self.answers, self.authorities, self.additionals):
+            ret.extend(int_to_bytes(len(section)))
+
+        for question in self.questions:
+            ret.extend(bytes(question))
+
+        for rr in itertools.chain(self.answers, self.authorities, self.additionals):
+            ret.extend(bytes(rr))
+
+        return bytes(ret)
