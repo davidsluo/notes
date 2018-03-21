@@ -1,6 +1,6 @@
-from CSCI_4760.pj02.models import OpCode, QType, QClass, ResourceRecord, Flags, Question, DNSMessage
+from .models import OpCode, QType, QClass, ResourceRecord, Question, DNSMessage, Flag
 
-__all__ = ['Parser']
+__all__ = ['DNSParser']
 
 
 class BytesView:
@@ -46,7 +46,7 @@ class BytesView:
         return int.from_bytes(self.read_bytes(length), byteorder='big', signed=False)
 
 
-class Parser:
+class DNSParser:
     """
     Parses DNS messages from byte strings.
     """
@@ -54,12 +54,17 @@ class Parser:
     def __init__(self, raw: bytes):
         self.view = BytesView(raw)
 
-    def parse(self) -> DNSMessage:
+    @classmethod
+    def parse(cls, raw: bytes):
+        parser = cls(raw)
+        return parser._parse()
+
+    def _parse(self) -> DNSMessage:
         transaction_id = self.view.read_int(2)
         metadata = self.view.read_int(2)
-        opcode = OpCode.from_opcode((metadata & (0b1111 << 11)) >> 11)
+        opcode = OpCode((metadata & (0b1111 << 11)) >> 11)
         rcode = metadata & 0b1111
-        flags = [flag for flag in Flags if flag & metadata != 0]
+        flags = [flag for flag in Flag if flag & metadata != 0]
         z = (metadata & (0b111 << 4)) >> 4
         question_count = self.view.read_int(2)
         answer_count = self.view.read_int(2)
@@ -180,3 +185,8 @@ class Parser:
             rdata = 'Unsupported record.'
 
         return ResourceRecord(name, qtype, qclass, ttl, rdlength, rdata)
+
+
+def parse(raw: bytes):
+    parser = DNSParser(raw)
+    return parser.parse()
