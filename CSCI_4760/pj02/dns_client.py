@@ -4,8 +4,10 @@ import socket
 # from .constructor import DNSConstructor
 # from .models import QType
 # from .parser import DNSParser
+from pprint import pprint
+
 from CSCI_4760.pj02.constructor import DNSConstructor
-from CSCI_4760.pj02.models import QType
+from CSCI_4760.pj02.models.enums import QType
 from CSCI_4760.pj02.parser import DNSParser
 
 parser = argparse.ArgumentParser()
@@ -41,4 +43,4 @@ response = DNSParser.parse(raw_resp)
 
 conn.close()
 
-print(dict(response))
+pprint(vars(response))
