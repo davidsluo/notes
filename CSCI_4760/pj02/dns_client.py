@@ -14,7 +14,7 @@ def qtype(arg):
         raise argparse.ArgumentTypeError()
 
 
-parser.add_argument('-t', metavar='TYPE', type=qtype, required=True, dest='type')
+parser.add_argument('-t', metavar='TYPE', type=qtype, dest='type', default=QType.A)
 parser.add_argument('--tcp', action='store_true')
 parser.add_argument('--port', type=int, default=53)
 parser.add_argument('DNSIP')
