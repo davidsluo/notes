@@ -1,126 +1,161 @@
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from .enums import QClass, QType
-from .util import int_to_bytes
+if TYPE_CHECKING:
+    from dns.parser import DNSParser
+from .enums import Class, Type
 
 
 class ResourceRecord(ABC):
+    __type__: Type = None
+
     def __init__(self,
                  name: str,
-                 qtype: QType,
-                 qclass: QClass,
+                 class_: Class,
                  ttl: int,
                  rdlength: int,
-                 rdata: bytes):
+                 rdata):
         self.name = name
-        self.qtype = qtype
-        self.qclass = qclass
+        self.type = self.__type__
+        self.class_ = class_
         self.ttl = ttl
         self.rdlength = rdlength
         self.rdata = rdata
 
-    @abstractmethod
-    def __bytes__(self) -> bytes:
-        ret = bytearray()
-        split = self.name.split('.')
-        for segment in split:
-            encoded = segment.encode()
-            ret.append(len(encoded))  # len must be < 64
-            ret.extend(encoded)
-        ret.extend(bytes(self.qtype))
-        ret.extend(bytes(self.qclass))
-        ret.extend(int_to_bytes(self.ttl))
-        # ret.append()  # This is done in subclasses
+    # def __bytes__(self) -> bytes:
+    #     ret = bytearray()
+    #     split = self.name.split('.')
+    #     for segment in split:
+    #         encoded = segment.encode()
+    #         ret.append(len(encoded))  # len must be < 64
+    #         ret.extend(encoded)
+    #     ret.extend(bytes(self.type))
+    #     ret.extend(bytes(self.class_))
+    #     ret.extend(int_to_bytes(self.ttl))
+    #     ret.extend(self.rdata.encode())
+    #
+    #     return ret
 
-        return ret
+    @classmethod
+    def from_parser(cls, parser: 'DNSParser'):
+        name = parser.read_name()
+        type = Type(parser.read_int(2))
+        class_ = Class(parser.read_int(2))
+        ttl = parser.read_int(4)
+        rdlength = parser.read_int(2)
+
+        py_class = next(subclass for subclass in cls.__subclasses__() if subclass.__type__ == type)
+
+        rdata = py_class.parse_rdata(parser)
+
+        return py_class(name, class_, ttl, rdlength, rdata)
+
+    @classmethod
+    @abstractmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        pass
 
     def __str__(self):
-        return f'<{self.__class__.__name__} name={self.name} qtype={self.qtype.name} rdata={self.rdata}>'
+        return f'<{self.__class__.__name__} name={self.name} qtype={self.type.name} rdata={self.rdata}>'
 
 
 class A(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.A, qclass, ttl, rdlength, rdata)
+    __type__ = Type.A
 
-    def __bytes__(self):
-        header = super(A, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return parser.read_address()
 
 
 class NS(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.NS, qclass, ttl, rdlength, rdata)
+    __type__ = Type.NS
 
-    def __bytes__(self):
-        header = super(NS, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return parser.read_name()
 
 
 class CNAME(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.CNAME, qclass, ttl, rdlength, rdata)
+    __type__ = Type.CNAME
 
-    def __bytes__(self):
-        header = super(CNAME, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return parser.read_name()
 
 
 class SOA(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.SOA, qclass, ttl, rdlength, rdata)
+    __type__ = Type.SOA
 
-    def __bytes__(self):
-        header = super(SOA, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return {
+            'mname': parser.read_name(),
+            'rname': parser.read_name(),
+            'serial': parser.read_int(4),
+            'refresh': parser.read_int(4),
+            'retry': parser.read_int(4),
+            'expire': parser.read_int(4),
+            'minimum': parser.read_int(4)
+        }
 
 
 class WKS(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.WKS, qclass, ttl, rdlength, rdata)
+    __type__ = Type.WKS
 
-    def __bytes__(self):
-        header = super(WKS, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        # TODO: match with dig
+        return {
+            'address': parser.read_address(),
+            'protocol': parser.read_int(1),
+            'bitmap': "wtf how do"  # todo: this
+        }
 
 
 class PTR(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.PTR, qclass, ttl, rdlength, rdata)
+    __type__ = Type.PTR
 
-    def __bytes__(self):
-        header = super(PTR, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return parser.read_name()
 
 
 class HINFO(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.HINFO, qclass, ttl, rdlength, rdata)
+    __type__ = Type.HINFO
 
-    def __bytes__(self):
-        header = super(HINFO, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return {
+            'cpu': parser.read_string(),
+            'os': parser.read_string()
+        }
 
 
 class MINFO(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.MINFO, qclass, ttl, rdlength, rdata)
+    __type__ = Type.MINFO
 
-    def __bytes__(self):
-        header = super(MINFO, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return {
+            'rmailbx': parser.read_name(),
+            'emailbx': parser.read_name()
+        }
 
 
 class MX(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.MX, qclass, ttl, rdlength, rdata)
+    __type__ = Type.MX
 
-    def __bytes__(self):
-        header = super(MX, self).__bytes__()
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return {
+            'preference': parser.read_int(2),
+            'exchange': parser.read_name()
+        }
 
 
 class TXT(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.TXT, qclass, ttl, rdlength, rdata)
+    @classmethod
+    def parse_rdata(cls, parser: 'DNSParser'):
+        return parser.read_string()
 
-    def __bytes__(self):
-        header = super(TXT, self).__bytes__()
-
-
-class ANY(ResourceRecord):
-    def __init__(self, name: str, qclass: QClass, ttl: int, rdlength: int, rdata: bytes):
-        super().__init__(name, QType.ANY, qclass, ttl, rdlength, rdata)
-
-    def __bytes__(self):
-        header = super(ANY, self).__bytes__()
+    __type__ = Type.TXT

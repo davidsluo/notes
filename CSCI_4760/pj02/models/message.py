@@ -48,7 +48,6 @@ class DNSMessage:
             line2 |= flag
         line2 |= self.z << 4
         line2 |= self.rcode
-        print(bin(line2))
         ret.extend(int_to_bytes(line2))
 
         for section in (self.questions, self.answers, self.authorities, self.additionals):
