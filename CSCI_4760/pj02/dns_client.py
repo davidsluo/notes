@@ -16,15 +16,17 @@ def qtype(arg):
 
 parser.add_argument('-t', metavar='TYPE', type=qtype, required=True, dest='type')
 parser.add_argument('--tcp', action='store_true')
+parser.add_argument('--port', type=int, default=53)
 parser.add_argument('DNSIP')
 parser.add_argument('HOST')
 
 args = parser.parse_args()
 
+# TODO: retry on fail to connect.
 if args.tcp:
-    client = Client(args.DNSIP, protocol='TCP')
+    client = Client(args.DNSIP, port=args.port, protocol='TCP')
 else:
-    client = Client(args.DNSIP, protocol='UDP')
+    client = Client(args.DNSIP, port=args.port, protocol='UDP')
 
 response = client.query(args.HOST, args.type)
 
