@@ -30,8 +30,6 @@ class QType(IntEnum):
     MINFO = 14
     MX = 15
     TXT = 16
-    AXFR = 252
-    MAILB = 253
     ANY = 255
 
     def __bytes__(self):
