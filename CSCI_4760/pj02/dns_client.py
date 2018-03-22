@@ -1,14 +1,10 @@
 import argparse
 import socket
-
-# from .constructor import DNSConstructor
-# from .models import QType
-# from .parser import DNSParser
 from pprint import pprint
 
-from CSCI_4760.pj02.constructor import DNSConstructor
-from CSCI_4760.pj02.models.enums import QType
-from CSCI_4760.pj02.parser import DNSParser
+from dns_constructor import DNSConstructor
+from dns_parser import DNSParser
+from models.enums import QType
 
 parser = argparse.ArgumentParser()
 
