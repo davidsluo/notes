@@ -1,7 +1,7 @@
-from .models.enums import OpCode, QType, QClass, Flag
-from .models.resource_record import ResourceRecord
-from .models.question import Question
-from .models.message import DNSMessage
+from models.enums import Flag, OpCode, QClass, QType
+from models.message import DNSMessage
+from models.question import Question
+from models.resource_record import ResourceRecord
 
 __all__ = ['DNSParser']
 
