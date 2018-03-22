@@ -1,9 +1,7 @@
 import argparse
-import socket
 from pprint import pprint
 
-from dns_constructor import DNSConstructor
-from dns_parser import DNSParser
+from dns.client import Client
 from models.enums import QType
 
 parser = argparse.ArgumentParser()
@@ -24,19 +22,10 @@ parser.add_argument('HOST')
 args = parser.parse_args()
 
 if args.tcp:
-    conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client = Client(args.DNSIP, protocol='TCP')
 else:
-    conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    client = Client(args.DNSIP, protocol='UDP')
 
-conn.connect((args.DNSIP, 53))
-
-request = DNSConstructor.construct(args.HOST, args.type)
-
-conn.send(bytes(request))
-raw_resp = conn.recv(1024)
-
-response = DNSParser.parse(raw_resp)
-
-conn.close()
+response = client.query(args.HOST, args.type)
 
 pprint(vars(response))
