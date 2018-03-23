@@ -104,16 +104,12 @@ class WKS(ResourceRecord):
 
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
-        # TODO: match with dig
         address = parser.read_address()
         protocol = parser.read_int(1)
 
         bitlen = (rdlength - 5) * 8
-        bits = int.from_bytes(parser.read_bytes(rdlength - 5), 'little')
-        bitmap = [bitlen * 8 - i - 1 for i in range(bitlen) if bits & (1 << i) != 0]
-        # for i in range((rdlength - 5) * 8):
-        #     if bits & (1 << i) != 0:
-        #         bitmap.append((rdlength - 5) * 8 - i - 1)
+        bits = int.from_bytes(parser.read_bytes(rdlength - 5), 'big')
+        bitmap = [bitlen - i - 1 for i in range(bitlen) if bits & (i << i) != 0]
 
         return {
             'address':  address,
