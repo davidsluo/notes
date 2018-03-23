@@ -1,5 +1,5 @@
 import argparse
-from pprint import pprint
+import time
 
 from dns.client import Client
 from models.enums import QType
@@ -27,6 +27,29 @@ if args.tcp:
 else:
     client = Client(args.DNSIP, port=args.port, protocol='UDP')
 
-response = client.query(args.HOST, args.type)
+response, query_time = client.query(args.HOST, args.type)
 
-pprint(vars(response))
+print(f'; <<>> {parser.prog} David Luo 811357331 <<>> @{args.DNSIP} {args.HOST}')
+print(f'; (1 server found)')  # TODO: how is this determined?
+print(';; Got answer:')
+status = 'NOERROR' if response.rcode == 0 else 'ERROR'
+print(f';; ->>HEADER<<- opcode: {response.opcode}, status: {status}, id:{response.transaction_id}')
+flag_str = ' '.join(flag.name for flag in response.flags)
+print(f';; flags: {flag_str}; QUERY: {len(response.questions)}, ANSWER: {len(response.answers)}, '
+      f'AUTHORITY: {len(response.authorities)}, ADDITIONAL: {len(response.additionals)}')
+print()
+print(';; QUESTION SECTION:')
+for q in response.questions:
+    print(f';{q.name:<35}    {q.qclass.name:<4}    {q.qtype.name:<8}')
+print()
+for name, section in {'ANSWER': response.answers, 'AUTHORITY': response.authorities}.items():
+    if len(section) > 0:
+        print(f';; {name} SECTION:')
+        for rr in section:
+            print(str(rr))
+        print()
+
+print(f';; Query time: {query_time} msec')
+print(f';; SERVER: {args.DNSIP}#{args.port}({args.DNSIP})')
+print(f';; WHEN: {time.strftime("%a %b %d %H:%M:%S %Z %Y")}')
+print(f';; MSG SIZE  rcvd: {response.size}')

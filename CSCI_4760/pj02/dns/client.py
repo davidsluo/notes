@@ -32,9 +32,9 @@ class Client:
             request = int_to_bytes(len(request)) + request
 
         # query dns server, retrying if necessary, with exponential backoff.
+        start = time.time()
         for try_count in range(self.retries):
             try:
-                start = time.time()
                 self.conn.connect((self.ip, self.port))
                 self.conn.send(request)
                 if self.protocol == 'TCP':
@@ -43,16 +43,15 @@ class Client:
                 else:
                     raw_resp = self.conn.recv(512)
                 self.conn.close()
-                end = time.time()
-                size = len(raw_resp)
                 break
             except TimeoutError:
                 self.on_timeout(try_count + 1)
                 time.sleep(2 ** try_count)
         else:
             # max retry count exceeded.
-            return None, 0, 0
+            return None, 0
+        end = time.time()
 
         response = DNSParser.parse(raw_resp)
 
-        return response, int(round(end - start) * 1000), size
+        return response, round((end - start) * 1000)
