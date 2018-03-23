@@ -50,9 +50,9 @@ class ResourceRecord(ABC):
 
         return py_class(name, class_, ttl, rdlength, rdata)
 
-    @classmethod
+    @staticmethod
     @abstractmethod
-    def parse_rdata(cls, rdlength: int, parser: 'DNSParser'):
+    def parse_rdata(rdlength: int, parser: 'DNSParser'):
         pass
 
     def __str__(self):
@@ -62,39 +62,39 @@ class ResourceRecord(ABC):
 class A(ResourceRecord):
     __type__ = Type.A
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_address()
 
 
 class NS(ResourceRecord):
     __type__ = Type.NS
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_name()
 
 
 class CNAME(ResourceRecord):
     __type__ = Type.CNAME
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_name()
 
 
 class SOA(ResourceRecord):
     __type__ = Type.SOA
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return {
-            'mname': parser.read_name(),
-            'rname': parser.read_name(),
-            'serial': parser.read_int(4),
+            'mname':   parser.read_name(),
+            'rname':   parser.read_name(),
+            'serial':  parser.read_int(4),
             'refresh': parser.read_int(4),
-            'retry': parser.read_int(4),
-            'expire': parser.read_int(4),
+            'retry':   parser.read_int(4),
+            'expire':  parser.read_int(4),
             'minimum': parser.read_int(4)
         }
 
@@ -102,48 +102,50 @@ class SOA(ResourceRecord):
 class WKS(ResourceRecord):
     __type__ = Type.WKS
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         # TODO: match with dig
         address = parser.read_address()
         protocol = parser.read_int(1)
-        bits = int.from_bytes(parser.read_bytes(rdlength - 5), 'big')
-        bitmap = []
-        for i in range((rdlength - 5) * 8, 0, -1):
-            if bits & (1 << i) != 0:
-                bitmap.append((rdlength - 5) * 8 - i - 1)
+
+        bitlen = (rdlength - 5) * 8
+        bits = int.from_bytes(parser.read_bytes(rdlength - 5), 'little')
+        bitmap = [bitlen * 8 - i - 1 for i in range(bitlen) if bits & (1 << i) != 0]
+        # for i in range((rdlength - 5) * 8):
+        #     if bits & (1 << i) != 0:
+        #         bitmap.append((rdlength - 5) * 8 - i - 1)
 
         return {
-            'address': address,
+            'address':  address,
             'protocol': protocol,
-            'bitmap': bitmap
+            'bitmap':   bitmap
         }
 
 
 class PTR(ResourceRecord):
     __type__ = Type.PTR
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_name()
 
 
 class HINFO(ResourceRecord):
     __type__ = Type.HINFO
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return {
             'cpu': parser.read_string(),
-            'os': parser.read_string()
+            'os':  parser.read_string()
         }
 
 
 class MINFO(ResourceRecord):
     __type__ = Type.MINFO
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return {
             'rmailbx': parser.read_name(),
             'emailbx': parser.read_name()
@@ -153,17 +155,17 @@ class MINFO(ResourceRecord):
 class MX(ResourceRecord):
     __type__ = Type.MX
 
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return {
             'preference': parser.read_int(2),
-            'exchange': parser.read_name()
+            'exchange':   parser.read_name()
         }
 
 
 class TXT(ResourceRecord):
-    @classmethod
-    def parse_rdata(cls, rdlength, parser: 'DNSParser'):
+    @staticmethod
+    def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_string()
 
     __type__ = Type.TXT
