@@ -1,9 +1,17 @@
 from abc import ABC, abstractmethod
+from collections import OrderedDict
 from typing import TYPE_CHECKING
+
+from .enums import Class, Type
 
 if TYPE_CHECKING:
     from dns.parser import DNSParser
-from .enums import Class, Type
+
+
+class DictRdataMixin:
+    def __str__(self):
+        rdata = ' '.join(str(value) for key, value in self.rdata.items())
+        return f'{self.name:<24}    {self.ttl:<8}    {self.class_.name:<4}    {self.type.name:<8}    {rdata}'
 
 
 class ResourceRecord(ABC):
@@ -39,11 +47,13 @@ class ResourceRecord(ABC):
     @classmethod
     def from_parser(cls, parser: 'DNSParser'):
         name = parser.read_name()
-        type = Type(parser.read_int(2))
+        try:
+            type = Type(parser.read_int(2))
+        except ValueError:
+            type = None
         class_ = Class(parser.read_int(2))
         ttl = parser.read_int(4)
         rdlength = parser.read_int(2)
-
         py_class = next(subclass for subclass in cls.__subclasses__() if subclass.__type__ == type)
 
         rdata = py_class.parse_rdata(rdlength, parser)
@@ -55,8 +65,20 @@ class ResourceRecord(ABC):
     def parse_rdata(rdlength: int, parser: 'DNSParser'):
         pass
 
+    def __repr__(self):
+        type = self.type.name if self.type else 'UNKNOWN'
+        return f'<{self.__class__.__name__} name={self.name} qtype={type} rdata={self.rdata}>'
+
     def __str__(self):
-        return f'<{self.__class__.__name__} name={self.name} qtype={self.type.name} rdata={self.rdata}>'
+        type = self.type.name if self.type else 'Unknown'
+        return f'{self.name:<24}    {self.ttl:<8}    {self.class_.name:<4}    {type:<8}    {self.rdata}'
+
+
+class Unknown(ResourceRecord):
+    @staticmethod
+    def parse_rdata(rdlength: int, parser: 'DNSParser'):
+        parser.skip(rdlength)
+        return 'UNKNOWN'
 
 
 class A(ResourceRecord):
@@ -83,20 +105,22 @@ class CNAME(ResourceRecord):
         return parser.read_name()
 
 
-class SOA(ResourceRecord):
+class SOA(DictRdataMixin, ResourceRecord):
     __type__ = Type.SOA
 
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
-        return {
-            'mname':   parser.read_name(),
-            'rname':   parser.read_name(),
-            'serial':  parser.read_int(4),
-            'refresh': parser.read_int(4),
-            'retry':   parser.read_int(4),
-            'expire':  parser.read_int(4),
-            'minimum': parser.read_int(4)
-        }
+        return OrderedDict(
+            [
+                ('mname', parser.read_name()),
+                ('rname', parser.read_name()),
+                ('serial', parser.read_int(4)),
+                ('refresh', parser.read_int(4)),
+                ('retry', parser.read_int(4)),
+                ('expire', parser.read_int(4)),
+                ('minimum', parser.read_int(4))
+            ]
+        )
 
 
 class WKS(ResourceRecord):
@@ -109,13 +133,19 @@ class WKS(ResourceRecord):
 
         bitlen = (rdlength - 5) * 8
         bits = int.from_bytes(parser.read_bytes(rdlength - 5), 'big')
-        bitmap = [bitlen - i - 1 for i in range(bitlen) if bits & (i << i) != 0]
+        bitmap = [bitlen - i - 1 for i in range(bitlen) if bits & (1 << i) != 0]
 
-        return {
-            'address':  address,
-            'protocol': protocol,
-            'bitmap':   bitmap
-        }
+        return OrderedDict(
+            [
+                ('address', address),
+                ('protocol', protocol),
+                ('bitmap', sorted(bitmap))
+            ]
+        )
+
+    def __str__(self):
+        rdata = f'{self.rdata["address"]} {self.rdata["protocol"]} {" ".join(str(i) for i in self.rdata["bitmap"])}'
+        return f'{self.name:<24}    {self.ttl:<8}    {self.class_:<4}    {self.type:<8}    {rdata}'
 
 
 class PTR(ResourceRecord):
@@ -126,42 +156,52 @@ class PTR(ResourceRecord):
         return parser.read_name()
 
 
-class HINFO(ResourceRecord):
+class HINFO(DictRdataMixin, ResourceRecord):
     __type__ = Type.HINFO
 
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
-        return {
-            'cpu': parser.read_string(),
-            'os':  parser.read_string()
-        }
+        return OrderedDict(
+            [
+                ('cpu', parser.read_string()),
+                ('os', parser.read_string())
+            ]
+        )
 
 
-class MINFO(ResourceRecord):
+class MINFO(DictRdataMixin, ResourceRecord):
     __type__ = Type.MINFO
 
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
-        return {
-            'rmailbx': parser.read_name(),
-            'emailbx': parser.read_name()
-        }
+        return OrderedDict(
+            [
+                ('rmailbx', parser.read_name()),
+                ('emailbx', parser.read_name())
+            ]
+        )
 
 
-class MX(ResourceRecord):
+class MX(DictRdataMixin, ResourceRecord):
     __type__ = Type.MX
 
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
-        return {
-            'preference': parser.read_int(2),
-            'exchange':   parser.read_name()
-        }
+        return OrderedDict(
+            [
+                ('preference', parser.read_int(2)),
+                ('exchange', parser.read_name())
+            ]
+        )
 
 
 class TXT(ResourceRecord):
+    __type__ = Type.TXT
+
     @staticmethod
     def parse_rdata(rdlength, parser: 'DNSParser'):
         return parser.read_string()
 
-    __type__ = Type.TXT
+    def __str__(self):
+        type = self.type.name if self.type else 'Unknown'
+        return f'{self.name:<24}    {self.ttl:<8}    {self.class_.name:<4}    {type:<8}    "{self.rdata}"'

@@ -1,4 +1,4 @@
-from models.enums import Flag, OpCode, Class, Type, QType, QClass
+from models.enums import Flag, OpCode, QClass, QType
 from models.message import DNSMessage
 from models.question import Question
 from models.resource_record import ResourceRecord
@@ -70,7 +70,8 @@ class DNSParser:
             questions=questions,
             answers=answers,
             authorities=authorities,
-            # additionals=additionals
+            # additionals=additionals,
+            raw=self.raw
         )
 
     def skip(self, length: int):

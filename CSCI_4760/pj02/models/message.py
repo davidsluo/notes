@@ -1,7 +1,7 @@
 import itertools
 from typing import List
 
-from .enums import OpCode, Flag
+from .enums import Flag, OpCode
 from .question import Question
 from .resource_record import ResourceRecord
 from .util import int_to_bytes
@@ -17,7 +17,9 @@ class DNSMessage:
                  questions: List[Question] = None,
                  answers: List[ResourceRecord] = None,
                  authorities: List[ResourceRecord] = None,
-                 additionals: List[ResourceRecord] = None):
+                 additionals: List[ResourceRecord] = None,
+                 *,
+                 raw=None):
         self.transaction_id = transaction_id
         self.opcode = opcode
         self.flags = flags
@@ -27,6 +29,8 @@ class DNSMessage:
         self.answers = answers or []
         self.authorities = authorities or []
         self.additionals = additionals or []
+        self.raw = raw or bytes(self)
+        self.size = len(self.raw)
 
     def __repr__(self):
         return f'<DNSResponse id={self.transaction_id}>'
