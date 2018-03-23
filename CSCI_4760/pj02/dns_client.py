@@ -11,7 +11,7 @@ def qtype(arg):
     try:
         return getattr(QType, arg)
     except:
-        raise argparse.ArgumentTypeError()
+        raise argparse.ArgumentTypeError(f'Type must be one of: {", ".join(t.name for t in QType)}')
 
 
 parser.add_argument('-t', metavar='TYPE', type=qtype, dest='type', default=QType.A)
@@ -22,7 +22,6 @@ parser.add_argument('HOST')
 
 args = parser.parse_args()
 
-# TODO: retry on fail to connect.
 if args.tcp:
     client = Client(args.DNSIP, port=args.port, protocol='TCP')
 else:
