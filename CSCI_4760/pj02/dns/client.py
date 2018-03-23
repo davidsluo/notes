@@ -44,14 +44,15 @@ class Client:
                     raw_resp = self.conn.recv(512)
                 self.conn.close()
                 end = time.time()
+                size = len(raw_resp)
                 break
             except TimeoutError:
                 self.on_timeout(try_count + 1)
                 time.sleep(2 ** try_count)
         else:
             # max retry count exceeded.
-            return None
+            return None, 0, 0
 
         response = DNSParser.parse(raw_resp)
 
-        return response, int(round(end - start) * 1000)
+        return response, int(round(end - start) * 1000), size
