@@ -1,8 +1,8 @@
-from .enums import Type, Class
+from .enums import QClass, QType
 
 
 class Question:
-    def __init__(self, name: str, qtype: Type, qclass: Class):
+    def __init__(self, name: str, qtype: QType, qclass: QClass):
         self.name = name
         self.qtype = qtype
         self.qclass = qclass
