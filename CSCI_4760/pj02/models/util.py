@@ -4,4 +4,4 @@ def int_to_bytes(integer):
     :param integer:
     :return:
     """
-    return (integer).to_bytes(2, 'big')
+    return integer.to_bytes(2, 'big')
