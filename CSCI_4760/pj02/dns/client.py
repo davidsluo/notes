@@ -36,7 +36,11 @@ class Client:
             try:
                 self.conn.connect((self.ip, self.port))
                 self.conn.send(request)
-                raw_resp = self.conn.recv(1024)
+                if self.protocol == 'TCP':
+                    message_len = int.from_bytes(self.conn.recv(2), 'big')
+                    raw_resp = self.conn.recv(message_len)
+                else:
+                    raw_resp = self.conn.recv(512)
                 self.conn.close()
                 break
             except TimeoutError:
@@ -46,9 +50,6 @@ class Client:
             # max retry count exceeded.
             return None
 
-        # parse response
-        if self.protocol == 'TCP':
-            raw_resp = raw_resp[2:]
         response = DNSParser.parse(raw_resp)
 
         return response
