@@ -43,8 +43,10 @@ class Client:
                 else:
                     raw_resp = self.conn.recv(512)
                 self.conn.close()
+                if raw_resp == b'':
+                    raise ValueError
                 break
-            except TimeoutError:
+            except (TimeoutError, ConnectionError, ValueError):
                 self.on_timeout(try_count + 1)
                 time.sleep(2 ** try_count)
         else:
