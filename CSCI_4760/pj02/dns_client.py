@@ -2,7 +2,7 @@ import argparse
 import time
 
 from dns.client import Client
-from models.enums import QType
+from models.enums import Flag, QType
 
 parser = argparse.ArgumentParser()
 
@@ -40,6 +40,8 @@ if response is not None:
     flag_str = ' '.join(flag.name for flag in response.flags)
     print(f';; flags: {flag_str}; QUERY: {len(response.questions)}, ANSWER: {len(response.answers)}, '
           f'AUTHORITY: {len(response.authorities)}, ADDITIONAL: {len(response.additionals)}')
+    if Flag.RD in response.flags and Flag.RA not in response.flags:
+        print(';; WARNING: recursion requested but not available')
     print()
     print(';; QUESTION SECTION:')
     for q in response.questions:
