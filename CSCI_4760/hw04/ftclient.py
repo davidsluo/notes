@@ -37,6 +37,7 @@ class ReceiverClientThread(threading.Thread):
         file = Path(filename)
         if file.is_file():
             self.conn.send(b'\xFF')
+            self.conn.close()
             log.critical(f'File {filename} already exists.')
             log.critical('Exiting...')
             return
@@ -47,7 +48,6 @@ class ReceiverClientThread(threading.Thread):
                 recv_size = min(self.CHUNK_SIZE, filesize - i)
                 chunk = self.conn.recv(recv_size)
                 f.write(chunk)
-
         self.conn.close()
 
 
@@ -87,12 +87,14 @@ class ReceiverClient(Client):
                 thread.start()
 
         except KeyboardInterrupt:
-            pass
+            log.info('Received keyboard interrupt. Waiting for connections to finish...')
+            for thread in threading.enumerate():
+                if thread != threading.current_thread():
+                    thread.join()
         finally:
-            log.info('Disconnecting...')
             self.server_conn.send(b'disconnect')
             self.server_conn.close()
-        log.info('Disconnecting...')
+            log.info('Exiting...')
 
 
 class SenderClient(Client):
@@ -137,10 +139,12 @@ class SenderClient(Client):
             with file.open('rb') as f:
                 self.client_conn.socket.sendfile(f)
             log.info('Disconnecting...')
-            self.client_conn.close()
 
         except KeyboardInterrupt:
-            pass
+            log.info('Received keyboard interrupt. Exiting...')
+        finally:
+            self.server_conn.close()
+            self.client_conn.close()
 
 
 if __name__ == '__main__':

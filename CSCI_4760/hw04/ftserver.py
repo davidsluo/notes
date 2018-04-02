@@ -99,10 +99,10 @@ class Server:
                 thread.start()
         except KeyboardInterrupt:
             log.info('Received keyboard interrupt. Waiting for connections to finish...')
-        finally:
             for thread in threading.enumerate():
                 if thread != threading.current_thread():
                     thread.join()
+        finally:
             self.conn.close()
             log.info('Exiting...')
 
