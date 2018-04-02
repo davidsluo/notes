@@ -22,7 +22,6 @@ class ServerThread(threading.Thread):
     def run(self):
         log.debug(f'Accepted connection from {self.address.host}:{self.address.port}.')
         mode = self.conn.recv(1)
-
         # client is receiving
         if mode == b'\x00':
             # get receiving address
@@ -46,12 +45,12 @@ class ServerThread(threading.Thread):
                 try:
                     disconnect = self.conn.recv(10)
                     if disconnect == b'disconnect':
-                        self.server.receivers.pop(id)
                         log.debug(f'{self.address.host}:{self.address.port} disconnected.')
                         break
                 except ConnectionError as er:
-                    self.server.receivers.pop(id)
                     log.debug(f'{self.address.host}:{self.address.port} disconnected with error.')
+                finally:
+                    self.server.receivers.pop(id)
 
         elif mode == b'\xFF':  # client is sending
             log.debug(f'{self.address.host}:{self.address.port} is sending.')
