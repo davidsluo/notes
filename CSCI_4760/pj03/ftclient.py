@@ -63,8 +63,7 @@ class ReceiverClient(Client):
         if self.client_address.host == '0.0.0.0':
             self.client_address = Address(socket.gethostname(), self.client_address.port)
 
-    def receive(self):
-        conn = None
+    def receive(self, size=4096):
         try:
             self.server_conn.connect(self.server_address)
 
@@ -98,7 +97,7 @@ class ReceiverClient(Client):
 
 
 class SenderClient(Client):
-    def send(self, id: int, filename: str):
+    def send(self, id: int, filename: str, *, connections: int = 1, size: int = 4096):
         try:
             file = Path(filename)
             if not file.is_file():
@@ -148,17 +147,36 @@ class SenderClient(Client):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('host', type=str)
-    parser.add_argument('port', type=int)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--receive', action='store_true')
-    group.add_argument('--send', metavar='ID filename', nargs=2)
-    args = parser.parse_args()
+
+    def address_type(arg: str):
+        try:
+            host, port = arg.split(maxsplit=1)
+            port = int(port)
+            return Address(host, port)
+        except:
+            raise argparse.ArgumentError('Improperly formatted address. Addresses must be in the format <host>:<port>')
+
+
+    parse = argparse.ArgumentParser()
+    parse.add_argument('--server', metavar='HOST:PORT', type=address_type, required=True,
+                       help='specifies the host and port of the tracker server.')
+    group = parse.add_mutually_exclusive_group(required=True)
+    group.add_argument('--receive', action='store_true',
+                       help='indicates that the client is in "receive" mode.')
+    group.add_argument('--send', metavar='ID filename', nargs=2,
+                       help='indicates that the client is in "send" mode.')
+    parse.add_argument('-c', '--cons', metavar='CNUM', type=int, default=1,
+                       help='specifies the number of parallel, concurrent connections to use when sending (default 1).')
+    parse.add_argument('-s', '--size', metavar='SIZE', type=int, default=4096,
+                       help="specifies the size of the buffer size when receiving (default 4096).")
+    parse.add_argument('-p', '--port', metavar='PORT', default=33333,  # TODO
+                       help='specifies the port that the client will use for receiving (default to <TODO>).')
+    args = parse.parse_args()
 
     if args.receive:
-        client = ReceiverClient(Address(args.host, args.port))
-        client.receive()
+        client = ReceiverClient(args.address)
+        client.receive(size=args.size)
     else:
-        client = SenderClient(Address(args.host, args.port))
-        client.send(int(args.send[0]), args.send[1])
+        client = SenderClient(args.address)
+        client.send(int(args.send[0]), args.send[1],
+                    connections=args.cons, size=args.size)
