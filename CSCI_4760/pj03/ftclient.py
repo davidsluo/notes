@@ -61,7 +61,7 @@ class ReceiverClient(Client):
         # address to accept connections from other clients
         self.client_address = Address(*self.client_conn.socket.getsockname())
         if self.client_address.host == '0.0.0.0':
-            self.client_address = Address(socket.gethostname(), self.client_address.port)
+            self.client_address.host = socket.gethostname()
 
     def receive(self, size=4096):
         try:
