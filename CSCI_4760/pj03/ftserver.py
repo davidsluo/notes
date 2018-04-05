@@ -17,10 +17,10 @@ class ServerThread(threading.Thread):
         self.conn = conn
         self.address = address
         self.server = server
-        self.name = f'{address.host}:{address.port}'
+        self.name = str(self.address)
 
     def run(self):
-        log.debug(f'Accepted connection from {self.address.host}:{self.address.port}.')
+        log.debug(f'Accepted connection from {self.address}.')
         mode = self.conn.recv(1)
         # client is receiving
         if mode == b'\x00':
@@ -28,8 +28,7 @@ class ServerThread(threading.Thread):
             host = self.conn.recv_string(1)
             port = self.conn.recv_int(2)
             receiving_address = Address(host, port)
-            log.debug(f'{self.address.host}:{self.address.port} is receiving at'
-                      f' {receiving_address.host}:{receiving_address.port}.')
+            log.debug(f'{self.address} is receiving at {receiving_address}.')
 
             # Generate and send ID
             id = random.randint(0, 0xFFFF)
@@ -38,39 +37,38 @@ class ServerThread(threading.Thread):
             self.conn.send_int(id, 2)
 
             self.server.receivers[id] = receiving_address
-            log.debug(f'{self.address.host}:{self.address.port} assigned ID {id}.')
+            log.debug(f'{self.address} assigned ID {id}.')
 
             # keep connection alive until receiver requests disconnect.
             while True:
                 try:
                     disconnect = self.conn.recv(10)
                     if disconnect == b'disconnect':
-                        log.debug(f'{self.address.host}:{self.address.port} disconnected.')
+                        log.debug(f'{self.address} disconnected.')
                         break
                 except ConnectionError as er:
-                    log.debug(f'{self.address.host}:{self.address.port} disconnected with error.')
+                    log.debug(f'{self.address} disconnected with error.')
                 finally:
                     self.server.receivers.pop(id)
 
         elif mode == b'\xFF':  # client is sending
-            log.debug(f'{self.address.host}:{self.address.port} is sending.')
+            log.debug(f'{self.address} is sending.')
 
             # Get ID
             id = self.conn.recv_int(2)
-            log.debug(f'{self.address.host}:{self.address.port} provided ID {id}.')
+            log.debug(f'{self.address} provided ID {id}.')
 
             try:
                 # Send receiving address
                 receiving_address = self.server.receivers[id]
                 self.conn.send_string(receiving_address.host, 1)
                 self.conn.send_int(receiving_address.port, 2)
-                log.debug(f'{self.address.host}:{self.address.port} directed to'
-                          f' {receiving_address.host}:{receiving_address.port}.')
+                log.debug(f'{self.address} directed to {receiving_address}.')
             except KeyError:
                 # No client receiving on provided ID. Send error and close connection.
                 self.conn.send_string('', 1)
                 self.conn.send_int(0, 2)
-                log.debug(f'{self.address.host}:{self.address.port} provided invalid ID {id}.')
+                log.debug(f'{self.address} provided invalid ID {id}.')
 
         # disconnect
         self.conn.close()

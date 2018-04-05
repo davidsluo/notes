@@ -33,7 +33,7 @@ class ReceiverClientThread(threading.Thread):
         filename = self.conn.recv_string(2)
         filesize = self.conn.recv_int(32)
 
-        log.info(f'Receiving {filename}, size {filesize} from {self.remote_addr.host}:{self.remote_addr.port}')
+        log.info(f'Receiving {filename}, size {filesize} from {self.remote_addr}')
         file = Path(filename)
         if file.is_file():
             self.conn.send(b'\xFF')
@@ -73,7 +73,7 @@ class ReceiverClient(Client):
 
             # send our receiving address in the form of <length of hostname><hostname><port>
             # hostname max length=255
-            log.debug(f'Sending receiving address {self.client_address.host}:{self.client_address.port}.')
+            log.debug(f'Sending receiving address {self.client_address}.')
             self.server_conn.send_string(self.client_address.host, len_num_bytes=1)
             self.server_conn.send_int(self.client_address.port, length=2)
 
