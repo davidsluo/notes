@@ -1,3 +1,6 @@
+# David Luo
+# 811357331
+# Adds two arrays such that C[i] = A[i] + B[i] for i = 0 upto 10
     .data
 listA:	.float 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.10
 listB:	.float 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 0.10
