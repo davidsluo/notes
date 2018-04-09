@@ -2,12 +2,24 @@ import argparse
 import logging
 import socket
 import threading
+import time
 from pathlib import Path
 
 from utils import Address, SocketWrapper
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('ftclient')
+
+
+# https://stackoverflow.com/a/1094933
+def human_readable(num, suffix='B'):
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            # return "%3.1f%s%s" % (num, unit, suffix)
+            return f'{num:3.1f} {unit}{suffix}'
+        num /= 1024.0
+    # return "%.1f%s%s" % (num, 'Yi', suffix)
+    return f'{num:.1f} Yi{suffix}'
 
 
 class Client:
@@ -33,7 +45,7 @@ class ReceiverClientThread(threading.Thread):
         filename = self.conn.recv_string(2)
         filesize = self.conn.recv_int(32)
 
-        log.info(f'Receiving {filename}, size {filesize} from {self.remote_addr}')
+        log.info(f'Receiving {filename}, size {filesize} bytes from {self.remote_addr}')
         file = Path(filename)
         if file.is_file():
             self.conn.send(b'\xFF')
@@ -43,6 +55,7 @@ class ReceiverClientThread(threading.Thread):
             return
         self.conn.send(b'\x00')
 
+        start = time.time()
         bytes_left = filesize
         with open(filename, 'wb') as f:
             while bytes_left > 0:
@@ -50,6 +63,12 @@ class ReceiverClientThread(threading.Thread):
                 chunk = self.conn.recv(recv_size)
                 f.write(chunk)
                 bytes_left -= len(chunk)
+        self.conn.send(b'\x0F')  # send done receiving message
+        end = time.time()
+
+        log.info(f'Received {human_readable(filesize)} in {end-start} seconds '
+                 f'({human_readable(filesize/(end-start))}/second).')
+
         self.conn.close()
 
 
@@ -126,7 +145,7 @@ class SenderClient(Client):
                 return
 
             self.client_conn.connect(receiver_address)
-            log.info(f'Sending file metadata - filename: {file.name}, size: {filesize}...')
+            log.info(f'Sending file metadata - filename: {file.name}, size: {filesize} bytes...')
             self.client_conn.send_string(file.name, 2)
             self.client_conn.send_int(filesize, 32)
 
@@ -136,9 +155,16 @@ class SenderClient(Client):
                 log.critical('Exiting...')
                 return
 
-            log.info('Sending file...')
+            start = time.time()
             with file.open('rb') as f:
                 self.client_conn.socket.sendfile(f)
+            done = self.client_conn.recv(1)
+            assert done == b'\x0F'
+            end = time.time()
+
+            log.info(f'Sent {human_readable(filesize)} in {end-start} seconds '
+                     f'({human_readable(filesize/(end-start))}/second).')
+
             log.info('Disconnecting...')
 
         except KeyboardInterrupt:
