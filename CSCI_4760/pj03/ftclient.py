@@ -1,7 +1,10 @@
 import argparse
+import gzip
 import logging
 import socket
 import threading
+import time
+import zlib
 from pathlib import Path
 
 from utils import Address, SocketWrapper
@@ -116,8 +119,8 @@ class SenderClient(Client):
             host = self.server_conn.recv_string(1)
             port = self.server_conn.recv_int(2)
             self.server_conn.close()
-            log.info(f'Receiving address for {id} at {host}:{port}.')
             receiver_address = Address(host, port)
+            log.info(f'Receiving address for {id} at {receiver_address}.')
             if receiver_address == Address('', 0):
                 log.critical('ID not found.')
                 log.critical('Exiting...')
@@ -150,7 +153,7 @@ if __name__ == '__main__':
 
     def address_type(arg: str):
         try:
-            host, port = arg.split(maxsplit=1)
+            host, port = arg.split(':', maxsplit=1)
             port = int(port)
             return Address(host, port)
         except:
@@ -174,9 +177,9 @@ if __name__ == '__main__':
     args = parse.parse_args()
 
     if args.receive:
-        client = ReceiverClient(args.address)
+        client = ReceiverClient(args.server)
         client.receive(size=args.size)
     else:
-        client = SenderClient(args.address)
+        client = SenderClient(args.server)
         client.send(int(args.send[0]), args.send[1],
                     connections=args.cons, size=args.size)
