@@ -1,10 +1,7 @@
 import argparse
-import gzip
 import logging
 import socket
 import threading
-import time
-import zlib
 from pathlib import Path
 
 from utils import Address, SocketWrapper
@@ -46,11 +43,13 @@ class ReceiverClientThread(threading.Thread):
             return
         self.conn.send(b'\x00')
 
+        bytes_left = filesize
         with open(filename, 'wb') as f:
-            for i in range(0, filesize, self.CHUNK_SIZE):
-                recv_size = min(self.CHUNK_SIZE, filesize - i)
+            while bytes_left > 0:
+                recv_size = min(self.CHUNK_SIZE, bytes_left)
                 chunk = self.conn.recv(recv_size)
                 f.write(chunk)
+                bytes_left -= len(chunk)
         self.conn.close()
 
 
