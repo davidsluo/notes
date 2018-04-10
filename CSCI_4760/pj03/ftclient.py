@@ -3,6 +3,7 @@ import logging
 import socket
 import threading
 import time
+import zlib
 from pathlib import Path
 
 from utils import Address, SocketWrapper
@@ -48,6 +49,8 @@ class ReceiverClientThread(threading.Thread):
         log.info(f'Receiving {filename}, size {filesize} bytes from {self.remote_addr}')
         file = Path(filename)
         if file.is_file():
+            file.unlink()
+        if file.is_file():
             self.conn.send(b'\xFF')
             self.conn.close()
             log.critical(f'File {filename} already exists.')
@@ -56,14 +59,22 @@ class ReceiverClientThread(threading.Thread):
         self.conn.send(b'\x00')
 
         start = time.time()
+
+        decompressor = zlib.decompressobj()
+
         bytes_left = filesize
-        with open(filename, 'wb') as f:
+        with file.open('wb') as f:
             while bytes_left > 0:
                 recv_size = min(self.CHUNK_SIZE, bytes_left)
                 chunk = self.conn.recv(recv_size)
-                f.write(chunk)
-                bytes_left -= len(chunk)
+                decompressed = decompressor.decompress(chunk)
+                f.write(decompressed)
+                bytes_left -= len(decompressed)
+            rest = decompressor.flush()
+            f.write(rest)
+
         self.conn.send(b'\x0F')  # send done receiving message
+
         end = time.time()
 
         log.info(f'Received {human_readable(filesize)} in {end-start} seconds '
@@ -122,7 +133,7 @@ class SenderClient(Client):
         try:
             file = Path(filename)
             if not file.is_file():
-                log.critical('File {filename} does not exist.')
+                log.critical(f'File {filename} does not exist.')
                 log.critical('Exiting...')
                 return
             filesize = file.stat().st_size
@@ -156,10 +167,25 @@ class SenderClient(Client):
                 return
 
             start = time.time()
+
+            compressor = zlib.compressobj()
+
+            bytes_left = filesize
             with file.open('rb') as f:
-                self.client_conn.socket.sendfile(f)
+                while bytes_left > 0:
+                    send_size = min(size, bytes_left)
+                    chunk = f.read(send_size)
+                    compressed = compressor.compress(chunk)
+                    sent_left = len(compressed)
+                    while sent_left > 0:
+                        sent_left -= self.client_conn.send(compressed)
+                    bytes_left -= len(chunk)
+                rest = compressor.flush()
+                self.client_conn.send(rest)
+
             done = self.client_conn.recv(1)
             assert done == b'\x0F'
+
             end = time.time()
 
             log.info(f'Sent {human_readable(filesize)} in {end-start} seconds '
