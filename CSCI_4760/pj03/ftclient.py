@@ -1,4 +1,5 @@
 import argparse
+import itertools
 import logging
 import socket
 import threading
@@ -22,6 +23,37 @@ def human_readable(num, suffix='B'):
     return f'{num:.1f} Yi{suffix}'
 
 
+# http://www.geekviewpoint.com/python/bitwise/msb
+def base_two_round(num):
+    i = 0
+    while num > 1:
+        num >>= 1
+        i += 1
+    return 1 << i
+
+
+def divide_into_sections(size, divisions):
+    if divisions == 0:
+        raise ZeroDivisionError
+    elif divisions < 0:
+        raise ValueError('Number of divisions cannot be less than zero.')
+
+    section_size = base_two_round(size // divisions)
+    sections = [section_size] * divisions
+    bytes_left = size - sum(sections)
+    i = 0
+    while i < len(sections) and bytes_left > section_size:
+        sections[i] += section_size
+        bytes_left -= section_size
+        i += 1
+    sections[-1] += bytes_left
+
+    indicies = [0] + list(itertools.accumulate(sections))
+    start_end = ((start, end) for start, end in zip(indicies[:-1], indicies[1:]))
+    offset_length = [(start, end - start) for start, end in start_end]
+    return offset_length
+
+
 class Client:
     def __init__(self, server_address: Address):
         self.server_address = server_address
@@ -30,46 +62,6 @@ class Client:
         self.server_conn = SocketWrapper()
         # socket to interact with other clients
         self.client_conn = SocketWrapper()
-
-
-class ReceiverClientThread(threading.Thread):
-    CHUNK_SIZE = 4096
-
-    def __init__(self, conn, remote_addr):
-        super().__init__()
-        self.conn: SocketWrapper = conn
-        self.remote_addr: Address = remote_addr
-
-    def run(self):
-        # supports up to 2^32 bytes, i.e. 4 GB
-        filename = self.conn.recv_string(2)
-        filesize = self.conn.recv_int(32)
-
-        log.info(f'Receiving {filename}, size {filesize} bytes from {self.remote_addr}')
-        file = Path(filename)
-        if file.is_file():
-            self.conn.send(b'\xFF')
-            self.conn.close()
-            log.critical(f'File {filename} already exists.')
-            log.critical('Exiting...')
-            return
-        self.conn.send(b'\x00')
-
-        start = time.time()
-        bytes_left = filesize
-        with open(filename, 'wb') as f:
-            while bytes_left > 0:
-                recv_size = min(self.CHUNK_SIZE, bytes_left)
-                chunk = self.conn.recv(recv_size)
-                f.write(chunk)
-                bytes_left -= len(chunk)
-        self.conn.send(b'\x0F')  # send done receiving message
-        end = time.time()
-
-        log.info(f'Received {human_readable(filesize)} in {end-start} seconds '
-                 f'({human_readable(filesize/(end-start))}/second).')
-
-        self.conn.close()
 
 
 class ReceiverClient(Client):
@@ -115,6 +107,46 @@ class ReceiverClient(Client):
             self.server_conn.send(b'disconnect')
             self.server_conn.close()
             log.info('Exiting...')
+
+
+class ReceiverClientThread(threading.Thread):
+    CHUNK_SIZE = 4096
+
+    def __init__(self, conn, remote_addr):
+        super().__init__()
+        self.conn: SocketWrapper = conn
+        self.remote_addr: Address = remote_addr
+
+    def run(self):
+        # supports up to 2^32 bytes, i.e. 4 GB
+        filename = self.conn.recv_string(2)
+        filesize = self.conn.recv_int(32)
+
+        log.info(f'Receiving {filename}, size {filesize} bytes from {self.remote_addr}')
+        file = Path(filename)
+        if file.is_file():
+            self.conn.send(b'\xFF')
+            self.conn.close()
+            log.critical(f'File {filename} already exists.')
+            log.critical('Exiting...')
+            return
+        self.conn.send(b'\x00')
+
+        start = time.time()
+        bytes_left = filesize
+        with open(filename, 'wb') as f:
+            while bytes_left > 0:
+                recv_size = min(self.CHUNK_SIZE, bytes_left)
+                chunk = self.conn.recv(recv_size)
+                f.write(chunk)
+                bytes_left -= len(chunk)
+        self.conn.send(b'\x0F')  # send done receiving message
+        end = time.time()
+
+        log.info(f'Received {human_readable(filesize)} in {end-start} seconds '
+                 f'({human_readable(filesize/(end-start))}/second).')
+
+        self.conn.close()
 
 
 class SenderClient(Client):
@@ -172,6 +204,18 @@ class SenderClient(Client):
         finally:
             self.server_conn.close()
             self.client_conn.close()
+
+
+class SenderClientThread(threading.Thread):
+    def __init__(self, remote_addr, offset, length):
+        super(SenderClientThread, self).__init__()
+        self.conn: SocketWrapper = SocketWrapper()
+        self.remote_addr: Address = remote_addr
+        self.offset = offset
+        self.length = length
+
+    def run(self):
+        pass
 
 
 if __name__ == '__main__':
