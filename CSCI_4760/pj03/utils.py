@@ -10,8 +10,11 @@ class Address:
         return f'{self.host}:{self.port}'
 
 
-
 class SocketWrapper:
+    """
+    Wrapper around socket methods for convenience and error checking.
+    """
+
     def __init__(self, sock: socket.socket = None):
         self.socket = sock or socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -34,7 +37,9 @@ class SocketWrapper:
         :param bytes: Bytes to send.
         :return: Number of bytes sent.
         """
-        return self.socket.send(bytes)
+        num_sent = self.socket.send(bytes)
+        assert num_sent == len(bytes)  # todo: is a good way to verify?
+        return num_sent
 
     def recv(self, buffersize) -> bytes:
         """
