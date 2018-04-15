@@ -85,7 +85,7 @@ class Server:
 
         self.receivers: Dict[int, Address] = {}
 
-        log.info(f'Server initialized on {address[0]}:{address[1]}.')
+        log.info(f'Server initialized on {address}.')
 
     def serve(self):
         log.info('Serving...')
@@ -106,9 +106,8 @@ class Server:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('host', type=str)
     parser.add_argument('port', type=int)
     args = parser.parse_args()
 
-    server = Server((args.host, args.port))
+    server = Server(('', args.port))
     server.serve()
