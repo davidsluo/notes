@@ -1,6 +1,7 @@
 import argparse
 import heapq
 import math
+from pprint import pprint
 from typing import TextIO, List
 
 import networkx
@@ -90,11 +91,17 @@ if __name__ == '__main__':
     tree = prims(graph)
 
     pyplot.figure(dpi=300)
-    networkx.draw_shell(graph, with_labels=True,
-                        node_color='red', font_color='black', font_weight='bold', font_family='Iosevka')
-    networkx.draw_networkx_edges(graph, networkx.shell_layout(graph), edgelist=tree, edge_color='green')
-    networkx.draw_networkx_edge_labels(graph, networkx.shell_layout(graph), font_family='Iosevka', font_weight='bold')
+    layout = networkx.shell_layout(graph)
+    networkx.draw(graph, pos=layout, with_labels=True,
+                  node_color='red', font_color='black', font_weight='bold', font_family='Iosevka')
+    networkx.draw_networkx_edges(graph, layout, edgelist=tree, edge_color='orange')
+    networkx.draw_networkx_edge_labels(graph, layout, font_family='Iosevka', font_weight='bold')
+
+    pprint(tree)
+    total_weight = sum(graph[i][j]['weight'] for i, j in tree)
+    print(total_weight)
+
+    pyplot.text(-0.8, 1, f'MST Weight: {total_weight}')
+
     pyplot.show()
 
-    total_weight = sum(attrs['weight'] for edge, attrs in graph.edges.items() if edge in tree)
-    print(total_weight)
