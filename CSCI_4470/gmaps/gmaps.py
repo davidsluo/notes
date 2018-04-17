@@ -1,7 +1,7 @@
 import argparse
-import heapq
 import math
-from typing import List, TextIO
+import random
+from typing import TextIO, Tuple
 
 import networkx
 from matplotlib import pyplot
@@ -31,27 +31,33 @@ class Node:
         return hash(self.label)
 
 
-def prims(g: networkx.Graph):
-    start = list(g.nodes.keys())[0]
-    start.distance = 0
+def dijkstra(g: networkx.Graph, source: Node):
+    q = set(g.nodes)
+    source.distance = 0
 
-    heap: List[Node] = []
-    for node in g.nodes.keys():
-        heapq.heappush(heap, node)
+    while q:
+        u = min(q, key=lambda x: x.distance)
+        q.remove(u)
 
-    while len(heap) > 0:
-        current: Node = heapq.heappop(heap)
-        for neighbor in g.neighbors(current):
-            edge_weight = g[current][neighbor]['weight']
-            if neighbor in heap and edge_weight < neighbor.distance:
-                neighbor.predecessor = current
-                neighbor.distance = edge_weight
+        for v in g.neighbors(u):
+            try:
+                alt = u.distance + g[u][v]['weight']
+            except:
+                alt = u.distance
+            if alt < v.distance:
+                v.distance = alt
+                v.predecessor = u
 
-    tree = [(node, node.predecessor) for node in g.nodes.keys() if node.predecessor is not None]
-    return tree
+    return [(node, node.predecessor) for node in g.nodes.keys() if node.predecessor is not None]
 
 
-if __name__ == '__main__':
+def get_node_labeled(label, graph: networkx.Graph):
+    for node in graph.nodes:
+        if node.label == label:
+            return node
+
+
+def graph_from_file():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_file', type=argparse.FileType(mode='r'))
     args = parser.parse_args()
@@ -87,18 +93,57 @@ if __name__ == '__main__':
                 v = next(filter(lambda x: x.label == node2, graph.nodes.keys()))
                 graph.add_edge(u, v, weight=int(weight))
 
-    tree = prims(graph)
+    return graph
 
-    pyplot.figure(dpi=300)
-    layout = networkx.shell_layout(graph)
+
+def randomized_graph(num_nodes, edge_density, weight_range: Tuple[int, int]):
+    graph = networkx.Graph()
+    graph.add_nodes_from((Node(i) for i in range(num_nodes)))
+    nodes = list(graph.nodes)
+
+    num_edges = round((num_nodes + 1) * num_nodes / 2 * edge_density)
+    i = 0
+    while i < num_edges:
+        u, v = random.choices(nodes, k=2)
+        if not graph.has_edge(u, v):
+            graph.add_edge(u, v, weight=random.randint(*weight_range))
+            i += 1
+    return graph
+
+
+def random_weight_change(graph: networkx.Graph):
+    edges = list(graph.edges)
+    u, v = random.choice(edges)
+    graph[u][v]['weight'] = random.randint(1, 100)
+    return u, v
+
+
+def draw_frame(graph: networkx.Graph, layout, start):
+    path = dijkstra(graph, start)
+    graph.graph['path'] = path
+    edge = random_weight_change(graph)
+
     networkx.draw(graph, pos=layout, with_labels=True,
                   node_color='red', font_color='black', font_weight='bold', font_family='Iosevka')
-    networkx.draw_networkx_edges(graph, layout, edgelist=tree, edge_color='orange')
-    networkx.draw_networkx_edge_labels(graph, layout, font_family='Iosevka', font_weight='bold')
+    networkx.draw_networkx_nodes(graph, layout, nodelist=[start], node_color='orange')
+    networkx.draw_networkx_edges(graph, layout, edgelist=path, edge_color='red')
+    labels = {key: value['weight'] for key, value in graph.edges.items()}
+    networkx.draw_networkx_edge_labels(graph, layout, edge_labels=labels, font_family='Iosevka', font_weight='bold')
+    networkx.draw_networkx_edge_labels(graph, layout, edge_labels={edge: graph[edge[0]][edge[1]]['weight']},
+                                       font_color='red', font_weight='bold')
 
-    total_weight = sum(graph[i][j]['weight'] for i, j in tree)
+    # pyplot.text(-0.9, 1, f'MST Weight: {tree_weight}')
+    # pyplot.text(-0.9, 0.9, f'Path Weight {path_weight}')
 
-    pyplot.text(-0.9, 1, f'MST Weight: {total_weight}')
 
-    pyplot.show()
+if __name__ == '__main__':
+    # graph: networkx.Graph = graph_from_file()
+    graph: networkx.Graph = randomized_graph(5, 1, (1, 100))
+    start = random.choice(list(graph.nodes))
+    layout = networkx.shell_layout(graph)
 
+    for i in range(5):
+        figure = pyplot.figure(dpi=300, figsize=(5, 5))
+        draw_frame(graph, layout, start)
+        random_weight_change(graph)
+        figure.savefig(f'{i}.png')
