@@ -24,7 +24,7 @@ inner_for:
 	addi $t7, $a2, 0 # arr[j]
 	
 	addi $a0, $t0, 0
-	subi $a1, $t5, 1
+	addi $a1, $t5, -1
 	jal get
 	addi $t8, $a2, 0 # arr[j-1]
 	
@@ -33,7 +33,7 @@ inner_for:
 	addi $t4, $t8, 0
 	
 	addi $a0, $t0, 0
-	subi $a1, $t5, 1
+	addi $a1, $t5, -1
 	addi $a2, $t7, 0
 	jal set
 	
