@@ -135,7 +135,7 @@ class ReceiverClientThread(threading.Thread):
 
         start = time.time()
         bytes_left = length
-        with file.open('wb') as f:
+        with file.open('rb+') as f:
             f.seek(offset)
             while bytes_left > 0:
                 recv_size = min(self.chunk_size, bytes_left)
