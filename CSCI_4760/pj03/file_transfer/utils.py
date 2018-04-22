@@ -1,4 +1,7 @@
+import argparse
+import itertools
 import socket
+from enum import Enum
 
 
 class Address:
@@ -91,3 +94,65 @@ class SocketWrapper:
         str_len = self.recv_int(len_num_bytes)
         encoded = self.recv(str_len)
         return encoded.decode()
+
+
+# https://stackoverflow.com/a/1094933
+def human_readable(num, suffix='B'):
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            # return "%3.1f%s%s" % (num, unit, suffix)
+            return f'{num:3.1f} {unit}{suffix}'
+        num /= 1024.0
+    # return "%.1f%s%s" % (num, 'Yi', suffix)
+    return f'{num:.1f} Yi{suffix}'
+
+
+# http://www.geekviewpoint.com/python/bitwise/msb
+def base_two_round(num):
+    i = 0
+    while num > 1:
+        num >>= 1
+        i += 1
+    return 1 << i
+
+
+def divide_into_sections(size, divisions):
+    if divisions == 0:
+        raise ZeroDivisionError
+    elif divisions < 0:
+        raise ValueError('Number of divisions cannot be less than zero.')
+
+    section_size = base_two_round(size // divisions)
+    sections = [section_size] * divisions
+    bytes_left = size - sum(sections)
+    i = 0
+    while i < len(sections) and bytes_left > section_size:
+        sections[i] += section_size
+        bytes_left -= section_size
+        i += 1
+    sections[-1] += bytes_left
+
+    indicies = [0] + list(itertools.accumulate(sections))
+    start_end = ((start, end) for start, end in zip(indicies[:-1], indicies[1:]))
+    offset_length = [(start, end - start) for start, end in start_end]
+    return offset_length
+
+
+def address_type(arg: str):
+    try:
+        host, port = arg.split(':', maxsplit=1)
+        port = int(port)
+        return Address(host, port)
+    except:
+        raise argparse.ArgumentError('Improperly formatted address. Addresses must be in the format <host>:<port>')
+
+
+class Consts(bytes, Enum):
+    IS_SENDING = b'\x04'
+    IS_RECEIVING = b'\x05'
+
+    RECEIVING_FILE = b'\x00'
+    RECEIVING_META = b'\x01'
+    FILE_EXISTS = b'\x02'
+    FILE_NOT_EXISTS = b'\x03'
+    FILE_RECEIVED = b'\x06'
