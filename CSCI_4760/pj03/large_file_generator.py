@@ -6,7 +6,7 @@ import subprocess
 
 def generate(file, size):
     if platform.system() == 'Linux':
-        p = subprocess.Popen(['dd', 'if=/dev/zero', f'of={file}', f'bs={size}', 'count=1'])
+        p = subprocess.Popen(['/bin/dd', 'if=/dev/zero', f'of={file}', f'bs={size}', 'count=1'])
     else:
         with open(file, 'wb') as f:
             curr_size = 0
