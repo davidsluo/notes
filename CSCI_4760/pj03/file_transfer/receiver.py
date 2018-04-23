@@ -48,6 +48,7 @@ class ReceiverClient:
 
             self.id = self.server_conn.recv_int(2)
             log.info(f'Assigned ID {self.id}.')
+            log.log(SCRIPT_LOG_LEVEL, str(self.id))
 
             # Wait for senders to send data
             log.info(f'Waiting for senders...')
@@ -149,7 +150,8 @@ class ReceiverMetaThread(threading.Thread):
 
         log.info(f'Received {human_readable(filesize)} in {end-start} seconds over {connections} connections '
                  f'({human_readable(filesize/(end-start))}/second).')
-        log.log(SCRIPT_LOG_LEVEL, f'{self.address},{file.name},{filesize},{self.chunk_size},{connections},{start},{end}')
+        log.log(SCRIPT_LOG_LEVEL,
+                f'{self.address},{file.name},{filesize},{self.chunk_size},{connections},{start},{end}')
 
         self.receiver.on_done_receiving()
 
