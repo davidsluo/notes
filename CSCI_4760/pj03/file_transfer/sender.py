@@ -3,7 +3,7 @@ import threading
 import time
 from pathlib import Path
 
-from file_transfer.utils import Address, Consts, SocketWrapper, divide_into_sections, human_readable
+from file_transfer.utils import Address, Consts, SCRIPT_LOG_LEVEL, SocketWrapper, divide_into_sections, human_readable
 
 log = logging.getLogger('ftclient')
 
@@ -80,6 +80,9 @@ class SenderClient:
 
             log.info(f'Sent {human_readable(filesize)} in {end-start} seconds over {connections} connections '
                      f'({human_readable(filesize/(end-start))}/second).')
+
+            # double comma is on purpose
+            log.log(SCRIPT_LOG_LEVEL, f'{self.client_address},{file.name},{filesize},,{connections},{start},{end}')
 
         except KeyboardInterrupt:
             log.info('Received keyboard interrupt. Exiting...')

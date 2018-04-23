@@ -3,7 +3,7 @@ import logging
 
 from file_transfer.receiver import ReceiverClient
 from file_transfer.sender import SenderClient
-from file_transfer.utils import Address
+from file_transfer.utils import Address, SCRIPT_LOG_LEVEL
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('ftclient')
@@ -16,6 +16,28 @@ def address_type(arg: str):
         return Address(host, port)
     except:
         raise argparse.ArgumentError('Improperly formatted address. Addresses must be in the format <host>:<port>')
+
+
+def log_level_type(arg: str):
+    levels = dict(
+        CRITICAL=logging.CRITICAL,
+        FATAL=logging.FATAL,
+        ERROR=logging.ERROR,
+        WARNING=logging.WARNING,
+        WARN=logging.WARN,
+        INFO=logging.INFO,
+        DEBUG=logging.DEBUG,
+        NOTSET=logging.NOTSET,
+        SCRIPT=SCRIPT_LOG_LEVEL
+    )
+    try:
+        try:
+            level = levels[arg.upper()]
+        except KeyError:
+            level = int(arg)
+        return level
+    except:
+        argparse.ArgumentParser(f'Log level an int or must be one of {", ".join(levels.keys())}, SCRIPT.')
 
 
 if __name__ == '__main__':
@@ -34,7 +56,11 @@ if __name__ == '__main__':
                        help="specifies the size of the buffer size when receiving (default 4096).")
     parse.add_argument('-p', '--port', metavar='PORT', default=33333,  # TODO
                        help='specifies the port that the client will use for receiving (default to <TODO>).')
+    parse.add_argument('--log-level', default=logging.INFO, type=log_level_type,
+                       help='specifies the level of logging (default INFO).')
     args = parse.parse_args()
+
+    log.setLevel(args.log_level)
 
     if args.receive == -1:
         client = ReceiverClient(args.server)
