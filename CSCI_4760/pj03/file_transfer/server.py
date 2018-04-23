@@ -12,7 +12,7 @@ log = logging.getLogger('ftserver')
 class Server:
     threads: List['ServerThread'] = []
 
-    def __init__(self, address: Address):
+    def __init__(self, address: Address, static_id=-1):
         self.address = address
 
         self.conn = SocketWrapper()
@@ -23,13 +23,14 @@ class Server:
         self.receivers: Dict[int, Address] = {}
 
         log.info(f'Server initialized on {address}.')
+        self.static_id = static_id
 
     def serve(self):
         log.info('Serving...')
         try:
             while True:
                 connection, address = self.conn.socket.accept()
-                thread = ServerThread(SocketWrapper(connection), Address(*address), self)
+                thread = ServerThread(SocketWrapper(connection), Address(*address), self, self.static_id)
                 self.threads.append(thread)
                 thread.start()
         except KeyboardInterrupt:
@@ -43,12 +44,13 @@ class Server:
 
 
 class ServerThread(threading.Thread):
-    def __init__(self, conn: SocketWrapper, address: Address, server: 'Server'):
+    def __init__(self, conn: SocketWrapper, address: Address, server: 'Server', static_id=-1):
         super().__init__()
         self.conn = conn
         self.address = address
         self.server = server
         self.name = str(self.address)
+        self.static_id = static_id
 
     def run(self):
         log.debug(f'Accepted connection from {self.address}.')
@@ -62,9 +64,12 @@ class ServerThread(threading.Thread):
             log.debug(f'{self.address} is receiving at {receiving_address}.')
 
             # Generate and send ID
-            id = random.randint(0, 0xFFFF)
-            while id in self.server.receivers:
+            if self.static_id == -1:
                 id = random.randint(0, 0xFFFF)
+                while id in self.server.receivers:
+                    id = random.randint(0, 0xFFFF)
+            else:
+                id = self.static_id
             self.conn.send_int(id, 2)
 
             self.server.receivers[id] = receiving_address
