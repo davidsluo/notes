@@ -3,18 +3,27 @@ import logging
 
 from file_transfer.receiver import ReceiverClient
 from file_transfer.sender import SenderClient
-from file_transfer.utils import address_type
+from file_transfer.utils import Address
 
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger('ftclient')
 
-if __name__ == '__main__':
 
+def address_type(arg: str):
+    try:
+        host, port = arg.split(':', maxsplit=1)
+        port = int(port)
+        return Address(host, port)
+    except:
+        raise argparse.ArgumentError('Improperly formatted address. Addresses must be in the format <host>:<port>')
+
+
+if __name__ == '__main__':
     parse = argparse.ArgumentParser()
     parse.add_argument('--server', metavar='HOST:PORT', type=address_type, required=True,
                        help='specifies the host and port of the tracker server.')
     group = parse.add_mutually_exclusive_group(required=True)
-    group.add_argument('--receive', action='store_true', nargs='?', default=-1,
+    group.add_argument('--receive', nargs='?', const=-1,
                        help='indicates that the client is in "receive" mode. '
                             'May also specify how many files to receive. -1 for unlimited (default -1)')
     group.add_argument('--send', metavar='ID filename', nargs=2,
@@ -27,10 +36,9 @@ if __name__ == '__main__':
                        help='specifies the port that the client will use for receiving (default to <TODO>).')
     args = parse.parse_args()
 
-    if args.receive:
+    if args.receive == -1:
         client = ReceiverClient(args.server)
-        client.receive(args.size)
+        client.receive(chunk_size=args.size)
     else:
         client = SenderClient(args.server)
-        client.send(int(args.send[0]), args.send[1],
-                    connections=args.cons, chunk_size=args.size)
+        client.send(int(args.send[0]), args.send[1], connections=args.cons)
