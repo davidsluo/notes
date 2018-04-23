@@ -158,3 +158,6 @@ class Consts(bytes, Enum):
     DISCONNECTING = b'\x10'
 
     ERROR = b'\xFF'
+
+
+SCRIPT_LOG_LEVEL = 100

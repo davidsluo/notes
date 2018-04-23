@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from typing import Dict, List
 
-from file_transfer.utils import Address, Consts, SocketWrapper, human_readable
+from file_transfer.utils import Address, Consts, SCRIPT_LOG_LEVEL, SocketWrapper, human_readable
 
 log = logging.getLogger('ftclient')
 
@@ -93,7 +93,7 @@ class ReceiverThreadSpawner(threading.Thread):
     def run(self):
         type = self.conn.recv(1)
         if type == Consts.META_DATA:
-            thread = ReceiverMetaThread(self.conn, self.address, self.receiver)
+            thread = ReceiverMetaThread(self.conn, self.address, self.chunk_size, self.receiver)
         elif type == Consts.FILE_DATA:
             thread = ReceiverFileThread(self.conn, self.address, self.chunk_size)
         else:
@@ -106,11 +106,12 @@ class ReceiverThreadSpawner(threading.Thread):
 class ReceiverMetaThread(threading.Thread):
     receiving: Dict = {}
 
-    def __init__(self, conn: SocketWrapper, address: Address, receiver: ReceiverClient):
+    def __init__(self, conn: SocketWrapper, address: Address, chunk_size, receiver: ReceiverClient):
         super().__init__()
         self.conn = conn
         self.address = address
         self.receiver = receiver
+        self.chunk_size = chunk_size
 
     def run(self):
         # Receive file metadata
@@ -148,6 +149,7 @@ class ReceiverMetaThread(threading.Thread):
 
         log.info(f'Received {human_readable(filesize)} in {end-start} seconds over {connections} connections '
                  f'({human_readable(filesize/(end-start))}/second).')
+        log.log(SCRIPT_LOG_LEVEL, f'{self.address},{file.name},{filesize},{self.chunk_size},{connections},{start},{end}')
 
         self.receiver.on_done_receiving()
 
