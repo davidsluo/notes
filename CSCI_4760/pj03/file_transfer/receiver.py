@@ -1,4 +1,6 @@
 import logging
+import os
+import select
 import socket
 import threading
 import time
@@ -11,7 +13,7 @@ log = logging.getLogger('ftclient')
 
 
 class ReceiverClient:
-    def __init__(self, server_address: Address):
+    def __init__(self, server_address: Address, count=-1):
         self.server_conn = SocketWrapper()
         self.server_address = server_address
 
@@ -25,6 +27,11 @@ class ReceiverClient:
 
         self.id = None
         self.threads: List[threading.Thread] = []
+
+        self.files_received = 0
+        self.count = count
+
+        self._read_channel, self._write_channel = os.pipe()
 
     def receive(self, chunk_size):
         try:
@@ -45,49 +52,65 @@ class ReceiverClient:
             # Wait for senders to send data
             log.info(f'Waiting for senders...')
             while True:
+                # Non-blocking socket.accept(). Blocks instead here (select.select()), so that it can be interrupted by
+                # a write to self._write_channel. See `on_done_receiving`.
+                # https://stackoverflow.com/a/32735675
+                rfds, _, _ = select.select([self.client_conn.socket.fileno(), self._read_channel], [], [])
+                if self._read_channel in rfds:
+                    self._stop()
+                    return
                 conn, remote_addr = self.client_conn.socket.accept()
-                thread = ReceiverThreadSpawner(SocketWrapper(conn), Address(*remote_addr), chunk_size, self.threads)
+                thread = ReceiverThreadSpawner(SocketWrapper(conn), Address(*remote_addr), chunk_size, self)
                 self.threads.append(thread)
                 thread.start()
         except KeyboardInterrupt:
             log.info('Received keyboard interrupt. Waiting for connections to finish...')
-            for thread in self.threads:
-                if thread.is_alive():
-                    thread.join()
+            self._stop()
         finally:
             log.info('Disconnecting from server.')
             self.server_conn.send(Consts.DISCONNECTING)
             self.server_conn.close()
 
+    def _stop(self):
+        for thread in self.threads:
+            if thread.is_alive():
+                thread.join()
+
+    def on_done_receiving(self):
+        self.files_received += 1
+        if self.count != -1 and self.files_received == self.count:
+            os.write(self._write_channel, b'!')
+
 
 class ReceiverThreadSpawner(threading.Thread):
-    def __init__(self, conn: SocketWrapper, address: Address, chunk_size, threads):
+    def __init__(self, conn: SocketWrapper, address: Address, chunk_size, receiver):
         super().__init__()
         self.conn = conn
         self.address = address
         self.chunk_size = chunk_size
-        self.threads = threads
+        self.receiver: ReceiverClient = receiver
 
     def run(self):
         type = self.conn.recv(1)
         if type == Consts.META_DATA:
-            thread = ReceiverMetaThread(self.conn, self.address)
+            thread = ReceiverMetaThread(self.conn, self.address, self.receiver)
         elif type == Consts.FILE_DATA:
             thread = ReceiverFileThread(self.conn, self.address, self.chunk_size)
         else:
             raise ValueError()
 
-        self.threads.append(thread)
+        self.receiver.threads.append(thread)
         thread.start()
 
 
 class ReceiverMetaThread(threading.Thread):
     receiving: Dict = {}
 
-    def __init__(self, conn: SocketWrapper, address: Address):
+    def __init__(self, conn: SocketWrapper, address: Address, receiver: ReceiverClient):
         super().__init__()
         self.conn = conn
         self.address = address
+        self.receiver = receiver
 
     def run(self):
         # Receive file metadata
@@ -125,6 +148,8 @@ class ReceiverMetaThread(threading.Thread):
 
         log.info(f'Received {human_readable(filesize)} in {end-start} seconds over {connections} connections '
                  f'({human_readable(filesize/(end-start))}/second).')
+
+        self.receiver.on_done_receiving()
 
 
 class ReceiverFileThread(threading.Thread):
