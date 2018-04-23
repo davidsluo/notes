@@ -7,7 +7,8 @@ server = 'vcf3'
 server_port = 4000
 receiver = 'vcf4'
 sender = 'vcf5'
-project_path = Path('/home/ugrads/dluo/notes/CSCI_4760/pj03')
+home_dir = Path('/home/ugrads/dluo')
+project_path = home_dir / 'notes/CSCI_4760/pj03'
 
 large_file = project_path / 'test_files/large_file.raw'
 if not large_file.is_file():
@@ -17,6 +18,7 @@ target_file = project_path / 'large_file.raw'
 server_proc = subprocess.Popen(
     f"ssh -t dluo@{server} "
     f"'cd {project_path.absolute()}; "
+    f"source {home_dir / '.bash_login'}; "
     f"python3 ftserver.py {server_port}'".split()
 )
 
@@ -34,6 +36,7 @@ with open('results.csv', 'w') as f:
             receiver_proc = subprocess.Popen(
                 f"ssh -t dluo@{server} "
                 f"'cd {project_path.absolute()}; "
+                f"source {home_dir / '.bash_login'}; "
                 f"python3 ftclient.py --receive 1 --server {server}:{server_port}' -c {num_connections} -s {size} --log-level SCRIPT".split(),
                 stdout=subprocess.PIPE
             )
@@ -43,6 +46,7 @@ with open('results.csv', 'w') as f:
             sender_proc = subprocess.Popen(
                 f"ssh dluo@{server} "
                 f"'cd {project_path.absolute()}; "
+                f"source {home_dir / '.bash_login'}; "
                 f"python3 ftclient.py --send {id} {large_file} --server {server}:{server_port}'".split(),
                 stdout=subprocess.PIPE
             )
