@@ -9,8 +9,6 @@ log = logging.getLogger('ftclient')
 
 
 class SenderClient:
-    threads = []
-    sending = []
 
     def __init__(self, server_address):
         self.server_conn = SocketWrapper()
