@@ -48,7 +48,6 @@ class ReceiverClient:
 
             self.id = self.server_conn.recv_int(2)
             log.info(f'Assigned ID {self.id}.')
-            log.log(SCRIPT_LOG_LEVEL, str(self.id))
 
             # Wait for senders to send data
             log.info(f'Waiting for senders...')
