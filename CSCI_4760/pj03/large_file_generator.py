@@ -1,6 +1,5 @@
 import argparse
 import platform
-import random
 import subprocess
 
 
@@ -12,9 +11,7 @@ def generate(file, size):
             curr_size = 0
             while curr_size < eval(size):
                 try:
-                    data = random.randint(0, 1 << 4096)
-                    b = data.to_bytes(4096, byteorder='big', signed=False)
-                    curr_size += f.write(b)
+                    curr_size += f.write(b'0' * 4096)
                 except KeyboardInterrupt:
                     break
 
