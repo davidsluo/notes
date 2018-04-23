@@ -1,10 +1,9 @@
+import argparse
 import random
-from os import PathLike
-from typing import Union
 
 
-def generate(file: Union[str, bytes, int, PathLike], size: int):
-    with open(file, 'wb') as f:
+def generate(file, size: int):
+    with file as f:
         curr_size = 0
         while curr_size < size:
             try:
@@ -16,5 +15,8 @@ def generate(file: Union[str, bytes, int, PathLike], size: int):
 
 
 if __name__ == '__main__':
-    # print()
-    generate('large_file/large_file.raw', 10 << 30)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('where', type=argparse.FileType('wb'))
+    parser.add_argument('size', type=eval)
+    args = parser.parse_args()
+    generate(args.where, args.size)
