@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parse.add_argument('--server', metavar='HOST:PORT', type=address_type, required=True,
                        help='specifies the host and port of the tracker server.')
     group = parse.add_mutually_exclusive_group(required=True)
-    group.add_argument('--receive', nargs='?', const=-1, default=None, metavar='COUNT',
+    group.add_argument('--receive', nargs='?', const=-1, default=None, metavar='COUNT', type=int,
                        help='indicates that the client is in "receive" mode. '
                             'May also specify how many files to receive. -1 for unlimited (default -1)')
     group.add_argument('--send', metavar='ID filename', nargs=2,
