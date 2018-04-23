@@ -1,13 +1,17 @@
+import logging
 import random
 import socket
 import threading
-from typing import Dict
+from typing import Dict, List
 
 from file_transfer.utils import Address, Consts, SocketWrapper
-from ftserver import log
+
+log = logging.getLogger('ftserver')
 
 
 class Server:
+    threads: List['ServerThread'] = []
+
     def __init__(self, address: Address):
         self.address = address
 
@@ -26,11 +30,12 @@ class Server:
             while True:
                 connection, address = self.conn.socket.accept()
                 thread = ServerThread(SocketWrapper(connection), Address(*address), self)
+                self.threads.append(thread)
                 thread.start()
         except KeyboardInterrupt:
             log.info('Received keyboard interrupt. Waiting for connections to finish...')
-            for thread in threading.enumerate():
-                if thread != threading.current_thread():
+            for thread in self.threads:
+                if thread.is_alive():
                     thread.join()
         finally:
             self.conn.close()
@@ -69,7 +74,7 @@ class ServerThread(threading.Thread):
             while True:
                 try:
                     disconnect = self.conn.recv(10)
-                    if disconnect == b'disconnect':
+                    if disconnect == Consts.DISCONNECTING:
                         log.debug(f'{self.address} disconnected.')
                         break
                 except ConnectionError as er:
@@ -98,3 +103,4 @@ class ServerThread(threading.Thread):
 
         # disconnect
         self.conn.close()
+        self.server.threads.remove(self)

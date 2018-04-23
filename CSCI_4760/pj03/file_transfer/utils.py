@@ -1,4 +1,3 @@
-import argparse
 import itertools
 import socket
 from enum import Enum
@@ -32,6 +31,8 @@ class SocketWrapper:
 
     def close(self):
         return self.socket.close()
+
+    disconnect = close
 
     def send(self, bytes):
         """
@@ -138,21 +139,22 @@ def divide_into_sections(size, divisions):
     return offset_length
 
 
-def address_type(arg: str):
-    try:
-        host, port = arg.split(':', maxsplit=1)
-        port = int(port)
-        return Address(host, port)
-    except:
-        raise argparse.ArgumentError('Improperly formatted address. Addresses must be in the format <host>:<port>')
-
-
 class Consts(bytes, Enum):
-    IS_SENDING = b'\x04'
-    IS_RECEIVING = b'\x05'
+    IS_SENDING = b'\x00'
+    IS_RECEIVING = b'\x01'
 
-    RECEIVING_FILE = b'\x00'
-    RECEIVING_META = b'\x01'
-    FILE_EXISTS = b'\x02'
-    FILE_NOT_EXISTS = b'\x03'
+    FILE_DATA = b'\x02'
+    META_DATA = b'\x03'
+
+    FILE_EXISTS = b'\x04'
+    FILE_NOT_EXISTS = b'\x05'
+
     FILE_RECEIVED = b'\x06'
+    CHUNK_RECEIVED = b'\07'
+
+    DONE_SENDING = b'\x08'
+    DONE_RECEIVING = b'\x09'
+
+    DISCONNECTING = b'\x10'
+
+    ERROR = b'\xFF'
