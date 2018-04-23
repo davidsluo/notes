@@ -17,7 +17,7 @@ target_file = project_path / 'large_file.raw'
 server_proc = subprocess.Popen(
     f"ssh -t dluo@{server} "
     f"'cd {project_path.absolute()}; "
-    f"python3 ftserver.py {server_port}'"
+    f"python3 ftserver.py {server_port}'".split()
 )
 
 power_range = range(10, 11)
@@ -34,7 +34,7 @@ with open('results.csv', 'w') as f:
             receiver_proc = subprocess.Popen(
                 f"ssh -t dluo@{server} "
                 f"'cd {project_path.absolute()}; "
-                f"python3 ftclient.py --receive 1 --server {server}:{server_port}' -c {num_connections} -s {size} --log-level SCRIPT",
+                f"python3 ftclient.py --receive 1 --server {server}:{server_port}' -c {num_connections} -s {size} --log-level SCRIPT".split(),
                 stdout=subprocess.PIPE
             )
 
@@ -43,7 +43,7 @@ with open('results.csv', 'w') as f:
             sender_proc = subprocess.Popen(
                 f"ssh dluo@{server} "
                 f"'cd {project_path.absolute()}; "
-                f"python3 ftclient.py --send {id} {large_file} --server {server}:{server_port}'",
+                f"python3 ftclient.py --send {id} {large_file} --server {server}:{server_port}'".split(),
                 stdout=subprocess.PIPE
             )
 
