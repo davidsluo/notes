@@ -9,8 +9,10 @@ log = logging.getLogger('ftserver')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('port', type=int)
-    parser.add_argument('--static-id', type=int)
+    parser.add_argument('port', type=int, default=47684, help='The port to host the server on.')
+    parser.add_argument('--static-id', type=int,
+                        help='Force the server to provide any client that connects with the specified ID. '
+                             'Generally used only in testing.')
     args = parser.parse_args()
 
     server = Server(Address('', args.port), args.static_id)
