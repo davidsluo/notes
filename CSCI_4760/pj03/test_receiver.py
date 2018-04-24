@@ -12,6 +12,7 @@ CONN_RANGE = range(50, 0, -1)
 SERVER_ADDRESS = Address('vcf3', 4000)
 TARGET_FILE = Path('large_file.raw')
 OUTPUT_FILE = 'data.csv'
+TIMEOUT = 20
 
 
 def run_receive(chunk_size):
@@ -44,6 +45,6 @@ if __name__ == '__main__':
 
             conn.send(int.to_bytes(num_conn, 32, 'big', signed=False))
 
-            recv.join(timeout=20)
+            recv.join(timeout=TIMEOUT)
             if recv.is_alive():
                 recv.terminate()
