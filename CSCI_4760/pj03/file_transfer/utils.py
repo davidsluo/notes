@@ -139,6 +139,22 @@ def divide_into_sections(size, divisions):
     return offset_length
 
 
+def divide_into_even_sections(size, divisions):
+    if divisions == 0:
+        raise ZeroDivisionError
+    elif divisions < 0:
+        raise ValueError('Number of divisions cannot be less than zero.')
+
+    section_size, remainder = divmod(size, divisions)
+    sections = [section_size] * (divisions - remainder)
+    sections.extend([section_size + 1] * remainder)
+
+    indicies = [0] + list(itertools.accumulate(sections))
+    start_end = ((start, end) for start, end in zip(indicies[:-1], indicies[1:]))
+    offset_length = [(start, end - start) for start, end in start_end]
+    return offset_length
+
+
 class Consts(bytes, Enum):
     IS_SENDING = b'\x00'
     IS_RECEIVING = b'\x01'
