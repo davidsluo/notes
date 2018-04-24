@@ -47,15 +47,16 @@ if __name__ == '__main__':
     group = parse.add_mutually_exclusive_group(required=True)
     group.add_argument('--receive', nargs='?', const=-1, default=None, metavar='COUNT', type=int,
                        help='indicates that the client is in "receive" mode. '
-                            'May also specify how many files to receive. -1 for unlimited (default -1)')
+                            'May also specify how many files to receive. -1 for unlimited. Only supported on Linux '
+                            '(default -1).')
     group.add_argument('--send', metavar='ID filename', nargs=2,
                        help='indicates that the client is in "send" mode.')
     parse.add_argument('-c', '--cons', metavar='CNUM', type=int, default=1,
                        help='specifies the number of parallel, concurrent connections to use when sending (default 1).')
     parse.add_argument('-s', '--size', metavar='SIZE', type=int, default=4096,
                        help="specifies the size of the buffer size when receiving (default 4096).")
-    parse.add_argument('-p', '--port', metavar='PORT', default=33333,  # TODO
-                       help='specifies the port that the client will use for receiving (default to <TODO>).')
+    parse.add_argument('-p', '--port', metavar='PORT', default=47685,
+                       help='specifies the port that the client will use for receiving (default to 47685).')
     parse.add_argument('--log-level', default=logging.INFO, type=log_level_type,
                        help='specifies the level of logging (default INFO).')
     args = parse.parse_args()
