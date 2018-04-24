@@ -1,5 +1,6 @@
 import logging
 import os
+import platform
 import select
 import socket
 import threading
@@ -31,7 +32,9 @@ class ReceiverClient:
         self.files_received = 0
         self.count = count
 
-        self._read_channel, self._write_channel = os.pipe()
+        self.interruptable = platform.system() == 'Linux'
+        if self.interruptable:
+            self._read_channel, self._write_channel = os.pipe()
 
     def receive(self, chunk_size):
         try:
@@ -52,13 +55,14 @@ class ReceiverClient:
             # Wait for senders to send data
             log.info(f'Waiting for senders...')
             while True:
-                # Non-blocking socket.accept(). Blocks instead here (select.select()), so that it can be interrupted by
-                # a write to self._write_channel. See `on_done_receiving`.
-                # https://stackoverflow.com/a/32735675
-                rfds, _, _ = select.select([self.client_conn.socket.fileno(), self._read_channel], [], [])
-                if self._read_channel in rfds:
-                    self._stop()
-                    return
+                if self.interruptable:
+                    # Non-blocking socket.accept(). Blocks instead here (select.select()), so that it can be interrupted
+                    # by a write to self._write_channel. See `on_done_receiving`.
+                    # https://stackoverflow.com/a/32735675
+                    rfds, _, _ = select.select([self.client_conn.socket.fileno(), self._read_channel], [], [])
+                    if self._read_channel in rfds:
+                        self._stop()
+                        return
                 conn, remote_addr = self.client_conn.socket.accept()
                 thread = ReceiverThreadSpawner(SocketWrapper(conn), Address(*remote_addr), chunk_size, self)
                 self.threads.append(thread)
@@ -78,7 +82,7 @@ class ReceiverClient:
 
     def on_done_receiving(self):
         self.files_received += 1
-        if self.count != -1 and self.files_received == self.count:
+        if self.interruptable and self.count != -1 and self.files_received == self.count:
             os.write(self._write_channel, b'!')
 
 
