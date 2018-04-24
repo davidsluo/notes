@@ -13,6 +13,7 @@ SERVER_ADDRESS = Address('vcf3', 4000)
 TARGET_FILE = Path('large_file.raw')
 OUTPUT_FILE = 'data.csv'
 TIMEOUT = 20
+SAMPLES = 3
 
 
 def run_receive(chunk_size):
@@ -32,19 +33,20 @@ if __name__ == '__main__':
     s.listen()
     conn, addr = s.accept()
 
-    for power in POWER_RANGE:
-        for num_conn in CONN_RANGE:
-            if TARGET_FILE.is_file():
-                TARGET_FILE.unlink()
+    for _ in range(SAMPLES):
+        for power in POWER_RANGE:
+            for num_conn in CONN_RANGE:
+                if TARGET_FILE.is_file():
+                    TARGET_FILE.unlink()
 
-            chunk_size = 1 << power
-            print('testing: ', chunk_size, num_conn)
+                chunk_size = 1 << power
+                print('testing: ', chunk_size, num_conn)
 
-            recv = Process(target=run_receive, args=(chunk_size,))
-            recv.start()
+                recv = Process(target=run_receive, args=(chunk_size,))
+                recv.start()
 
-            conn.send(int.to_bytes(num_conn, 32, 'big', signed=False))
+                conn.send(int.to_bytes(num_conn, 32, 'big', signed=False))
 
-            recv.join(timeout=TIMEOUT)
-            if recv.is_alive():
-                recv.terminate()
+                recv.join(timeout=TIMEOUT)
+                if recv.is_alive():
+                    recv.terminate()
