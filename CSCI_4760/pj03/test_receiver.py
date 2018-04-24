@@ -6,20 +6,23 @@ from pathlib import Path
 from file_transfer.receiver import ReceiverClient
 from file_transfer.utils import Address
 
-static_id = 5
+STATIC_ID = 5
+POWER_RANGE = range(30, 0, -1)
+CONN_RANGE = range(50, 0, -1)
+SERVER_ADDRESS = Address('vcf3', 4000)
+TARGET_FILE = Path('large_file.raw')
+OUTPUT_FILE = 'data.csv'
 
 
 def run_receive(chunk_size):
-    receiver = ReceiverClient(Address('vcf3', 4000), count=1)
+    receiver = ReceiverClient(SERVER_ADDRESS, count=1)
     receiver.receive(chunk_size)
 
 
 if __name__ == '__main__':
 
-    logging.basicConfig(filename='data.csv')
+    logging.basicConfig(filename=OUTPUT_FILE)
     # log.setLevel(SCRIPT_LOG_LEVEL)
-
-    target_file = Path('large_file.raw')
 
     s = socket.socket()
     s.bind(('', 0))
@@ -28,13 +31,13 @@ if __name__ == '__main__':
     s.listen()
     conn, addr = s.accept()
 
-    for power in range(50, 0, -1):
-        for num_conn in range(50, 0, -1):
-            if target_file.is_file():
-                target_file.unlink()
+    for power in POWER_RANGE:
+        for num_conn in CONN_RANGE:
+            if TARGET_FILE.is_file():
+                TARGET_FILE.unlink()
 
             chunk_size = 1 << power
-            print(chunk_size, num_conn)
+            print('testing: ', chunk_size, num_conn)
 
             recv = Process(target=run_receive, args=(chunk_size,))
             recv.start()
