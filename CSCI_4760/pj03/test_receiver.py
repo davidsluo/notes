@@ -7,7 +7,7 @@ from file_transfer.receiver import ReceiverClient
 from file_transfer.utils import Address
 
 STATIC_ID = 5
-POWER_RANGE = range(30, 0, -1)
+POWER_RANGE = range(30, 5, -1)
 CONN_RANGE = range(50, 0, -1)
 SERVER_ADDRESS = Address('vcf3', 4000)
 TARGET_FILE = Path('large_file.raw')
