@@ -20,9 +20,13 @@ class Server:
         self.conn.socket.bind((self.address.host, self.address.port))
         self.conn.socket.listen()
 
+        self.address = Address(*self.conn.socket.getsockname())
+        if self.address.host in ('0.0.0.0', ''):
+            self.address.host = socket.gethostname()
+
         self.receivers: Dict[int, Address] = {}
 
-        log.info(f'Server initialized on {address}.')
+        log.info(f'Server initialized on {self.address}.')
         self.static_id = static_id
 
     def serve(self):
