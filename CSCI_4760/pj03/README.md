@@ -22,13 +22,11 @@ $ source bin/activate
 $ python3 ftserver.py -h
 ```
 ```
-usage: ftserver.py [-h] [--static-id STATIC_ID] port
-
-positional arguments:
-  port                  The port to host the server on.
+usage: ftserver.py [-h] [--port PORT] [--static-id STATIC_ID]
 
 optional arguments:
   -h, --help            show this help message and exit
+  --port PORT           The port to host the server on.
   --static-id STATIC_ID
                         Force the server to provide any client that connects
                         with the specified ID. Generally used only in testing.
