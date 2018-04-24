@@ -20,6 +20,6 @@ with open('conn_info', 'r') as f:
 
 while True:
     num_conns: int = int.from_bytes(s.recv(32), 'big', signed=False)
-    time.sleep(1)
+    time.sleep(0.05)
     sender = SenderClient(SERVER_ADDRESS)
     sender.send(5, str(SOURCE_FILE), connections=num_conns)
