@@ -1,0 +1,11 @@
+/*
+As speech is not yet widely supported across browsers, there's not much I really felt
+like I needed to do here. I just made links be enunciated slowly and letter by letter
+since links are an exact sequence of characters.
+*/
+@media speech {
+    a {
+        speak-as: spell-out;
+        voice-rate: slow;
+    }
+}

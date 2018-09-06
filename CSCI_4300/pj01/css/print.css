@@ -1,0 +1,23 @@
+/* 
+Here, I made the navbar not display as it is not the main content of the page.
+All links have their destination in parentheses in case the viewer of the printed
+document wishes to visit them. Articles and figures avoid internal page breaking
+in order to preserve continuity.
+*/
+@media print {
+    nav {
+        display: none;
+    }
+
+    @page {
+        margin: 1cm;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    article, figure {
+        page-break-inside: avoid;
+    }
+}

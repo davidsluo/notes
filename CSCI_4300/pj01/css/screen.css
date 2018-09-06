@@ -1,0 +1,123 @@
+/* 
+I generally followed standard website design, converting the navigation menu into a proper navbar,
+using some @media queries to make the site responsive. Additionally, there is some minimal
+styling for tables to make it look prettier and force line breaks on link for mobile devices.
+Embeded videos are now also responsive.
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto'); 
+
+/* general content */
+body {
+    font-family: 'Roboto', sans-serif; 
+    margin: 0px;
+}
+
+.container {
+    max-width: 800px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+@media (max-width: 850px) {
+    .container {
+        margin-right: 1em;
+        margin-left: 1em;
+    }
+}
+
+/* images */
+figure {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1em;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* navbar */
+nav {
+    padding: 0;
+    max-width: 800px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #818181;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+}
+
+nav a:hover, nav a.active {
+    background-color: #696969
+}
+
+@media (max-width: 350px) {
+    nav li {
+        float: none;
+    }
+
+    nav a {
+        text-align: left;
+    }
+}
+
+@media (max-width: 850px) {
+    nav {
+        max-width: none;
+    }
+}
+
+/* youtube videos. referenced https://www.ostraining.com/blog/coding/responsive-videos/ */
+.responsive-video {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.responsive-video iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+/* table styles */
+table {
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid #646464;
+}
+
+th, td {
+    padding: 4px 8px;
+}
+
+/* force links to line break */
+table a {
+    word-break: break-all;
+}
