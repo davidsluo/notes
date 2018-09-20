@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <form action="/" method="GET">
+            <div class="text-center mb-4">
+                <h1 class="font-weight-normal">PJ02</h1>
+            </div>
+            {% if errors %}
+                {% for error in errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="form-label-group">
+                <label for="num">Input Number</label>
+                <input name="num" type="text" class="form-control" id="num" placeholder="Input Number" required />
+            </div>
+            <div class="form-label-group">
+                <label for="frombase">From Base</label>
+                <select name="frombase" class="form-control" id="frombase">
+                    <option>2</option>
+                    <option>8</option>
+                    <option>10</option>
+                    <option>16</option>
+                </select>
+            </div>
+            <div class="form-label-group">
+                <label for="tobase">To Base</label>
+                <select name="tobase" class="form-control" id="tobase">
+                    <option>2</option>
+                    <option>8</option>
+                    <option>10</option>
+                    <option>16</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Convert</button>
+        </form>
+        {% if output %}
+            <div class="text-center mt-4">
+                <h1>Output</h1>
+                <p>{{ num }} in base {{ base }} is {{ output }}.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
