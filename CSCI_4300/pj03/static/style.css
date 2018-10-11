@@ -1,0 +1,12 @@
+#paginator > .pagination {
+    display: inline-flex;
+}
+
+.fa {
+    top: 0;
+    position:absolute;
+}
+
+.table {
+    margin-bottom: 0;
+}

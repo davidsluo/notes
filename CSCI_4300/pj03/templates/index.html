@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="overflow-x:scroll">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                {% for column in header %}
+                    <th scope="col">
+                        {% if column == col %}
+                            {% if order == 'ASC' %}
+                                <i class="fa fa-sort-up float-right"></i>
+                                <a href="/pj03/?page={{ page }}&per_page={{ per_page }}&col={{ col }}&order=DESC">
+                            {% elif order == 'DESC' %}
+                                <i class="fa fa-sort-down float-right"></i>
+                                <a href="/pj03/?page={{ page }}&per_page={{ per_page }}">
+                            {% endif %}
+                        {% else %}
+                            <a href="/pj03/?page={{ page }}&per_page={{ per_page }}&col={{ column }}&order=ASC">
+                        {% endif %}
+
+                        {{ column }}
+                        </a>
+                    </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="paginator" class="text-center mt-4">
+        <ul class="pagination">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                <a class="page-link"
+                   href="/pj03/?page={{ page - 1 }}&per_page={{ per_page }}&col={{ column }}&order={{ order }}">Previous</a>
+            </li>
+            {% for p in pages %}
+                <li class="page-item {% if p == page %}active{% elif p == '...' %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="/pj03/?page={{ p }}&per_page={{ per_page }}&col={{ column }}&order={{ order }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item {% if page == last_page %}disabled{% endif %}">
+                <a class="page-link"
+                   href="/pj03/?page={{ page + 1 }}&per_page={{ per_page }}&col={{ column }}&order={{ order }}"">Next</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container mt-2">
+        <h1>Description</h1>
+        <p>
+            This dataset is from <a href="https://www.ncdc.noaa.gov/cdo-web/datatools/lcd">NOAA's Local Climatological
+            Data</a> &mdash; hourly weather data gathered from the Athens-Ben Epps Airport from October 1, 2013 to
+            October 1, 2018. The columns are truncated to show only hourly data.
+        </p>
+        <h2>Query</h2>
+        <p>
+            Query string: <code>{{ query_string }}</code>
+        </p>
+        <h2>Schema</h2>
+        <p>
+            The schema can be downloaded <a href="static/schema.sql">here</a>. More info about the schema can be found
+            <a href="static/schema.html">here</a>.
+        </p>
+    </div>
+{% endblock %}

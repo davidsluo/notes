@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>David Luo PJ03</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1>The Schema</h1>
+    <code><pre>
+        CREATE TABLE weather (
+           id SERIAL,
+           Station VARCHAR(32),
+           StationName VARCHAR(64),
+           Elevation DECIMAL(5,2),
+           Latitude DECIMAL(7,4),
+           Longitude DECIMAL(7,4),
+           Date DATETIME,
+           SkyConditions VARCHAR(32),
+           Visibility DECIMAL(4,2),
+           PresentWeatherType VARCHAR(32),
+           DryBulbTempF INTEGER,
+           WetBulbTempF INTEGER,
+           DewPointTempF INTEGER,
+           RelativeHumidity INTEGER,
+           WindSpeed INTEGER,
+           WindDirection INTEGER,
+           WindGustSpeed INTEGER,
+           StationPressure DECIMAL(4,2),
+           PressureTendency INTEGER,
+           PressureChange DECIMAL(4,2),
+           SeaLevelPressure DECIMAL(4,2),
+           Precipitation INTEGER,
+           AltimeterSetting DECIMAL(4,2)
+        );
+    </pre>
+    </code>
+
+    <p>
+        This table was constructed by taking the CSV spreadsheet of the data and converting each column into the
+        appropriate data type as specified by the spreadsheet documentation, or by looking at the values present within
+        the data. These labeled columns were then used to create the above SQL instruction. Most of the numerical values
+        use a fixed point decimal since an arbitrary level of precision is not necessary in many of these fields.
+        Varchar is still used in places where the constraints are somewhat unknown such as the <code>Station</code> and
+        <code>StationName</code>. <code>SkyConditions</code> and <code>PresentWeatherType</code> could be converted into
+        an integer for a bitwise boolean array, but are not due to lack of a real need to save on space for this
+        project. All the fields were left <code>NULL</code>able since there were many spots in the data with simply no
+        value.
+    </p>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script
+</body>
+</html>
