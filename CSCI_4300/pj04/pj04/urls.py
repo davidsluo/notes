@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('pj04/', include([
+    path('pj04/', include([ # account for having to put app under /pj04/
         path('admin/', admin.site.urls),
         path('', include('polls.urls'))
     ]))
