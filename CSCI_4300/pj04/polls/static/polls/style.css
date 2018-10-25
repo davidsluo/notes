@@ -1,7 +1,5 @@
-li a {
-    color: green;
-}
-
-body {
-    background: white url("images/background.gif") no-repeat;
+.container {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
 }
