@@ -1,0 +1,3 @@
+[submodule "CSCI_4730/csx730-list"]
+	path = CSCI_4730/csx730-list
+	url = git@github.com:dsluo/csx730-list
