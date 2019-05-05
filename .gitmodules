@@ -1,9 +1,36 @@
 [submodule "CSCI_4730/csx730-list"]
 	path = CSCI_4730/csx730-list
 	url = git@github.com:dsluo/csx730-list
+[submodule "CSCI_4730/csx730-libdis"]
+	path = CSCI_4730/csx730-libdis
+	url = git@github.com:dsluo/csx730-libdis
+[submodule "CSCI_4730/csx730-malloc"]
+	path = CSCI_4730/csx730-malloc
+	url = git@github.com:dsluo/csx730-malloc
+[submodule "CSCI_4730/csx730-more-paging"]
+	path = CSCI_4730/csx730-more-paging
+	url = git@github.com:dsluo/csx730-more-paging
+[submodule "CSCI_4730/csx730-paging"]
+	path = CSCI_4730/csx730-paging
+	url = git@github.com:dsluo/csx730-paging
+[submodule "CSCI_4730/csx730-quiz02"]
+	path = CSCI_4730/csx730-quiz02
+	url = git@github.com:dsluo/csx730-quiz02
+[submodule "CSCI_4730/csx730-strace"]
+	path = CSCI_4730/csx730-strace
+	url = git@github.com:dsluo/csx730-strace
+[submodule "CSCI_4730/csx730-uthread"]
+	path = CSCI_4730/csx730-uthread
+	url = git@github.com:dsluo/csx730-uthread
+[submodule "CSCI_4730/csx730-vfs"]
+	path = CSCI_4730/csx730-vfs
+	url = git@github.com:dsluo/csx730-vfs
 [submodule "CSCI_4250/proj1"]
 	path = CSCI_4250/proj1
-	url = git@github.com:dsluo/csci4250-hw1.git
+	url = git@github.com:dsluo/csci4250-pj1.git
 [submodule "CSCI_4250/hw1"]
 	path = CSCI_4250/hw1
-	url = git@github.com:dsluo/csci4250-pj1.git
+	url = git@github.com:dsluo/csci4250-hw1.git
+[submodule "CSCI_4250/hw2"]
+	path = CSCI_4250/hw2
+	url = git@github.com:dsluo/csci4250-hw2.git
