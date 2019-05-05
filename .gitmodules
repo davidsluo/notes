@@ -34,3 +34,6 @@
 [submodule "CSCI_4250/hw2"]
 	path = CSCI_4250/hw2
 	url = git@github.com:dsluo/csci4250-hw2.git
+[submodule "CSCI_4800/cookthisnotthat"]
+	path = CSCI_4800/cookthisnotthat
+	url = git@github.com:dsluo/cookthisnotthat.git
